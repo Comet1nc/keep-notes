@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "site": "keep-notes-site",
+    "public": "dist/keep-notes",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
