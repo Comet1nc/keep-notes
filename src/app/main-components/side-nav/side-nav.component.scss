@@ -1,18 +1,26 @@
-.example-container {
-  width: 100%;
-  min-height: 100vh;
-  // border: 1px solid rgba(0, 0, 0, 0.5);
+.container {
+  width: 200px;
+  height: 100vh;
+  background-color: #fafafa;
+  position: fixed;
+  overflow: hidden;
+
+  // @debug $is-dark-theme;
+
+  transition: width 0.5s ease-in-out;
+
+  &.opened {
+    width: 280px;
+  }
+
+  &.closed {
+    width: 80px;
+  }
 }
 
-.example-sidenav-content {
+.labels-list {
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  padding: 50px;
-}
-
-.example-sidenav {
-  padding: 20px;
+  // gap: 20px;
 }

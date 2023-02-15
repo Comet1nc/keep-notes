@@ -8,6 +8,7 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -18,7 +19,7 @@ $keep-notes-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$keep-notes-theme: mat.define-light-theme((color: (primary: $keep-notes-primary,
+$keep-notes-theme-light: mat.define-light-theme((color: (primary: $keep-notes-primary,
         accent: $keep-notes-accent,
         warn: $keep-notes-warn )));
 
@@ -37,14 +38,19 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
 // pre istalled theme
 // @import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-.theme-dark {
-  @include mat.all-component-themes($keep-notes-theme-dark);
-}
 
 .theme-light {
-  @include mat.all-component-themes($keep-notes-theme);
+  @include mat.all-component-themes($keep-notes-theme-light);
+  // @include mat.core-theme($keep-notes-theme-light);
 
 }
+
+.theme-dark {
+  @include mat.all-component-colors($keep-notes-theme-dark);
+  // @include mat.core-theme($keep-notes-theme-dark);
+}
+
+
 
 html,
 body {
@@ -54,4 +60,15 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }

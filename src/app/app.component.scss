@@ -1,4 +1,18 @@
-.example-card {
-  max-width: 900px;
-  margin: 0 auto;
+.main {
+  display: flex;
+
+}
+
+.content {
+
+  padding: 10px;
+  transition: margin 0.5s ease-in-out;
+
+  &.opened {
+    margin-left: 280px;
+  }
+
+  &.closed {
+    margin-left: 80px;
+  }
 }

@@ -1,22 +1,27 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-side-nav',
+  selector: 'side-nav',
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss'],
 })
-export class SideNavComponent implements AfterViewInit {
-  @ViewChild('drawer') drawer: any;
-
+export class SideNavComponent implements OnInit {
   @Input() sub!: Observable<void>;
 
-  closed = true;
+  isSideNavOpened = false;
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.sub.subscribe(() => {
-      this.drawer.toggle();
+      this.isSideNavOpened = !this.isSideNavOpened;
     });
   }
-  // @Input() showFiller = false;
+
+  getClassByState() {
+    if (this.isSideNavOpened) {
+      return 'opened';
+    } else {
+      return 'closed';
+    }
+  }
 }

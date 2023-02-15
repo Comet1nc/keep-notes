@@ -15,10 +15,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { ToolBarComponent } from './main-components/tool-bar/tool-bar.component';
-import { SideNavComponent } from './main-components/side-nav/side-nav.component';
+import { SideNavModule } from './main-components/side-nav/side-nav.module';
 
 @NgModule({
-  declarations: [AppComponent, ToolBarComponent, SideNavComponent],
+  declarations: [AppComponent, ToolBarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -38,6 +38,7 @@ import { SideNavComponent } from './main-components/side-nav/side-nav.component'
     MatSlideToggleModule,
     MatCardModule,
     MatSelectModule,
+    SideNavModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

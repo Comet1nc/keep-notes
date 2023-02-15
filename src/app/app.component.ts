@@ -18,8 +18,19 @@ export class AppComponent {
 
   onToggleSideNav = new Subject<void>();
 
+  isSideNavOpened = false;
+
   toggleSideNav() {
     this.onToggleSideNav.next();
+    this.isSideNavOpened = !this.isSideNavOpened;
+  }
+
+  getContentClass() {
+    if (this.isSideNavOpened) {
+      return 'opened';
+    } else {
+      return 'closed';
+    }
   }
 
   foods: Food[] = [
