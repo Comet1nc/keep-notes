@@ -1,7 +1,14 @@
+// @use 'sass:map';
+// @use '@angular/material' as mat;
+
+// $color-config: mat.get-color-config($theme);
+// $is-dark-theme: map.get($color-config, 'is-dark');
+
+
 .container {
   width: 200px;
   height: 100vh;
-  background-color: #fafafa;
+  background-color: inherit;
   position: fixed;
   overflow: hidden;
 

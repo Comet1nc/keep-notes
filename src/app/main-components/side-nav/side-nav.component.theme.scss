@@ -1,0 +1,30 @@
+@mixin side-nav-light {
+  side-nav {
+    background-color: #FAFAFA;
+
+    button {
+      background-color: #feefc3;
+    }
+
+    svg {}
+  }
+}
+
+@mixin side-nav-dark {
+  side-nav {
+    background-color: #303030;
+
+    span {
+      color: #e8eaed;
+    }
+
+    button {
+      background-color: #41331c;
+    }
+
+    svg {
+      fill: #e8eaed !important;
+    }
+
+  }
+}

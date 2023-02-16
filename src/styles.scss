@@ -1,12 +1,15 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
+@use './app/main-components/side-nav/side-nav.component.theme' as side-nav;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
+
+
 
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
@@ -27,27 +30,20 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
         accent: $keep-notes-accent,
         warn: $keep-notes-warn,
       )));
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-// @include mat.all-component-themes($keep-notes-theme-dark);
-
-/* You can add global styles to this file, and also import other style files */
-
-// pre istalled theme
-// @import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
-
+//
 
 .theme-light {
   @include mat.all-component-themes($keep-notes-theme-light);
-  // @include mat.core-theme($keep-notes-theme-light);
-
+  @include side-nav.side-nav-light;
+  // @include side-nav.theme(false);
+  // @include side-nav-theme($keep-notes-theme-light)
 }
 
 .theme-dark {
   @include mat.all-component-colors($keep-notes-theme-dark);
-  // @include mat.core-theme($keep-notes-theme-dark);
+  @include side-nav.side-nav-dark;
+  // @include side-nav.theme(true);
+  // @include side-nav-theme($keep-notes-theme-dark)
 }
 
 

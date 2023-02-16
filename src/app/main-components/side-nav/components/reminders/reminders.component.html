@@ -1,0 +1,23 @@
+<li class="label" [ngClass]="getLabelClass()">
+  <button>
+    <svg
+      *ngIf="svgPath !== ''"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path [attr.d]="svgPath" />
+    </svg>
+    <svg
+      *ngIf="svgPath === ''"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path *ngFor="let path of svgPaths" [attr.d]="path" />
+    </svg>
+    <span>{{ title }}</span>
+  </button>
+</li>
