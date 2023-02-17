@@ -1,14 +1,53 @@
 mat-toolbar {
+  padding: 8px;
   height: 65px;
+  position: fixed;
 
   .search-bar-wrapper {
     background-color: rgb(215, 214, 214);
     flex: 1 1 auto;
     margin: 0 10px;
-    height: 60%;
+    height: 96%;
     display: flex;
     align-items: center;
     border-radius: 8px;
+
+    .search-button {
+      margin: auto;
+      display: flex;
+
+
+      svg {
+        padding: 5px;
+        margin: 3px;
+        fill: #5f6368;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(205, 205, 205);
+          border-radius: 50%;
+        }
+      }
+
+    }
+
+    .close-input-button {
+      margin: auto;
+      display: flex;
+
+
+      svg {
+        padding: 5px;
+        margin: 3px;
+        fill: #5f6368;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgb(205, 205, 205);
+          border-radius: 50%;
+        }
+      }
+    }
 
     .search-bar {
       flex: 1 1 auto;
@@ -23,7 +62,10 @@ mat-toolbar {
   .title {
     margin-left: 10px;
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 500;
     width: 200px;
+
   }
+
+
 }
