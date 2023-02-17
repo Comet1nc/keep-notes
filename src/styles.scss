@@ -2,6 +2,7 @@
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 @use './app/main-components/side-nav/side-nav.component.theme' as side-nav;
+@use './app/main-components/tool-bar/tool-bar.component.theme.scss' as tool-bar;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -35,6 +36,7 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
 .theme-light {
   @include mat.all-component-themes($keep-notes-theme-light);
   @include side-nav.side-nav-light;
+  @include tool-bar.tool-bar-light;
   // @include side-nav.theme(false);
   // @include side-nav-theme($keep-notes-theme-light)
 }
@@ -42,6 +44,7 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
 .theme-dark {
   @include mat.all-component-colors($keep-notes-theme-dark);
   @include side-nav.side-nav-dark;
+  @include tool-bar.tool-bar-dark;
   // @include side-nav.theme(true);
   // @include side-nav-theme($keep-notes-theme-dark)
 }

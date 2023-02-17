@@ -3,6 +3,10 @@
     background-color: #FAFAFA;
 
     button {
+      background-color: #FAFAFA;
+    }
+
+    button.active {
       background-color: #feefc3;
     }
 
@@ -19,6 +23,10 @@
     }
 
     button {
+      background-color: #303030;
+    }
+
+    button.active {
       background-color: #41331c;
     }
 

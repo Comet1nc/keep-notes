@@ -5,6 +5,6 @@
 <div class="main">
   <side-nav [sub]="onToggleSideNav.asObservable()"></side-nav>
   <div class="content" [ngClass]="getContentClass()">
-    <h1>hello</h1>
+    <router-outlet></router-outlet>
   </div>
 </div>

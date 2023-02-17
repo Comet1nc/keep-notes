@@ -1,0 +1,16 @@
+@mixin tool-bar-light {
+  mat-toolbar {
+    .title {
+      color: #5f6368;
+    }
+  }
+}
+
+@mixin tool-bar-dark {
+  mat-toolbar {
+    .title {
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+  }
+}

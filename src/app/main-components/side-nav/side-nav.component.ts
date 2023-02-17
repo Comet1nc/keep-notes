@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Route } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,6 +11,8 @@ export class SideNavComponent implements OnInit {
   @Input() sub!: Observable<void>;
 
   isSideNavOpened = false;
+  //
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.sub.subscribe(() => {
