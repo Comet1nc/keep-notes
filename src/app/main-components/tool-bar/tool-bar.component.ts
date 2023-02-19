@@ -11,6 +11,8 @@ export class ToolBarComponent {
   @Output()
   onToggleSideNav = new EventEmitter();
 
+  menuIsActive = false;
+
   toggleDarkMode() {
     this.switchDarkMode.emit();
   }

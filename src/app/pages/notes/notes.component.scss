@@ -1,3 +1,140 @@
 .container {
   height: 4000px;
+  width: 100%;
+
+  .input-bar {
+    background-color: white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
+
+    border-radius: 8px;
+    width: 600px;
+    margin: 32px auto 16px auto;
+
+    .title-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+
+      .title-input {
+        // border: 1px solid black;
+        font-size: 20px;
+        font-weight: 500;
+        height: 24px;
+        width: 100%;
+        font-weight: 500;
+      }
+
+      .pin-button {
+        width: 33px;
+        height: 33px;
+        background-image: url('../../../assets/icons/pin.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.71;
+
+        padding: 20px;
+
+        &:hover {
+          background-color: rgb(205 205 205 / 30%);
+          border-radius: 50%;
+          opacity: 1;
+        }
+      }
+    }
+
+    .main-note-content-wrapper {
+      padding: 10px 15px;
+
+      .note-content-input {
+        font-size: 15px;
+        font-weight: 400;
+        width: 100%;
+        word-break: break-all;
+        position: relative;
+        min-height: 40px;
+
+        .default-text {
+          color: #5f6368;
+          ;
+          font-weight: 500;
+
+          position: absolute;
+          // bottom: 0;
+          left: 0;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        // min-height: 100px;
+        // resize: none;
+      }
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+
+        button {
+
+          width: 33px;
+          height: 33px;
+          background-position: center;
+          background-repeat: no-repeat;
+          opacity: 0.71;
+
+          padding: 20px;
+
+          &:hover {
+            background-color: rgb(205 205 205 / 30%);
+            border-radius: 50%;
+            opacity: 1;
+          }
+        }
+
+
+        .background-btn {
+          background-image: url('../../../assets/icons/background.svg');
+        }
+
+        .add-image-btn {
+          background-image: url('../../../assets/icons/image.svg');
+        }
+
+        .archive-btn {
+          background-image: url('../../../assets/icons/archive.svg');
+        }
+
+        .draw-btn {
+          background-image: url('../../../assets/icons/draw.svg');
+        }
+
+      }
+
+      .close-btn {
+        padding: 8px 24px;
+        height: 36px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-family: 'Roboto';
+        font-size: 15px;
+
+        &:hover {
+          background-color: rgba(95, 99, 104, 0.039);
+        }
+      }
+    }
+
+
+
+
+  }
 }

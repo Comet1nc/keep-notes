@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
+  AfterContentInit,
   Component,
   HostBinding,
   Inject,

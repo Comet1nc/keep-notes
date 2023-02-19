@@ -34,7 +34,14 @@
       </svg>
     </button>
   </div>
-  <button mat-raised-button class="example-icon" (click)="toggleDarkMode()">
-    Toggle DarkMode
-  </button>
+  <div class="settings-wrapper">
+    <button
+      class="settings-button"
+      (click)="menuIsActive = !menuIsActive"
+    ></button>
+    <tool-bar-settings-menu
+      *ngIf="menuIsActive"
+      (onThemeChanged)="toggleDarkMode()"
+    ></tool-bar-settings-menu>
+  </div>
 </mat-toolbar>

@@ -71,3 +71,19 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+div {
+  font-family: 'Roboto', sans-serif;
+}
+
+input,
+textarea {
+  border: none;
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+}

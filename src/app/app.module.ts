@@ -16,9 +16,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { ToolBarComponent } from './main-components/tool-bar/tool-bar.component';
 import { SideNavModule } from './main-components/side-nav/side-nav.module';
+import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
+import { MatRippleModule } from '@angular/material/core';
 
 @NgModule({
-  declarations: [AppComponent, ToolBarComponent],
+  declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -38,6 +40,7 @@ import { SideNavModule } from './main-components/side-nav/side-nav.module';
     MatSlideToggleModule,
     MatCardModule,
     MatSelectModule,
+    MatRippleModule,
     SideNavModule,
   ],
   providers: [],
