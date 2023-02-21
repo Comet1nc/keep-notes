@@ -1,0 +1,123 @@
+@mixin input-bar-light {
+  .input-bar {
+    background-color: white;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+
+    .closed-section {
+      .input-wrapper {
+        .default-text {
+          color: #4C4C4C;
+        }
+      }
+
+      .action-buttons {
+        button {
+          svg {
+            fill: #767676;
+          }
+        }
+      }
+    }
+
+    .opened-section {
+      .title-wrapper {
+        .title-input {
+          background-color: #fff;
+
+          &::placeholder {
+            color: #666666;
+          }
+        }
+
+        .pin-button {
+          svg {
+            fill: #535353;
+          }
+        }
+      }
+
+      .main-note-content-wrapper {
+        .default-text {
+          color: #4C4C4C;
+          //BDBDBE
+        }
+      }
+
+      footer {
+        .action-buttons {
+          button {
+            svg {
+              fill: #4A4A4A;
+            }
+          }
+        }
+
+        .close-btn {
+          color: #212121;
+        }
+      }
+    }
+
+  }
+}
+
+@mixin input-bar-dark {
+  .input-bar {
+    background-color: #303030;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
+
+    .closed-section {
+      .input-wrapper {
+        .default-text {
+          color: #BDBDBE;
+        }
+      }
+
+      .action-buttons {
+        button {
+          svg {
+            fill: #98989A;
+          }
+        }
+      }
+    }
+
+    .opened-section {
+      .title-wrapper {
+        .title-input {
+          background-color: #303030;
+
+          &::placeholder {
+            color: #A6A6A7;
+          }
+        }
+
+        .pin-button {
+          svg {
+            fill: #B4B4B5;
+          }
+        }
+      }
+
+      .main-note-content-wrapper {
+        .default-text {
+          color: #BDBDBE;
+        }
+      }
+
+      footer {
+        .action-buttons {
+          button {
+            svg {
+              fill: #BEBFBF;
+            }
+          }
+        }
+
+        .close-btn {
+          color: #D7D9DD;
+        }
+      }
+    }
+  }
+}

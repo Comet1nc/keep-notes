@@ -20,8 +20,20 @@
           fill: #5f6368;
         }
       }
+    }
 
+    .settings-wrapper {
+      .settings-button {
+        svg {
+          fill: #5f6368;
+        }
 
+        &:hover {
+          svg {
+            fill: #222222;
+          }
+        }
+      }
     }
 
     tool-bar-settings-menu {
@@ -66,8 +78,23 @@
           color: white;
         }
       }
-
     }
+
+    .settings-wrapper {
+      .settings-button {
+        svg {
+          fill: #98989A;
+        }
+
+        &:hover {
+          svg {
+            fill: #E1E1E2;
+            //222222
+          }
+        }
+      }
+    }
+
 
     tool-bar-settings-menu {
       .container {

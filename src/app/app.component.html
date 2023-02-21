@@ -3,7 +3,10 @@
   (onToggleSideNav)="toggleSideNav()"
 ></app-tool-bar>
 <div class="main">
-  <side-nav [sub]="onToggleSideNav.asObservable()"></side-nav>
+  <side-nav
+    [sub]="onToggleSideNav.asObservable()"
+    [isSideNavOpened]="isSideNavOpened"
+  ></side-nav>
   <div class="content" [ngClass]="getContentClass()">
     <router-outlet></router-outlet>
   </div>

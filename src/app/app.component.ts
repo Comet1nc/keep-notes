@@ -19,7 +19,7 @@ export class AppComponent {
 
   onToggleSideNav = new Subject<void>();
 
-  isSideNavOpened = false;
+  isSideNavOpened = true;
 
   toggleSideNav() {
     this.onToggleSideNav.next();

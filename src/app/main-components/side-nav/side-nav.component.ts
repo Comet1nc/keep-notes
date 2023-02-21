@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class SideNavComponent implements OnInit {
   @Input() sub!: Observable<void>;
 
-  isSideNavOpened = false;
+  @Input() isSideNavOpened = true;
   //
   constructor(private route: ActivatedRoute) {}
 
