@@ -1,40 +1,4 @@
 <p>notes works!</p>
 <div class="container">
-  <div class="input-bar">
-    <div class="title-wrapper">
-      <input type="text" class="title-input" placeholder="Title" />
-      <button class="pin-button"></button>
-    </div>
-    <div class="main-note-content-wrapper">
-      <div
-        contenteditable="true"
-        class="note-content-input"
-        aria-multiline="true"
-        role="textbox"
-        tabindex="0"
-        spellcheck="true"
-        dir="ltr"
-        [(ngModel)]="newNoteText"
-        (click)="hideDeafultText()"
-      >
-        <div
-          *ngIf="contentInputClicked"
-          class="default-text"
-          spellcheck="false"
-          contenteditable="false"
-        >
-          Take a note...
-        </div>
-      </div>
-    </div>
-    <footer>
-      <div class="action-buttons">
-        <button class="background-btn"></button>
-        <button class="add-image-btn"></button>
-        <button class="archive-btn"></button>
-        <button class="draw-btn"></button>
-      </div>
-      <button class="close-btn">Close</button>
-    </footer>
-  </div>
+  <app-input-bar></app-input-bar>
 </div>

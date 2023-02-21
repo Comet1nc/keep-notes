@@ -5,11 +5,4 @@ import { Component, ElementRef } from '@angular/core';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
 })
-export class NotesComponent {
-  newNoteText: string = '';
-  contentInputClicked = true;
-
-  hideDeafultText() {
-    this.contentInputClicked = false;
-  }
-}
+export class NotesComponent {}

@@ -18,6 +18,7 @@ import { ToolBarComponent } from './main-components/tool-bar/tool-bar.component'
 import { SideNavModule } from './main-components/side-nav/side-nav.module';
 import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
 import { MatRippleModule } from '@angular/material/core';
+import { SharedComponentsModule } from './shared-components/shared-components.module';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
@@ -42,6 +43,7 @@ import { MatRippleModule } from '@angular/material/core';
     MatSelectModule,
     MatRippleModule,
     SideNavModule,
+    SharedComponentsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
