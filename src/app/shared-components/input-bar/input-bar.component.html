@@ -1,15 +1,10 @@
 <div class="input-bar">
   <div class="closed-section" *ngIf="!isOpened">
     <div class="input-wrapper" (click)="openSection()">
-      <div
-        *ngIf="newNoteText.length === 0"
-        class="default-text"
-        spellcheck="false"
-        contenteditable="false"
-      >
+      <div class="default-text" spellcheck="false" contenteditable="false">
         Take a note...
       </div>
-      <div
+      <!-- <div
         contenteditable="true"
         class="note-content-input"
         aria-multiline="true"
@@ -17,7 +12,7 @@
         tabindex="0"
         spellcheck="true"
         dir="ltr"
-      ></div>
+      ></div> -->
     </div>
     <div class="action-buttons">
       <button class="add-image-btn">
@@ -48,7 +43,13 @@
   </div>
   <div class="opened-section" *ngIf="isOpened">
     <div class="title-wrapper">
-      <input type="text" class="title-input" placeholder="Title" />
+      <input
+        type="text"
+        class="title-input"
+        placeholder="Title"
+        maxlength="45"
+        [(ngModel)]="titleText"
+      />
       <button class="pin-button">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +140,9 @@
           </svg>
         </button>
       </div>
-      <button class="close-btn" (click)="closeSection()">Close</button>
+      <button class="close-btn" (click)="closeSection(inputField)">
+        Close
+      </button>
     </footer>
   </div>
 </div>

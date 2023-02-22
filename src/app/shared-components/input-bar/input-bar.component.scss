@@ -2,7 +2,7 @@
 
   border-radius: 8px;
   width: 600px;
-  margin: 32px auto 16px auto;
+  margin: 90px auto 16px auto;
 
   .closed-section {
     display: flex;
@@ -17,6 +17,8 @@
       align-items: center;
       width: 100%;
       min-height: 30px;
+
+      cursor: text;
 
       .default-text {
 

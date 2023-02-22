@@ -1,6 +1,13 @@
-.container {
-  height: 4000px;
+.input-container {
   width: 100%;
+}
 
+.notes-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 50px 100px;
+  // margin: 0 auto;
 
 }
