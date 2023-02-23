@@ -1,0 +1,40 @@
+@mixin note-field-light {
+  .note {
+    border-color: #d0d0d0;
+
+    .pin-button {
+      svg {
+        fill: #4A4A4A;
+      }
+    }
+
+    .action-buttons {
+      button {
+        svg {
+          fill: #4A4A4A;
+        }
+      }
+    }
+  }
+}
+
+@mixin note-field-dark {
+  .note {
+
+    border-color: #4A4D51;
+
+    .pin-button {
+      svg {
+        fill: #BEBFBF;
+      }
+    }
+
+    .action-buttons {
+      button {
+        svg {
+          fill: #BEBFBF;
+        }
+      }
+    }
+  }
+}
