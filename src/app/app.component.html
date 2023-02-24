@@ -1,3 +1,8 @@
+<app-edit-note
+  *ngIf="showEditMode"
+  [activeNote]="noteToEdit"
+  (onCloseEditMode)="closeEditMode($event)"
+></app-edit-note>
 <app-tool-bar
   (switchDarkMode)="switchMode()"
   (onToggleSideNav)="toggleSideNav()"

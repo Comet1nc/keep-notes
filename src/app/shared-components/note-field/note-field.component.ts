@@ -5,7 +5,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NotesService } from 'src/app/services/notes.service';
 import { Note } from '../input-bar/input-bar.component';
 
 @Component({
@@ -39,10 +40,43 @@ import { Note } from '../input-bar/input-bar.component';
     ]),
   ],
 })
-export class NoteFieldComponent {
+export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
 
   showButtons = false;
+  mouseInNote = false;
+  editModeOpened = false;
+
+  constructor(private notesService: NotesService) {}
+
+  ngOnInit(): void {
+    this.notesService.closeEditMode.subscribe((note: Note) =>
+      this.editModeClosed(note)
+    );
+  }
+
+  editModeClosed(note: Note) {
+    this.editModeOpened = false;
+
+    this.note = note;
+  }
+
+  openEditMode() {
+    if (this.mouseInNote) {
+      this.notesService.openEditMode.next(this.note);
+      this.editModeOpened = true;
+    }
+  }
+
+  onMouseEnter() {
+    this.showButtons = true;
+    this.mouseInNote = true;
+  }
+
+  onMouseLeave() {
+    this.showButtons = false;
+    this.mouseInNote = false;
+  }
 
   getTitle() {
     let clearedText = this.note.title.trim();

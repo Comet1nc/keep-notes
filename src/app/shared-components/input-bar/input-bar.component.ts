@@ -41,6 +41,7 @@ export class InputBarComponent {
 
     // clearing input fields
     this.titleText = '';
+    this.newNoteText = '';
     inputField.innerText = '';
   }
 }

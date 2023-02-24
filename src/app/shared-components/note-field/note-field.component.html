@@ -1,7 +1,9 @@
 <div
   class="note"
-  (mouseenter)="showButtons = true"
-  (mouseleave)="showButtons = false"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+  (click)="openEditMode()"
+  *ngIf="!editModeOpened"
 >
   <div class="title">{{ getTitle() }}</div>
   <div class="content">{{ getContent() }}</div>
