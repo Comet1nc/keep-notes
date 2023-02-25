@@ -1,11 +1,11 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
-  EventEmitter,
   Output,
+  EventEmitter,
   ViewChild,
+  ElementRef,
 } from '@angular/core';
+import { Note } from 'src/app/models/note.model';
 
 @Component({
   selector: 'app-input-bar',
@@ -43,14 +43,5 @@ export class InputBarComponent {
     this.titleText = '';
     this.newNoteText = '';
     inputField.innerText = '';
-  }
-}
-
-export class Note {
-  title: string;
-  content: string;
-  constructor(title: string, content: string) {
-    this.title = title;
-    this.content = content;
   }
 }

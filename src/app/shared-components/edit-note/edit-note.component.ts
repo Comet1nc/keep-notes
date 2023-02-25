@@ -1,23 +1,15 @@
+import { trigger, transition, style, animate } from '@angular/animations';
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
-  EventEmitter,
-  Input,
   OnInit,
+  AfterViewInit,
+  Input,
   Output,
+  EventEmitter,
   ViewChild,
+  ElementRef,
 } from '@angular/core';
-import { NotesService } from 'src/app/services/notes.service';
-import { Note } from '../input-bar/input-bar.component';
-import {
-  animate,
-  animation,
-  group,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { Note } from 'src/app/models/note.model';
 
 @Component({
   selector: 'app-edit-note',
@@ -38,32 +30,6 @@ import {
           })
         ),
       ]),
-      transition(':leave', [
-        style({
-          opacity: '1',
-          transform: '*',
-        }),
-        animate(
-          '200ms ease-in-out',
-          style({
-            transform: 'scale(0.5)',
-          })
-        ),
-        group([
-          animate(
-            '100ms',
-            style({
-              transform: 'scale(0)',
-            })
-          ),
-          animate(
-            '100ms',
-            style({
-              opacity: '0',
-            })
-          ),
-        ]),
-      ]),
     ]),
     trigger('bg', [
       transition(':enter', [
@@ -77,30 +43,18 @@ import {
           })
         ),
       ]),
-      transition(':leave', [
-        style({
-          opacity: '1',
-        }),
-        animate(
-          '400ms ease-in-out',
-          style({
-            opacity: '0',
-          })
-        ),
-      ]),
     ]),
   ],
 })
 export class EditNoteComponent implements OnInit, AfterViewInit {
   @Input() activeNote!: Note;
+  @Input() noteIndex!: number;
   @Output() onCloseEditMode = new EventEmitter<Note>();
 
   titleText: string = '';
   newNoteText: string = '';
 
   @ViewChild('inputField') inputField!: ElementRef;
-
-  constructor(private notesService: NotesService) {}
 
   ngOnInit(): void {
     this.titleText = this.activeNote.title;
@@ -116,7 +70,10 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   }
 
   closeEditMode() {
+    let note = new Note(this.titleText, this.newNoteText);
+    note.index = this.noteIndex;
+    this.onCloseEditMode.emit(note);
+
     this.activeNote = new Note('', '');
-    this.onCloseEditMode.emit(new Note(this.titleText, this.newNoteText));
   }
 }

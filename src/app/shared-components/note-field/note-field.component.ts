@@ -5,9 +5,9 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Note } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
-import { Note } from '../input-bar/input-bar.component';
 
 @Component({
   selector: 'app-note-field',
@@ -42,6 +42,11 @@ import { Note } from '../input-bar/input-bar.component';
 })
 export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
+  @Input() index!: number;
+  @Output() onMakePinned = new EventEmitter<Note>();
+  @Output() onNoteChange = new EventEmitter<Note>();
+
+  editmode = 'editmode';
 
   showButtons = false;
   mouseInNote = false;
@@ -49,8 +54,13 @@ export class NoteFieldComponent implements OnInit {
 
   constructor(private notesService: NotesService) {}
 
+  makePinned() {
+    this.onMakePinned.emit(this.note);
+  }
+
   ngOnInit(): void {
-    this.notesService.closeEditMode.subscribe((note: Note) =>
+    this.note.index = this.index;
+    this.notesService.closeEditMode.subscribe((note) =>
       this.editModeClosed(note)
     );
   }
@@ -58,7 +68,10 @@ export class NoteFieldComponent implements OnInit {
   editModeClosed(note: Note) {
     this.editModeOpened = false;
 
-    this.note = note;
+    // console.log(note);
+    // if (note.index === this.index) {
+    //   this.onNoteChange.emit(note);
+    // }
   }
 
   openEditMode() {

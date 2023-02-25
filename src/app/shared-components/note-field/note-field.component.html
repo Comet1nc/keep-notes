@@ -2,12 +2,17 @@
   class="note"
   (mouseenter)="onMouseEnter()"
   (mouseleave)="onMouseLeave()"
-  (click)="openEditMode()"
-  *ngIf="!editModeOpened"
+  [ngClass]="{ editmode: editModeOpened }"
 >
+  <div class="open-edit-mode-trigger" (click)="openEditMode()"></div>
   <div class="title">{{ getTitle() }}</div>
   <div class="content">{{ getContent() }}</div>
-  <button class="pin-button" *ngIf="showButtons" [@icons]>
+  <button
+    class="pin-button"
+    *ngIf="showButtons"
+    [@icons]
+    (click)="makePinned()"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"

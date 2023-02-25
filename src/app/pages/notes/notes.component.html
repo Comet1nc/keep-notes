@@ -1,6 +1,12 @@
 <div class="input-container">
   <app-input-bar (saveNoteData)="saveNoteData($event)"></app-input-bar>
 </div>
+<div class="pinned-notes-container" *ngIf="pinnedNotes.length > 0"></div>
 <div class="notes-container" *ngIf="notes.length > 0">
-  <app-note-field *ngFor="let note of notes" [note]="note"></app-note-field>
+  <app-note-field
+    *ngFor="let note of notes; let i = index"
+    [note]="note"
+    [index]="i"
+    (onMakePinned)="makePinned($event)"
+  ></app-note-field>
 </div>

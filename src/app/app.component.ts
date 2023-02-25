@@ -1,16 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import {
-  AfterContentInit,
   AfterViewInit,
   Component,
-  HostBinding,
   Inject,
   OnInit,
   Renderer2,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { NotesService } from './services/notes.service';
-import { Note } from './shared-components/input-bar/input-bar.component';
+import { Note } from 'src/app/models/note.model';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   showEditMode = false;
   noteToEdit!: Note;
+  noteIndex!: number;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -33,8 +32,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     private notesService: NotesService
   ) {}
   ngOnInit(): void {
-    this.notesService.openEditMode.subscribe((note) => {
+    this.notesService.openEditMode.subscribe((note: Note) => {
       this.noteToEdit = note;
+      this.noteIndex = note.index;
       this.showEditMode = true;
     });
   }
@@ -58,12 +58,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  foods: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
-
   switchMode() {
     this.renderer.removeClass(
       this.document.body,
@@ -75,9 +69,4 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.isDarkMode ? 'theme-dark' : 'theme-light'
     );
   }
-}
-
-interface Food {
-  value: string;
-  viewValue: string;
 }

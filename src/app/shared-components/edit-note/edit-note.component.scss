@@ -1,5 +1,5 @@
 .bg {
-  position: absolute;
+  position: fixed;
   background-color: #202124ac;
   top: 0;
   left: 0;
@@ -9,13 +9,13 @@
 }
 
 .container {
-  position: absolute;
+  position: fixed;
   top: 30vh;
   left: calc(50% - 300px);
   z-index: 10;
   width: 600px;
-  height: 180px;
-  background-color: white;
+  border-radius: 8px;
+  padding: 5px;
 
   .title-wrapper {
     display: flex;
@@ -84,7 +84,7 @@
 
     .action-buttons {
       display: flex;
-      gap: 10px;
+      gap: 15px;
 
       button {
 
