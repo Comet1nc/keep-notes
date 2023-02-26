@@ -5,8 +5,16 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Note } from 'src/app/models/note.model';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { Note, NoteCategory } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -40,11 +48,13 @@ import { NotesService } from 'src/app/services/notes.service';
     ]),
   ],
 })
-export class NoteFieldComponent implements OnInit {
+export class NoteFieldComponent implements OnInit, OnDestroy {
   @Input() note!: Note;
   @Input() index!: number;
+  @Input() onNotesChanged!: Observable<void>;
+  @Input() categoryType!: NoteCategory;
+  onNotesChangedSub!: Subscription;
   @Output() onMakePinned = new EventEmitter<Note>();
-  @Output() onNoteChange = new EventEmitter<Note>();
 
   editmode = 'editmode';
 
@@ -54,28 +64,30 @@ export class NoteFieldComponent implements OnInit {
 
   constructor(private notesService: NotesService) {}
 
+  ngOnInit(): void {
+    this.note.index = this.index;
+
+    this.notesService.closeEditMode.subscribe(
+      (note) => (this.editModeOpened = false)
+    );
+
+    // this.onNotesChangedSub = this.onNotesChanged.subscribe(() => {
+    //   this.note.index = this.index;
+    // });
+  }
+
+  ngOnDestroy(): void {
+    // this.onNotesChangedSub.unsubscribe();
+  }
+
   makePinned() {
     this.onMakePinned.emit(this.note);
   }
 
-  ngOnInit(): void {
-    this.note.index = this.index;
-    this.notesService.closeEditMode.subscribe((note) =>
-      this.editModeClosed(note)
-    );
-  }
-
-  editModeClosed(note: Note) {
-    this.editModeOpened = false;
-
-    // console.log(note);
-    // if (note.index === this.index) {
-    //   this.onNoteChange.emit(note);
-    // }
-  }
-
   openEditMode() {
     if (this.mouseInNote) {
+      this.note.fromCategory = this.categoryType;
+      this.note.index = this.index;
       this.notesService.openEditMode.next(this.note);
       this.editModeOpened = true;
     }

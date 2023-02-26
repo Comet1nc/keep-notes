@@ -1,7 +1,6 @@
 <app-edit-note
   *ngIf="showEditMode"
   [activeNote]="noteToEdit"
-  [noteIndex]="noteIndex"
   (onCloseEditMode)="closeEditMode($event)"
 ></app-edit-note>
 <app-tool-bar

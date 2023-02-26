@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { Note } from 'src/app/models/note.model';
+import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Note, NoteCategory } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -10,12 +11,23 @@ import { NotesService } from 'src/app/services/notes.service';
 export class NotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
+  onNotesChanged = new Subject<void>();
+  categoryType: NoteCategory = NoteCategory.notes;
 
   constructor(private notesService: NotesService) {}
 
   ngOnInit(): void {
+    this.notes = this.notesService.notesContainer;
+    this.pinnedNotes = this.notesService.notesContainerPinned;
+
     this.notesService.closeEditMode.subscribe((note: Note) => {
-      this.notes[note.index] = note;
+      if (note.fromCategory === this.categoryType) {
+        if (!note.isPinned) {
+          this.notes[note.index] = note;
+        } else {
+          this.pinnedNotes[note.index] = note;
+        }
+      }
     });
   }
 
@@ -24,7 +36,20 @@ export class NotesComponent implements OnInit {
   }
 
   makePinned(note: Note) {
-    // let elementIndex = this.notes.indexOf(note);
-    // this.notes = this.notes.splice(elementIndex);
+    let noteIndex = this.notes.indexOf(note);
+
+    this.pinnedNotes.push(note);
+
+    if (this.notes.length === 1) {
+      this.notes.pop();
+    } else if (noteIndex === 0) {
+      this.notes.shift();
+    } else if (noteIndex + 1 === this.notes.length) {
+      this.notes.pop();
+    } else {
+      this.notes.splice(noteIndex, 1);
+    }
+
+    this.onNotesChanged.next();
   }
 }

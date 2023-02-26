@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   showEditMode = false;
   noteToEdit!: Note;
-  noteIndex!: number;
+  // noteIndex!: number;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.notesService.openEditMode.subscribe((note: Note) => {
       this.noteToEdit = note;
-      this.noteIndex = note.index;
+      // this.noteIndex = note.index;
       this.showEditMode = true;
     });
   }
