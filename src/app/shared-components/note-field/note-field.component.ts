@@ -48,13 +48,12 @@ import { NotesService } from 'src/app/services/notes.service';
     ]),
   ],
 })
-export class NoteFieldComponent implements OnInit, OnDestroy {
+export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
   @Input() index!: number;
-  @Input() onNotesChanged!: Observable<void>;
   @Input() categoryType!: NoteCategory;
-  onNotesChangedSub!: Subscription;
-  @Output() onMakePinned = new EventEmitter<Note>();
+  @Output() onTogglePin = new EventEmitter<Note>();
+  @Output() onDeleteNote = new EventEmitter<Note>();
 
   editmode = 'editmode';
 
@@ -62,26 +61,29 @@ export class NoteFieldComponent implements OnInit, OnDestroy {
   mouseInNote = false;
   editModeOpened = false;
 
+  moreOptionsActive = false;
+
   constructor(private notesService: NotesService) {}
 
   ngOnInit(): void {
     this.note.index = this.index;
+    this.note.fromCategory = this.categoryType;
 
     this.notesService.closeEditMode.subscribe(
       (note) => (this.editModeOpened = false)
     );
-
-    // this.onNotesChangedSub = this.onNotesChanged.subscribe(() => {
-    //   this.note.index = this.index;
-    // });
   }
 
-  ngOnDestroy(): void {
-    // this.onNotesChangedSub.unsubscribe();
+  deleteNote() {
+    this.onDeleteNote.emit(this.note);
   }
 
-  makePinned() {
-    this.onMakePinned.emit(this.note);
+  toggleMenu() {
+    this.moreOptionsActive = !this.moreOptionsActive;
+  }
+
+  togglePin() {
+    this.onTogglePin.emit(this.note);
   }
 
   openEditMode() {
@@ -101,6 +103,7 @@ export class NoteFieldComponent implements OnInit, OnDestroy {
   onMouseLeave() {
     this.showButtons = false;
     this.mouseInNote = false;
+    this.moreOptionsActive = false;
   }
 
   getTitle() {

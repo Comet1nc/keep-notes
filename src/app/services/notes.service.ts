@@ -11,4 +11,6 @@ export class NotesService {
 
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
+
+  deleteNote(note: Note) {}
 }

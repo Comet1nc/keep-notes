@@ -1,23 +1,27 @@
 <div class="input-container">
   <app-input-bar (saveNoteData)="saveNoteData($event)"></app-input-bar>
 </div>
-<div class="pinned-notes-container" *ngIf="pinnedNotes.length > 0"></div>
-<div class="notes-container" *ngIf="pinnedNotes.length > 0">
-  <app-note-field
-    [onNotesChanged]="onNotesChanged.asObservable()"
-    *ngFor="let note of pinnedNotes; let i = index"
-    [note]="note"
-    [index]="i"
-  ></app-note-field>
-</div>
-<hr />
-<div class="notes-container" *ngIf="notes.length > 0">
-  <app-note-field
-    *ngFor="let note of notes"
-    [note]="note"
-    [index]="notes.indexOf(note)"
-    [categoryType]="categoryType"
-    [onNotesChanged]="onNotesChanged.asObservable()"
-    (onMakePinned)="makePinned($event)"
-  ></app-note-field>
+<div class="notes-container">
+  <div class="category-type" *ngIf="pinnedNotes.length > 0">PINNED</div>
+  <div class="pinned-notes-container" *ngIf="pinnedNotes.length > 0">
+    <app-note-field
+      *ngFor="let note of pinnedNotes; let i = index"
+      [note]="note"
+      [index]="notes.indexOf(note)"
+      [categoryType]="categoryType"
+      (onTogglePin)="togglePin($event)"
+      (onDeleteNote)="deleteNote($event)"
+    ></app-note-field>
+  </div>
+  <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
+  <div class="unpinned-notes-container" *ngIf="notes.length > 0">
+    <app-note-field
+      *ngFor="let note of notes"
+      [note]="note"
+      [index]="notes.indexOf(note)"
+      [categoryType]="categoryType"
+      (onTogglePin)="togglePin($event)"
+      (onDeleteNote)="deleteNote($event)"
+    ></app-note-field>
+  </div>
 </div>

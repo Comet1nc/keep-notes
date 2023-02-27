@@ -11,7 +11,6 @@ import { NotesService } from 'src/app/services/notes.service';
 export class NotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
-  onNotesChanged = new Subject<void>();
   categoryType: NoteCategory = NoteCategory.notes;
 
   constructor(private notesService: NotesService) {}
@@ -29,27 +28,65 @@ export class NotesComponent implements OnInit {
         }
       }
     });
+
+    // filling db with some data for testing
+    let count = 0;
+    for (let index = 0; index < 3; index++) {
+      count++;
+      let item = new Note(count.toString(), 'Hello world');
+      this.notesService.notesContainer.push(item);
+      let pinned = new Note(count.toString(), 'Hello world');
+      pinned.isPinned = true;
+      this.notesService.notesContainerPinned.push(pinned);
+    }
+  }
+
+  deleteNote(note: Note, _exitArray?: any) {
+    let exitArray = _exitArray;
+
+    if (exitArray !== undefined) {
+      // skip
+    } else if (note.isPinned) {
+      exitArray = this.pinnedNotes;
+    } else {
+      exitArray = this.notes;
+    }
+
+    let noteIndex = exitArray.indexOf(note);
+
+    if (exitArray.length === 1) {
+      exitArray.pop();
+    } else if (noteIndex === 0) {
+      exitArray.shift();
+    } else if (noteIndex + 1 === exitArray.length) {
+      exitArray.pop();
+    } else {
+      exitArray.splice(noteIndex, 1);
+    }
   }
 
   saveNoteData(data: Note) {
     this.notes.push(data);
   }
 
-  makePinned(note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+  togglePin(note: Note) {
+    let enterArray;
+    let exitArray;
 
-    this.pinnedNotes.push(note);
+    if (note.isPinned) {
+      enterArray = this.notes;
+      exitArray = this.pinnedNotes;
 
-    if (this.notes.length === 1) {
-      this.notes.pop();
-    } else if (noteIndex === 0) {
-      this.notes.shift();
-    } else if (noteIndex + 1 === this.notes.length) {
-      this.notes.pop();
+      note.isPinned = false;
     } else {
-      this.notes.splice(noteIndex, 1);
+      enterArray = this.pinnedNotes;
+      exitArray = this.notes;
+
+      note.isPinned = true;
     }
 
-    this.onNotesChanged.next();
+    enterArray.push(note);
+
+    this.deleteNote(note, exitArray);
   }
 }
