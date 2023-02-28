@@ -48,7 +48,6 @@ import { Note } from 'src/app/models/note.model';
 })
 export class EditNoteComponent implements OnInit, AfterViewInit {
   @Input() activeNote!: Note;
-  // @Input() noteIndex!: number;
   @Output() onCloseEditMode = new EventEmitter<Note>();
 
   titleText: string = '';
@@ -70,8 +69,6 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   }
 
   closeEditMode() {
-    // let note = new Note(this.titleText, this.newNoteText);
-    // note.index = this.noteIndex;
     this.activeNote.title = this.titleText;
     this.activeNote.content = this.newNoteText;
     this.onCloseEditMode.emit(this.activeNote);

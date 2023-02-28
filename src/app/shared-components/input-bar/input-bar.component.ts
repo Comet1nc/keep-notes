@@ -29,6 +29,7 @@ export class InputBarComponent {
       this.inputField.nativeElement.focus();
     }, 10);
   }
+
   closeSection(inputField: HTMLDivElement) {
     this.isOpened = false;
 

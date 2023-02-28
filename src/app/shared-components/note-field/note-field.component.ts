@@ -1,20 +1,6 @@
-import {
-  animate,
-  animation,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Note } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -51,7 +37,6 @@ import { NotesService } from 'src/app/services/notes.service';
 export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
   @Input() index!: number;
-  @Input() categoryType!: NoteCategory;
   @Output() onTogglePin = new EventEmitter<Note>();
   @Output() onDeleteNote = new EventEmitter<Note>();
 
@@ -67,10 +52,9 @@ export class NoteFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.note.index = this.index;
-    this.note.fromCategory = this.categoryType;
 
     this.notesService.closeEditMode.subscribe(
-      (note) => (this.editModeOpened = false)
+      () => (this.editModeOpened = false)
     );
   }
 
@@ -88,7 +72,6 @@ export class NoteFieldComponent implements OnInit {
 
   openEditMode() {
     if (this.mouseInNote) {
-      this.note.fromCategory = this.categoryType;
       this.note.index = this.index;
       this.notesService.openEditMode.next(this.note);
       this.editModeOpened = true;

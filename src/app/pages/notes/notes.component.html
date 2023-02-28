@@ -8,7 +8,6 @@
       *ngFor="let note of pinnedNotes; let i = index"
       [note]="note"
       [index]="notes.indexOf(note)"
-      [categoryType]="categoryType"
       (onTogglePin)="togglePin($event)"
       (onDeleteNote)="deleteNote($event)"
     ></app-note-field>
@@ -19,7 +18,6 @@
       *ngFor="let note of notes"
       [note]="note"
       [index]="notes.indexOf(note)"
-      [categoryType]="categoryType"
       (onTogglePin)="togglePin($event)"
       (onDeleteNote)="deleteNote($event)"
     ></app-note-field>

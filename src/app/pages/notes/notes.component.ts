@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Note } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -11,7 +10,6 @@ import { NotesService } from 'src/app/services/notes.service';
 export class NotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
-  categoryType: NoteCategory = NoteCategory.notes;
 
   constructor(private notesService: NotesService) {}
 
@@ -20,13 +18,7 @@ export class NotesComponent implements OnInit {
     this.pinnedNotes = this.notesService.notesContainerPinned;
 
     this.notesService.closeEditMode.subscribe((note: Note) => {
-      if (note.fromCategory === this.categoryType) {
-        if (!note.isPinned) {
-          this.notes[note.index] = note;
-        } else {
-          this.pinnedNotes[note.index] = note;
-        }
-      }
+      this.notesService.changeNote(note);
     });
 
     // filling db with some data for testing
@@ -41,52 +33,15 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  deleteNote(note: Note, _exitArray?: any) {
-    let exitArray = _exitArray;
-
-    if (exitArray !== undefined) {
-      // skip
-    } else if (note.isPinned) {
-      exitArray = this.pinnedNotes;
-    } else {
-      exitArray = this.notes;
-    }
-
-    let noteIndex = exitArray.indexOf(note);
-
-    if (exitArray.length === 1) {
-      exitArray.pop();
-    } else if (noteIndex === 0) {
-      exitArray.shift();
-    } else if (noteIndex + 1 === exitArray.length) {
-      exitArray.pop();
-    } else {
-      exitArray.splice(noteIndex, 1);
-    }
+  deleteNote(note: Note, _exitArray?: Note[]) {
+    this.notesService.deleteNote(note, _exitArray);
   }
 
-  saveNoteData(data: Note) {
-    this.notes.push(data);
+  saveNoteData(note: Note) {
+    this.notesService.saveNewNote(note);
   }
 
   togglePin(note: Note) {
-    let enterArray;
-    let exitArray;
-
-    if (note.isPinned) {
-      enterArray = this.notes;
-      exitArray = this.pinnedNotes;
-
-      note.isPinned = false;
-    } else {
-      enterArray = this.pinnedNotes;
-      exitArray = this.notes;
-
-      note.isPinned = true;
-    }
-
-    enterArray.push(note);
-
-    this.deleteNote(note, exitArray);
+    this.notesService.togglePin(note);
   }
 }
