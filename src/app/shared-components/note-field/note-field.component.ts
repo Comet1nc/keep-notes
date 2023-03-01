@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
+import { EditNoteService } from '../edit-note/edit-note.service';
 
 @Component({
   selector: 'app-note-field',
@@ -36,7 +37,6 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
-  @Input() index!: number;
   @Output() onTogglePin = new EventEmitter<Note>();
   @Output() onDeleteNote = new EventEmitter<Note>();
 
@@ -48,18 +48,20 @@ export class NoteFieldComponent implements OnInit {
 
   moreOptionsActive = false;
 
-  constructor(private notesService: NotesService) {}
+  constructor(
+    private notesService: NotesService,
+    private editNoteService: EditNoteService
+  ) {}
 
   ngOnInit(): void {
-    this.note.index = this.index;
-
-    this.notesService.closeEditMode.subscribe(
+    this.editNoteService.onCloseEditMode.subscribe(
       () => (this.editModeOpened = false)
     );
   }
 
   deleteNote() {
-    this.onDeleteNote.emit(this.note);
+    // this.onDeleteNote.emit(this.note);
+    this.notesService.deleteNote(this.note);
   }
 
   toggleMenu() {
@@ -67,13 +69,12 @@ export class NoteFieldComponent implements OnInit {
   }
 
   togglePin() {
-    this.onTogglePin.emit(this.note);
+    this.notesService.togglePin(this.note);
   }
 
   openEditMode() {
     if (this.mouseInNote) {
-      this.note.index = this.index;
-      this.notesService.openEditMode.next(this.note);
+      this.editNoteService.openEditMode(this.note);
       this.editModeOpened = true;
     }
   }

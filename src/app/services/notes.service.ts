@@ -1,22 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class NotesService {
-  closeEditMode = new Subject<Note>();
-  openEditMode = new Subject<Note>();
-
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
+  filled = false;
 
   deleteNote(note: Note, _exitArray?: Note[]) {
     let exitArray = _exitArray;
 
     if (exitArray !== undefined) {
-      // skip
+      // skipping
     } else if (note.isPinned) {
       exitArray = this.notesContainerPinned;
     } else {

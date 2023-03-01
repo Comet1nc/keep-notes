@@ -6,6 +6,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
+import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
   selector: 'app-input-bar',
@@ -18,6 +19,8 @@ export class InputBarComponent {
   isOpened: boolean = false;
   @Output() saveNoteData = new EventEmitter<Note>();
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
+
+  constructor(private notesService: NotesService) {}
 
   input(e: any) {
     this.newNoteText = e.srcElement.innerText;
@@ -38,7 +41,7 @@ export class InputBarComponent {
     }
 
     // saving
-    this.saveNoteData.emit(new Note(this.titleText, this.newNoteText));
+    this.notesService.saveNewNote(new Note(this.titleText, this.newNoteText));
 
     // clearing input fields
     this.titleText = '';

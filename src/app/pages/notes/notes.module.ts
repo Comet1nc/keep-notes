@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { NotesRoutingModule } from './notes-routing.module';
 import { NotesComponent } from './notes.component';
 import { FormsModule } from '@angular/forms';
-import { AppModule } from '../../app.module';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
+import { NotesService } from 'src/app/services/notes.service';
 
 @NgModule({
   declarations: [NotesComponent],
+  providers: [NotesService],
   imports: [
     CommonModule,
     NotesRoutingModule,
