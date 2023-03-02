@@ -60,7 +60,6 @@ export class NoteFieldComponent implements OnInit {
   }
 
   deleteNote() {
-    // this.onDeleteNote.emit(this.note);
     this.notesService.deleteNote(this.note);
   }
 

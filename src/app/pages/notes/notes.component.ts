@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
+import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
 @Component({
   selector: 'app-notes',
@@ -11,9 +12,25 @@ export class NotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
 
-  constructor(private notesService: NotesService) {}
+  showEditMode = false;
+  editModeNoteData!: Note;
+
+  constructor(
+    private notesService: NotesService,
+    private editNoteService: EditNoteService
+  ) {}
 
   ngOnInit(): void {
+    this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
+      this.showEditMode = true;
+
+      this.editModeNoteData = note;
+    });
+
+    this.editNoteService.onCloseEditMode.subscribe(() => {
+      this.showEditMode = false;
+    });
+
     this.notes = this.notesService.notesContainer;
     this.pinnedNotes = this.notesService.notesContainerPinned;
 

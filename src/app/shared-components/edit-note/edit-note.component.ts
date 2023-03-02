@@ -4,12 +4,12 @@ import {
   OnInit,
   AfterViewInit,
   Input,
-  Output,
-  EventEmitter,
   ViewChild,
   ElementRef,
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
+import { NotesService } from 'src/app/services/notes.service';
+import { EditNoteService } from './edit-note.service';
 
 @Component({
   selector: 'app-edit-note',
@@ -48,16 +48,27 @@ import { Note } from 'src/app/models/note.model';
 })
 export class EditNoteComponent implements OnInit, AfterViewInit {
   @Input() activeNote!: Note;
-  @Output() onCloseEditMode = new EventEmitter<void>();
 
   titleText: string = '';
   newNoteText: string = '';
 
   @ViewChild('inputField') inputField!: ElementRef;
 
+  constructor(
+    private editNoteService: EditNoteService,
+    private notesService: NotesService
+  ) {}
+
   ngOnInit(): void {
     this.titleText = this.activeNote.title;
     this.newNoteText = this.activeNote.content;
+  }
+
+  closeEditMode() {
+    this.editNoteService.onCloseEditMode.next();
+
+    this.activeNote.title = this.titleText;
+    this.activeNote.content = this.newNoteText;
   }
 
   ngAfterViewInit(): void {
@@ -66,11 +77,5 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   input(e: any) {
     this.newNoteText = e.srcElement.innerText;
-  }
-
-  closeEditMode() {
-    this.activeNote.title = this.titleText;
-    this.activeNote.content = this.newNoteText;
-    this.onCloseEditMode.emit();
   }
 }

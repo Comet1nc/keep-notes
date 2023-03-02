@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
+import { EditNoteService } from '../shared-components/edit-note/edit-note.service';
 
 @Injectable()
 export class NotesService {
