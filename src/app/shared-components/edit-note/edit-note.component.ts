@@ -8,6 +8,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
+import { ArchiveService } from 'src/app/services/archive.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from './edit-note.service';
 
@@ -52,16 +53,40 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   titleText: string = '';
   newNoteText: string = '';
 
+  moreOptionsActive = false;
+
   @ViewChild('inputField') inputField!: ElementRef;
+
+  @Input() inArchive = false;
 
   constructor(
     private editNoteService: EditNoteService,
-    private notesService: NotesService
+    private notesService: NotesService,
+    private archiveService: ArchiveService
   ) {}
 
   ngOnInit(): void {
     this.titleText = this.activeNote.title;
     this.newNoteText = this.activeNote.content;
+  }
+
+  toggleMenu() {
+    this.moreOptionsActive = !this.moreOptionsActive;
+  }
+
+  deleteNote() {
+    if (this.inArchive) {
+      this.archiveService.deleteNote(this.activeNote);
+    } else {
+      this.notesService.deleteNote(this.activeNote);
+    }
+
+    this.editNoteService.onCloseEditMode.next();
+  }
+
+  togglePin() {
+    if (this.inArchive) return;
+    this.notesService.togglePin(this.activeNote);
   }
 
   closeEditMode() {

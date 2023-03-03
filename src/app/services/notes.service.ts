@@ -1,12 +1,26 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Note } from 'src/app/models/note.model';
-import { EditNoteService } from '../shared-components/edit-note/edit-note.service';
+import { Note, NoteCategory } from 'src/app/models/note.model';
+import { ArchiveService } from './archive.service';
 
 @Injectable()
 export class NotesService {
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
   filled = false;
+
+  myCategory!: NoteCategory;
+
+  constructor(private archive: ArchiveService) {
+    archive.unArchiveNote.subscribe((note: Note) => {
+      if (note.fromCategory === this.myCategory) {
+        if (note.isPinned) {
+          this.saveNewNoteToPinned(note);
+        } else {
+          this.saveNewNote(note);
+        }
+      }
+    });
+  }
 
   deleteNote(note: Note, _exitArray?: Note[]) {
     let exitArray = _exitArray;
@@ -51,6 +65,10 @@ export class NotesService {
     enterArray.push(note);
 
     this.deleteNote(note, exitArray);
+  }
+
+  saveNewNoteToPinned(note: Note) {
+    this.notesContainerPinned.push(note);
   }
 
   saveNewNote(note: Note) {

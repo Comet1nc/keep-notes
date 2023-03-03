@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Note } from 'src/app/models/note.model';
+import { Note, NoteCategory } from 'src/app/models/note.model';
+import { ArchiveService } from 'src/app/services/archive.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from '../edit-note/edit-note.service';
 
@@ -47,10 +48,13 @@ export class NoteFieldComponent implements OnInit {
   editModeOpened = false;
 
   moreOptionsActive = false;
+  @Input() inArchive = false;
+  @Input() fromCategory!: NoteCategory;
 
   constructor(
     private notesService: NotesService,
-    private editNoteService: EditNoteService
+    private editNoteService: EditNoteService,
+    private archiveService: ArchiveService
   ) {}
 
   ngOnInit(): void {
@@ -59,8 +63,25 @@ export class NoteFieldComponent implements OnInit {
     );
   }
 
+  toggleArchive() {
+    if (this.inArchive) {
+      this.archiveService.deleteNote(this.note);
+
+      this.archiveService.unArchiveNote.next(this.note);
+    } else {
+      this.notesService.deleteNote(this.note);
+      this.note.fromCategory = this.fromCategory;
+
+      this.archiveService.saveNewNote(this.note);
+    }
+  }
+
   deleteNote() {
-    this.notesService.deleteNote(this.note);
+    if (this.inArchive) {
+      this.archiveService.deleteNote(this.note);
+    } else {
+      this.notesService.deleteNote(this.note);
+    }
   }
 
   toggleMenu() {
@@ -68,6 +89,7 @@ export class NoteFieldComponent implements OnInit {
   }
 
   togglePin() {
+    if (this.inArchive) return;
     this.notesService.togglePin(this.note);
   }
 

@@ -11,10 +11,15 @@
     <app-note-field
       *ngFor="let note of pinnedNotes; let i = index"
       [note]="note"
+      [fromCategory]="fromCategory"
     ></app-note-field>
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
-    <app-note-field *ngFor="let note of notes" [note]="note"></app-note-field>
+    <app-note-field
+      *ngFor="let note of notes"
+      [note]="note"
+      [fromCategory]="fromCategory"
+    ></app-note-field>
   </div>
 </div>

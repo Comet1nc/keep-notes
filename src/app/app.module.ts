@@ -19,6 +19,7 @@ import { SideNavModule } from './main-components/side-nav/side-nav.module';
 import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
 import { MatRippleModule } from '@angular/material/core';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
+import { ArchiveService } from './services/archive.service';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
@@ -45,6 +46,7 @@ import { SharedComponentsModule } from './shared-components/shared-components.mo
     SideNavModule,
     SharedComponentsModule,
   ],
+  providers: [ArchiveService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

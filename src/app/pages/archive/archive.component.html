@@ -1,1 +1,14 @@
-<p>archive works!</p>
+<app-edit-note
+  *ngIf="showEditMode"
+  [activeNote]="editModeNoteData"
+  [inArchive]="isArchive"
+></app-edit-note>
+<div class="notes-container">
+  <div class="unpinned-notes-container" *ngIf="notes.length > 0">
+    <app-note-field
+      *ngFor="let note of notes"
+      [note]="note"
+      [inArchive]="isArchive"
+    ></app-note-field>
+  </div>
+</div>

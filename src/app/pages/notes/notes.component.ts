@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Note } from 'src/app/models/note.model';
+import { Note, NoteCategory } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
@@ -14,6 +14,8 @@ export class NotesComponent implements OnInit {
 
   showEditMode = false;
   editModeNoteData!: Note;
+
+  fromCategory = NoteCategory.notes;
 
   constructor(
     private notesService: NotesService,
@@ -33,6 +35,8 @@ export class NotesComponent implements OnInit {
 
     this.notes = this.notesService.notesContainer;
     this.pinnedNotes = this.notesService.notesContainerPinned;
+
+    this.notesService.myCategory = this.fromCategory;
 
     // filling db with some data for testing
     if (this.notesService.filled) return;
