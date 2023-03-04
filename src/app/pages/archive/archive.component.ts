@@ -14,7 +14,8 @@ export class ArchiveComponent implements OnInit {
 
   showEditMode = false;
   editModeNoteData!: Note;
-  isArchive = true;
+
+  readonly isArchive = true;
 
   constructor(
     private editNoteService: EditNoteService,

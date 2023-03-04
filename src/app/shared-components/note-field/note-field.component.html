@@ -7,7 +7,13 @@
   <div class="open-edit-mode-trigger" (click)="openEditMode()"></div>
   <div class="title">{{ getTitle() }}</div>
   <div class="content">{{ getContent() }}</div>
-  <button class="pin-button" *ngIf="showButtons" [@icons] (click)="togglePin()">
+  <button
+    class="pin-button"
+    *ngIf="showButtons && !inBin"
+    [@icons]
+    (click)="togglePin()"
+    [matTooltip]="note.isPinned ? 'Unpin note' : 'Pin note'"
+  >
     <svg
       class="unpinned-icon"
       *ngIf="!note.isPinned"
@@ -36,8 +42,8 @@
       />
     </svg>
   </button>
-  <div class="action-buttons" *ngIf="showButtons" [@icons]>
-    <button class="background-btn">
+  <div class="action-buttons" *ngIf="showButtons && !inBin" [@icons]>
+    <button class="background-btn" matTooltip="Background options">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="33"
@@ -53,7 +59,7 @@
         <circle cx="17.5" cy="11.5" r="1.5" />
       </svg>
     </button>
-    <button class="add-image-btn">
+    <button class="add-image-btn" matTooltip="Add image">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -65,7 +71,11 @@
         />
       </svg>
     </button>
-    <button class="archive-btn" (click)="toggleArchive()">
+    <button
+      class="archive-btn"
+      (click)="toggleArchive()"
+      [matTooltip]="inArchive ? 'Unarchive' : 'Archive'"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -89,7 +99,7 @@
         />
       </svg>
     </button>
-    <button class="draw-btn">
+    <button class="draw-btn" matTooltip="Add drawing">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -102,7 +112,11 @@
       </svg>
     </button>
     <div class="more-options">
-      <button class="more-options-btn" (click)="toggleMenu()">
+      <button
+        class="more-options-btn"
+        (click)="toggleMenu()"
+        matTooltip="More options"
+      >
         <svg
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"
@@ -122,5 +136,42 @@
         <div class="delete-btn" (click)="deleteNote()">Delete</div>
       </div>
     </div>
+  </div>
+  <div
+    class="action-buttons bin-action-buttons"
+    *ngIf="showButtons && inBin"
+    [@icons]
+  >
+    <button
+      class="delete-forever"
+      matTooltip="Delete forever"
+      (click)="deleteForever()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24px"
+        height="24px"
+        viewBox="0 0 24 24"
+      >
+        <path fill="none" d="M0 0h24v24H0V0z" />
+        <path
+          d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"
+        />
+        <path fill="none" d="M0 0h24v24H0z" />
+      </svg>
+    </button>
+    <button class="restore" matTooltip="Restore" (click)="restoreFromBin()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24px"
+        height="24px"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14zM6 7v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zm8 7v4h-4v-4H8l4-4 4 4h-2z"
+        />
+        <path fill="none" d="M0 0h24v24H0z" />
+      </svg>
+    </button>
   </div>
 </div>

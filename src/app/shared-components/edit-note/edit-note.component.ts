@@ -7,8 +7,9 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { Note } from 'src/app/models/note.model';
+import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
+import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from './edit-note.service';
 
@@ -48,8 +49,6 @@ import { EditNoteService } from './edit-note.service';
   ],
 })
 export class EditNoteComponent implements OnInit, AfterViewInit {
-  @Input() activeNote!: Note;
-
   titleText: string = '';
   newNoteText: string = '';
 
@@ -57,12 +56,16 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   @ViewChild('inputField') inputField!: ElementRef;
 
+  @Input() activeNote!: Note;
   @Input() inArchive = false;
+  @Input() inBin = false;
+  @Input() fromCategory!: NoteCategory;
 
   constructor(
     private editNoteService: EditNoteService,
     private notesService: NotesService,
-    private archiveService: ArchiveService
+    private archiveService: ArchiveService,
+    private binService: BinService
   ) {}
 
   ngOnInit(): void {
@@ -74,14 +77,46 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     this.moreOptionsActive = !this.moreOptionsActive;
   }
 
+  toggleArchive() {
+    if (this.inArchive) {
+      this.archiveService.deleteNote(this.activeNote);
+
+      this.archiveService.unArchiveNote.next(this.activeNote);
+    } else {
+      this.notesService.deleteNote(this.activeNote);
+      this.activeNote.fromCategory = this.fromCategory;
+
+      this.archiveService.saveNewNote(this.activeNote);
+    }
+
+    this.closeEditMode();
+  }
+
   deleteNote() {
     if (this.inArchive) {
       this.archiveService.deleteNote(this.activeNote);
     } else {
       this.notesService.deleteNote(this.activeNote);
+      this.activeNote.fromCategory = this.fromCategory;
     }
 
-    this.editNoteService.onCloseEditMode.next();
+    this.binService.saveNewNote(this.activeNote);
+
+    this.closeEditMode();
+  }
+
+  deleteForever() {
+    this.binService.deleteNote(this.activeNote);
+
+    this.closeEditMode();
+  }
+
+  restoreFromBin() {
+    this.binService.deleteNote(this.activeNote);
+
+    this.binService.restoreNote.next(this.activeNote);
+
+    this.closeEditMode();
   }
 
   togglePin() {

@@ -1,6 +1,7 @@
 <app-edit-note
   *ngIf="showEditMode"
   [activeNote]="editModeNoteData"
+  [fromCategory]="fromCategory"
 ></app-edit-note>
 <div class="input-container">
   <app-input-bar></app-input-bar>

@@ -15,15 +15,16 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class InputBarComponent {
   titleText: string = '';
-  newNoteText: string = '';
+  mainNoteText: string = '';
   isOpened: boolean = false;
+  noteIsPinned: boolean = false;
   @Output() saveNoteData = new EventEmitter<Note>();
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
 
   constructor(private notesService: NotesService) {}
 
   input(e: any) {
-    this.newNoteText = e.srcElement.innerText;
+    this.mainNoteText = e.srcElement.innerText;
   }
 
   openSection() {
@@ -36,16 +37,23 @@ export class InputBarComponent {
   closeSection(inputField: HTMLDivElement) {
     this.isOpened = false;
 
-    if (this.titleText.length === 0 && this.newNoteText.length === 0) {
+    if (this.titleText.length === 0 && this.mainNoteText.length === 0) {
       return;
     }
 
+    let newNote = new Note(this.titleText, this.mainNoteText);
+    newNote.isPinned = this.noteIsPinned;
+
     // saving
-    this.notesService.saveNewNote(new Note(this.titleText, this.newNoteText));
+    if (newNote.isPinned) {
+      this.notesService.saveNewNoteToPinned(newNote);
+    } else {
+      this.notesService.saveNewNote(newNote);
+    }
 
     // clearing input fields
     this.titleText = '';
-    this.newNoteText = '';
+    this.mainNoteText = '';
     inputField.innerText = '';
   }
 }

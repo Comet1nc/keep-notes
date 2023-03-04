@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 
 @Injectable()
-export class ArchiveService {
-  unArchiveNote = new Subject<Note>();
+export class BinService {
+  restoreNote = new Subject<Note>();
 
   notesContainer: Note[] = [];
 

@@ -1,66 +1,85 @@
 <div class="bg" (click)="closeEditMode()" [@bg]></div>
 <div class="container" [@note]>
-  <div class="title-wrapper">
-    <input
-      type="text"
-      class="title-input"
-      placeholder="Title"
-      maxlength="20"
-      [(ngModel)]="titleText"
-    />
-    <button class="pin-button" (click)="togglePin()">
-      <svg
-        class="unpinned-icon"
-        *ngIf="!activeNote.isPinned"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path fill="none" d="M0 0h24v24H0z" />
-        <path
-          d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z"
-        />
-      </svg>
-      <svg
-        class="pinned-icon"
-        *ngIf="activeNote.isPinned"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path fill="none" d="M0 0h24v24H0z" />
-        <path
+  <div class="edit-fields" *ngIf="!inBin">
+    <div class="title-wrapper">
+      <input
+        type="text"
+        class="title-input"
+        placeholder="Title"
+        maxlength="20"
+        [(ngModel)]="titleText"
+      />
+      <button class="pin-button" (click)="togglePin()">
+        <svg
+          class="unpinned-icon"
+          *ngIf="!activeNote.isPinned"
           xmlns="http://www.w3.org/2000/svg"
-          d="M17 4a2 2 0 0 0-2-2H9c-1.1 0-2 .9-2 2v7l-2 3v2h6v5l1 1 1-1v-5h6v-2l-2-3V4z"
-        />
-      </svg>
-    </button>
-  </div>
-  <div class="main-note-content-wrapper">
-    <div
-      *ngIf="newNoteText.length === 0"
-      class="default-text"
-      spellcheck="false"
-      contenteditable="false"
-    >
-      Take a note...
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path
+            d="M17 4v7l2 3v2h-6v5l-1 1-1-1v-5H5v-2l2-3V4c0-1.1.9-2 2-2h6c1.11 0 2 .89 2 2zM9 4v7.75L7.5 14h9L15 11.75V4H9z"
+          />
+        </svg>
+        <svg
+          class="pinned-icon"
+          *ngIf="activeNote.isPinned"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path
+            xmlns="http://www.w3.org/2000/svg"
+            d="M17 4a2 2 0 0 0-2-2H9c-1.1 0-2 .9-2 2v7l-2 3v2h6v5l1 1 1-1v-5h6v-2l-2-3V4z"
+          />
+        </svg>
+      </button>
     </div>
-    <div
-      contenteditable="true"
-      class="note-content-input"
-      aria-multiline="true"
-      role="textbox"
-      tabindex="0"
-      spellcheck="true"
-      dir="ltr"
-      #inputField
-      (input)="input($event)"
-    ></div>
+    <div class="main-note-content-wrapper">
+      <div
+        *ngIf="newNoteText.length === 0"
+        class="default-text"
+        spellcheck="false"
+        contenteditable="false"
+      >
+        Take a note...
+      </div>
+      <div
+        contenteditable="true"
+        class="note-content-input"
+        aria-multiline="true"
+        role="textbox"
+        tabindex="0"
+        spellcheck="true"
+        dir="ltr"
+        #inputField
+        (input)="input($event)"
+      ></div>
+    </div>
+  </div>
+  <div class="read-only-fields" *ngIf="inBin">
+    <div class="title-wrapper">
+      <div class="title-input" [innerText]="titleText"></div>
+    </div>
+    <div class="main-note-content-wrapper">
+      <div
+        contenteditable="false"
+        class="note-content-input"
+        aria-multiline="true"
+        role="textbox"
+        tabindex="0"
+        spellcheck="true"
+        dir="ltr"
+        #inputField
+      ></div>
+    </div>
   </div>
   <footer>
-    <div class="action-buttons">
+    <div class="action-buttons" *ngIf="!inBin">
       <button class="background-btn">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +108,7 @@
           />
         </svg>
       </button>
-      <button class="archive-btn">
+      <button class="archive-btn" (click)="toggleArchive()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -134,6 +153,39 @@
           <div class="delete-btn" (click)="deleteNote()">Delete</div>
         </div>
       </div>
+    </div>
+    <div class="action-buttons bin-action-buttons" *ngIf="inBin">
+      <button
+        class="delete-forever"
+        matTooltip="Delete forever"
+        (click)="deleteForever()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+        >
+          <path fill="none" d="M0 0h24v24H0V0z" />
+          <path
+            d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"
+          />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </svg>
+      </button>
+      <button class="restore" matTooltip="Restore" (click)="restoreFromBin()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14zM6 7v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zm8 7v4h-4v-4H8l4-4 4 4h-2z"
+          />
+          <path fill="none" d="M0 0h24v24H0z" />
+        </svg>
+      </button>
     </div>
     <button class="close-btn" (click)="closeEditMode()">Close</button>
   </footer>

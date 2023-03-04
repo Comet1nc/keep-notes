@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
+import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from '../edit-note/edit-note.service';
 
@@ -38,23 +39,22 @@ import { EditNoteService } from '../edit-note/edit-note.service';
 })
 export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
+  @Input() inArchive = false;
+  @Input() inBin = false;
+  @Input() fromCategory!: NoteCategory;
   @Output() onTogglePin = new EventEmitter<Note>();
   @Output() onDeleteNote = new EventEmitter<Note>();
-
-  editmode = 'editmode';
 
   showButtons = false;
   mouseInNote = false;
   editModeOpened = false;
-
   moreOptionsActive = false;
-  @Input() inArchive = false;
-  @Input() fromCategory!: NoteCategory;
 
   constructor(
     private notesService: NotesService,
     private editNoteService: EditNoteService,
-    private archiveService: ArchiveService
+    private archiveService: ArchiveService,
+    private binService: BinService
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +81,20 @@ export class NoteFieldComponent implements OnInit {
       this.archiveService.deleteNote(this.note);
     } else {
       this.notesService.deleteNote(this.note);
+      this.note.fromCategory = this.fromCategory;
     }
+
+    this.binService.saveNewNote(this.note);
+  }
+
+  deleteForever() {
+    this.binService.deleteNote(this.note);
+  }
+
+  restoreFromBin() {
+    this.binService.deleteNote(this.note);
+
+    this.binService.restoreNote.next(this.note);
   }
 
   toggleMenu() {

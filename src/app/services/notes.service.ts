@@ -1,25 +1,30 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
+import { BinService } from './bin.service';
 
 @Injectable()
 export class NotesService {
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
-  filled = false;
+
+  filled = false; // temporary parameter for testing
 
   myCategory!: NoteCategory;
 
-  constructor(private archive: ArchiveService) {
-    archive.unArchiveNote.subscribe((note: Note) => {
-      if (note.fromCategory === this.myCategory) {
-        if (note.isPinned) {
-          this.saveNewNoteToPinned(note);
-        } else {
-          this.saveNewNote(note);
-        }
+  restoreNoteFn = (note: Note) => {
+    if (note.fromCategory === this.myCategory) {
+      if (note.isPinned) {
+        this.saveNewNoteToPinned(note);
+      } else {
+        this.saveNewNote(note);
       }
-    });
+    }
+  };
+
+  constructor(private archive: ArchiveService, private bin: BinService) {
+    archive.unArchiveNote.subscribe(this.restoreNoteFn);
+    bin.restoreNote.subscribe(this.restoreNoteFn);
   }
 
   deleteNote(note: Note, _exitArray?: Note[]) {

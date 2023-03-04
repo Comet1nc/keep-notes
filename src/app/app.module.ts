@@ -20,6 +20,7 @@ import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/
 import { MatRippleModule } from '@angular/material/core';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { ArchiveService } from './services/archive.service';
+import { BinService } from './services/bin.service';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
@@ -46,7 +47,7 @@ import { ArchiveService } from './services/archive.service';
     SideNavModule,
     SharedComponentsModule,
   ],
-  providers: [ArchiveService],
+  providers: [ArchiveService, BinService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
