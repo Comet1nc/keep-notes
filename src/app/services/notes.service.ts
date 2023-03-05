@@ -1,14 +1,17 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
 export class NotesService {
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
+  onNotesChanged = new Subject<void>();
 
-  filled = false; // temporary parameter for testing
+  filled = false;
 
   myCategory!: NoteCategory;
 
@@ -19,12 +22,36 @@ export class NotesService {
       } else {
         this.saveNewNote(note);
       }
+
+      this.saveToLocalStorage();
     }
   };
 
-  constructor(private archive: ArchiveService, private bin: BinService) {
+  constructor(
+    private archive: ArchiveService,
+    private bin: BinService,
+    private localStorageService: LocalStorageService
+  ) {
     archive.unArchiveNote.subscribe(this.restoreNoteFn);
     bin.restoreNote.subscribe(this.restoreNoteFn);
+
+    this.onNotesChanged.subscribe(() => {
+      this.saveToLocalStorage();
+    });
+  }
+
+  loadDataFromLocalStorage() {
+    let notes = this.localStorageService.getData(this.myCategory);
+    if (notes === null) return;
+    let parsed: Note[] = JSON.parse(notes);
+    for (const note of parsed) {
+      if (note.isPinned === true) {
+        this.notesContainerPinned.push(note);
+      } else {
+        this.notesContainer.push(note);
+      }
+    }
+    this.filled = true;
   }
 
   deleteNote(note: Note, _exitArray?: Note[]) {
@@ -49,6 +76,8 @@ export class NotesService {
     } else {
       exitArray.splice(noteIndex, 1);
     }
+
+    this.saveToLocalStorage();
   }
 
   togglePin(note: Note) {
@@ -70,14 +99,20 @@ export class NotesService {
     enterArray.push(note);
 
     this.deleteNote(note, exitArray);
+
+    this.saveToLocalStorage();
   }
 
   saveNewNoteToPinned(note: Note) {
     this.notesContainerPinned.push(note);
+
+    this.saveToLocalStorage();
   }
 
   saveNewNote(note: Note) {
     this.notesContainer.push(note);
+
+    this.saveToLocalStorage();
   }
 
   changeNote(note: Note) {
@@ -88,5 +123,16 @@ export class NotesService {
       let noteIndex = this.notesContainerPinned.indexOf(note);
       this.notesContainerPinned[noteIndex] = note;
     }
+
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage() {
+    let mergedNotes = JSON.stringify([
+      ...this.notesContainer,
+      ...this.notesContainerPinned,
+    ]);
+
+    this.localStorageService.saveData(this.myCategory, mergedNotes);
   }
 }

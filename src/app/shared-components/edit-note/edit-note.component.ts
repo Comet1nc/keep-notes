@@ -129,6 +129,14 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
     this.activeNote.title = this.titleText;
     this.activeNote.content = this.newNoteText;
+
+    if (this.inArchive) {
+      this.archiveService.onNotesChanged.next();
+    } else if (this.inBin) {
+      this.binService.onNotesChanged.next();
+    } else {
+      this.notesService.onNotesChanged.next();
+    }
   }
 
   ngAfterViewInit(): void {

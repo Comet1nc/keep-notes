@@ -18,7 +18,6 @@ export class InputBarComponent {
   mainNoteText: string = '';
   isOpened: boolean = false;
   noteIsPinned: boolean = false;
-  @Output() saveNoteData = new EventEmitter<Note>();
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
 
   constructor(private notesService: NotesService) {}

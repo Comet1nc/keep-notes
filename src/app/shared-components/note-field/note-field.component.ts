@@ -42,8 +42,6 @@ export class NoteFieldComponent implements OnInit {
   @Input() inArchive = false;
   @Input() inBin = false;
   @Input() fromCategory!: NoteCategory;
-  @Output() onTogglePin = new EventEmitter<Note>();
-  @Output() onDeleteNote = new EventEmitter<Note>();
 
   showButtons = false;
   mouseInNote = false;

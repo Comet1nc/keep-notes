@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
-import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
 @Component({
@@ -23,6 +22,10 @@ export class ArchiveComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (!this.archiveService.filled) {
+      this.archiveService.loadDataFromLocalStorage();
+    }
+
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
       this.showEditMode = true;
 

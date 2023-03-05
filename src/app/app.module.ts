@@ -21,6 +21,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { ArchiveService } from './services/archive.service';
 import { BinService } from './services/bin.service';
+import { LocalStorageService } from './services/local-storage.service';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
@@ -47,7 +48,7 @@ import { BinService } from './services/bin.service';
     SideNavModule,
     SharedComponentsModule,
   ],
-  providers: [ArchiveService, BinService],
+  providers: [ArchiveService, BinService, LocalStorageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

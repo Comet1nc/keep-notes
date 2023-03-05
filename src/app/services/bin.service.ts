@@ -1,12 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Note } from 'src/app/models/note.model';
+import { Note, NoteCategory } from 'src/app/models/note.model';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
 export class BinService {
   restoreNote = new Subject<Note>();
 
+  onNotesChanged = new Subject<void>();
+  filled = false;
+
   notesContainer: Note[] = [];
+
+  myCategory: NoteCategory = NoteCategory.bin;
+
+  constructor(private localStorageService: LocalStorageService) {
+    this.onNotesChanged.subscribe(() => {
+      this.saveToLocalStorage();
+    });
+  }
+
+  loadDataFromLocalStorage() {
+    let notes = this.localStorageService.getData(this.myCategory);
+    if (notes === null) return;
+
+    let parsed: Note[] = JSON.parse(notes);
+    this.notesContainer = [...parsed];
+    this.filled = true;
+  }
+
+  saveToLocalStorage() {
+    let notes = JSON.stringify(this.notesContainer);
+
+    this.localStorageService.saveData(this.myCategory, notes);
+  }
 
   deleteNote(note: Note, _exitArray?: Note[]) {
     let exitArray = _exitArray;
@@ -28,14 +55,20 @@ export class BinService {
     } else {
       exitArray.splice(noteIndex, 1);
     }
+
+    this.saveToLocalStorage();
   }
 
   saveNewNote(note: Note) {
     this.notesContainer.push(note);
+
+    this.saveToLocalStorage();
   }
 
   changeNote(note: Note) {
     let noteIndex = this.notesContainer.indexOf(note);
     this.notesContainer[noteIndex] = note;
+
+    this.saveToLocalStorage();
   }
 }

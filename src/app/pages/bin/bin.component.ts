@@ -22,6 +22,10 @@ export class BinComponent {
   ) {}
 
   ngOnInit(): void {
+    if (!this.binService.filled) {
+      this.binService.loadDataFromLocalStorage();
+    }
+
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
       this.showEditMode = true;
 

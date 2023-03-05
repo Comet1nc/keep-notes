@@ -4,7 +4,7 @@
   [inBin]="isBin"
 ></app-edit-note>
 <div class="notes-container">
-  <div class="unpinned-notes-container" *ngIf="notes.length > 0">
+  <div class="unpinned-notes-container">
     <app-note-field
       *ngFor="let note of notes"
       [note]="note"

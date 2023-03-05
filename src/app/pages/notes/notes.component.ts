@@ -38,17 +38,8 @@ export class NotesComponent implements OnInit {
 
     this.notesService.myCategory = this.fromCategory;
 
-    // filling db with some data for testing
-    if (this.notesService.filled) return;
-    let count = 0;
-    for (let index = 0; index < 3; index++) {
-      count++;
-      let item = new Note(count.toString(), 'Hello world');
-      this.notesService.notesContainer.push(item);
-      let pinned = new Note(count.toString(), 'Hello world');
-      pinned.isPinned = true;
-      this.notesService.notesContainerPinned.push(pinned);
+    if (!this.notesService.filled) {
+      this.notesService.loadDataFromLocalStorage();
     }
-    this.notesService.filled = true;
   }
 }
