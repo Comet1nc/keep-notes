@@ -4,6 +4,8 @@ export class Note {
   isPinned: boolean = false;
   index!: number;
   fromCategory!: NoteCategory;
+  createdAt!: Date;
+  lastEditAt!: Date;
 
   constructor(title: string, content: string) {
     this.title = title;

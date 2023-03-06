@@ -78,6 +78,14 @@
       ></div>
     </div>
   </div>
+  <div class="time">
+    <div class="create-date">
+      Created {{ activeNote.createdAt | date : "dd LLL" }} |&nbsp;
+    </div>
+    <div class="last-edit-date">
+      Edited {{ activeNote.createdAt | date : "dd LLL" }}
+    </div>
+  </div>
   <footer>
     <div class="action-buttons" *ngIf="!inBin">
       <button class="background-btn" matTooltip="Background options">

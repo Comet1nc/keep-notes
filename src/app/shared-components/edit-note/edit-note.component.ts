@@ -51,6 +51,7 @@ import { EditNoteService } from './edit-note.service';
 export class EditNoteComponent implements OnInit, AfterViewInit {
   titleText: string = '';
   newNoteText: string = '';
+  createdAt: string = '';
 
   moreOptionsActive = false;
 
@@ -129,6 +130,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
     this.activeNote.title = this.titleText;
     this.activeNote.content = this.newNoteText;
+    this.activeNote.lastEditAt = new Date();
 
     if (this.inArchive) {
       this.archiveService.onNotesChanged.next();

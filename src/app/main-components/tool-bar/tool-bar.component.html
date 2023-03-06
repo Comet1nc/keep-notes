@@ -18,7 +18,13 @@
         <path d="M0,0h24v24H0V0z" fill="none"></path>
       </svg>
     </button>
-    <input type="text" class="search-bar" placeholder="Search" />
+    <input
+      type="text"
+      class="search-bar"
+      placeholder="Search"
+      [(ngModel)]="searchText"
+      (input)="search()"
+    />
     <button class="close-input-button">
       <svg
         focusable="false"

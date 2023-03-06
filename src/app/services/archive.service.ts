@@ -20,6 +20,10 @@ export class ArchiveService {
     });
   }
 
+  getNotesForSearch() {
+    return this.notesContainer;
+  }
+
   loadDataFromLocalStorage() {
     let notes = this.localStorageService.getData(this.myCategory);
     if (notes === null) return;

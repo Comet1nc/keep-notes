@@ -1,6 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
+import { SearchBarService } from '../main-components/tool-bar/search-bar.service';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
 import { LocalStorageService } from './local-storage.service';
@@ -15,6 +16,27 @@ export class NotesService {
 
   myCategory!: NoteCategory;
 
+  constructor(
+    private archive: ArchiveService,
+    private bin: BinService,
+    private localStorageService: LocalStorageService,
+    private searchBarService: SearchBarService
+  ) {
+    archive.unArchiveNote.subscribe(this.restoreNoteFn);
+    bin.restoreNote.subscribe(this.restoreNoteFn);
+
+    searchBarService.notesServiceData = this.notesContainer;
+    searchBarService.notesServiceDataPinned = this.notesContainerPinned;
+
+    this.onNotesChanged.subscribe(() => {
+      this.saveToLocalStorage();
+    });
+  }
+
+  getNotesForSearch() {
+    return [...this.notesContainer, ...this.notesContainerPinned];
+  }
+
   restoreNoteFn = (note: Note) => {
     if (note.fromCategory === this.myCategory) {
       if (note.isPinned) {
@@ -26,19 +48,6 @@ export class NotesService {
       this.saveToLocalStorage();
     }
   };
-
-  constructor(
-    private archive: ArchiveService,
-    private bin: BinService,
-    private localStorageService: LocalStorageService
-  ) {
-    archive.unArchiveNote.subscribe(this.restoreNoteFn);
-    bin.restoreNote.subscribe(this.restoreNoteFn);
-
-    this.onNotesChanged.subscribe(() => {
-      this.saveToLocalStorage();
-    });
-  }
 
   loadDataFromLocalStorage() {
     let notes = this.localStorageService.getData(this.myCategory);
@@ -106,11 +115,15 @@ export class NotesService {
   saveNewNoteToPinned(note: Note) {
     this.notesContainerPinned.push(note);
 
+    note.createdAt = new Date();
+
     this.saveToLocalStorage();
   }
 
   saveNewNote(note: Note) {
     this.notesContainer.push(note);
+
+    note.createdAt = new Date();
 
     this.saveToLocalStorage();
   }

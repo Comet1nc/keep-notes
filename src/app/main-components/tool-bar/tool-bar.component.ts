@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { SearchBarService } from './search-bar.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -12,6 +14,13 @@ export class ToolBarComponent {
   onToggleSideNav = new EventEmitter();
 
   menuIsActive = false;
+  searchText: string = '';
+
+  constructor(private searchBarService: SearchBarService) {}
+
+  search() {
+    this.searchBarService.search(this.searchText);
+  }
 
   toggleDarkMode() {
     this.switchDarkMode.emit();

@@ -16,3 +16,19 @@
     margin-left: 80px;
   }
 }
+
+.info {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .info {
+    position: absolute;
+    top: 70%;
+    right: 25%;
+    display: flex;
+    z-index: 20;
+    opacity: 0.3;
+    font-size: 30px;
+  }
+}
