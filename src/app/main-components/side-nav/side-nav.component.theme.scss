@@ -4,6 +4,10 @@
 
     button {
       background-color: #FAFAFA;
+
+      &:hover {
+        background-color: #ececec;
+      }
     }
 
     button.active {
@@ -24,6 +28,10 @@
 
     button {
       background-color: #303030;
+
+      &:hover {
+        background-color: #3a3a3a;
+      }
     }
 
     button.active {

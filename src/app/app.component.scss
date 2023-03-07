@@ -19,6 +19,7 @@
 
 .info {
   display: none;
+  pointer-events: none;
 }
 
 @media (max-width: 1200px) {

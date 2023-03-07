@@ -19,7 +19,17 @@ export class ToolBarComponent {
   constructor(private searchBarService: SearchBarService) {}
 
   search() {
-    this.searchBarService.search(this.searchText);
+    if (this.searchText === '' && this.searchBarService.searching === true) {
+      this.endSearch();
+    } else {
+      this.searchBarService.search(this.searchText);
+    }
+  }
+
+  endSearch() {
+    this.searchBarService.endSearch.next();
+    this.searchBarService.searching = false;
+    this.searchText = '';
   }
 
   toggleDarkMode() {

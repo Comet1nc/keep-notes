@@ -13,20 +13,17 @@ export class NotesService {
   onNotesChanged = new Subject<void>();
 
   filled = false;
+  canSearch = false;
 
   myCategory!: NoteCategory;
 
   constructor(
     private archive: ArchiveService,
     private bin: BinService,
-    private localStorageService: LocalStorageService,
-    private searchBarService: SearchBarService
+    private localStorageService: LocalStorageService
   ) {
     archive.unArchiveNote.subscribe(this.restoreNoteFn);
     bin.restoreNote.subscribe(this.restoreNoteFn);
-
-    searchBarService.notesServiceData = this.notesContainer;
-    searchBarService.notesServiceDataPinned = this.notesContainerPinned;
 
     this.onNotesChanged.subscribe(() => {
       this.saveToLocalStorage();

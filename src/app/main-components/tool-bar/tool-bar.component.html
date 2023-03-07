@@ -25,7 +25,7 @@
       [(ngModel)]="searchText"
       (input)="search()"
     />
-    <button class="close-input-button">
+    <button class="close-input-button" (click)="endSearch()">
       <svg
         focusable="false"
         height="24px"
