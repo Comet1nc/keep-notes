@@ -3,6 +3,10 @@
     .note {
       border-color: #d0d0d0;
 
+      &:hover {
+        box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+      }
+
       .pin-button {
         svg {
           fill: #4A4A4A;
@@ -13,6 +17,19 @@
         button {
           svg {
             fill: #4A4A4A;
+          }
+        }
+
+        .more-options {
+          .more-options-menu {
+            background-color: white;
+            box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+
+            .delete-btn {
+              &:hover {
+                background-color: #c3c3c3;
+              }
+            }
           }
         }
       }
@@ -27,6 +44,10 @@
 
       border-color: #4A4D51;
 
+      &:hover {
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 60%), 0 1px 3px 1px rgb(0 0 0 / 30%);
+      }
+
       .pin-button {
         svg {
           fill: #BEBFBF;
@@ -37,6 +58,19 @@
         button {
           svg {
             fill: #BEBFBF;
+          }
+        }
+
+        .more-options {
+          .more-options-menu {
+            background-color: #303030;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 60%), 0 2px 6px 2px rgb(0 0 0 / 30%);
+
+            .delete-btn {
+              &:hover {
+                background-color: #434446;
+              }
+            }
           }
         }
       }
