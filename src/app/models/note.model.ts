@@ -6,6 +6,7 @@ export class Note {
   fromCategory!: NoteCategory;
   createdAt!: Date;
   lastEditAt!: Date;
+  color!: { name: string; value: string };
 
   constructor(title: string, content: string) {
     this.title = title;

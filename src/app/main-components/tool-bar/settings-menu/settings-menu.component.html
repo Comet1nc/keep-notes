@@ -1,5 +1,9 @@
 <div class="container">
-  <button mat-raised-button class="example-icon" (click)="toggleDarkMode()">
-    Toggle DarkMode
-  </button>
+  <div class="dark-mode-setting">
+    <div>Dark Mode</div>
+    <mat-slide-toggle
+      (change)="toggleDarkMode()"
+      [checked]="isDarkMode"
+    ></mat-slide-toggle>
+  </div>
 </div>

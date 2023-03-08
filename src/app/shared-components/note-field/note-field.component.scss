@@ -7,6 +7,7 @@
   margin: 10px;
   height: 100px;
   position: relative;
+  z-index: 0;
 
   &.editmode {
     opacity: 0;
@@ -77,31 +78,52 @@
       }
     }
 
+    .change-bg {
+      position: relative;
+
+      .change-bg-menu {
+        position: absolute;
+        bottom: 0;
+        background-color: #fff;
+        bottom: -55px;
+        display: flex;
+        padding: 10px;
+        gap: 5px;
+        border-radius: 10px;
+        box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+
+        .custom-colors,
+        .default-option {
+          width: 40px;
+          height: 40px;
+          border-radius: 50px;
+          background-color: #fff;
+        }
+
+        .default-option {
+          border: 1px gray solid;
+        }
+      }
+    }
+
     .more-options {
       position: relative;
 
       .more-options-menu {
-        background-color: white;
         position: absolute;
         bottom: 35px;
         display: flex;
         flex-direction: column-reverse;
         padding: 6px 0;
-        box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
         border-radius: 4px;
         width: 79px;
         align-items: center;
-
 
         .delete-btn {
           padding: 3px 0;
           width: 100%;
           cursor: pointer;
           text-align: center;
-
-          &:hover {
-            background-color: #c3c3c3;
-          }
         }
       }
     }

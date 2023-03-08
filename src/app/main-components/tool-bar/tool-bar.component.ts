@@ -15,6 +15,7 @@ export class ToolBarComponent {
 
   menuIsActive = false;
   searchText: string = '';
+  isDarkMode = false;
 
   constructor(private searchBarService: SearchBarService) {}
 
@@ -34,6 +35,7 @@ export class ToolBarComponent {
 
   toggleDarkMode() {
     this.switchDarkMode.emit();
+    this.isDarkMode = !this.isDarkMode;
   }
 
   toggleSideNav() {

@@ -7,8 +7,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class SettingsMenuComponent {
   @Output() onThemeChanged = new EventEmitter<void>();
+  @Input() isDarkMode = false;
 
   toggleDarkMode() {
     this.onThemeChanged.emit();
+    this.isDarkMode = !this.isDarkMode;
   }
 }

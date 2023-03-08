@@ -57,6 +57,7 @@
     <tool-bar-settings-menu
       *ngIf="menuIsActive"
       (onThemeChanged)="toggleDarkMode()"
+      [isDarkMode]="isDarkMode"
     ></tool-bar-settings-menu>
   </div>
 </mat-toolbar>

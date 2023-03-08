@@ -1,6 +1,15 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { Note, NoteCategory } from 'src/app/models/note.model';
+import { NotesRoutingModule } from 'src/app/pages/notes/notes-routing.module';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -37,28 +46,61 @@ import { EditNoteService } from '../edit-note/edit-note.service';
     ]),
   ],
 })
-export class NoteFieldComponent implements OnInit {
+export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
   @Input() inArchive = false;
   @Input() inBin = false;
   @Input() fromCategory!: NoteCategory;
 
+  @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
+
   showButtons = false;
   mouseInNote = false;
   editModeOpened = false;
   moreOptionsActive = false;
+  changeBgMenuActive = false;
+
+  colors = [
+    { name: 'red', value: '#F28B82' },
+    { name: 'green', value: '#CCFF90' },
+  ];
 
   constructor(
     private notesService: NotesService,
     private editNoteService: EditNoteService,
     private archiveService: ArchiveService,
-    private binService: BinService
+    private binService: BinService,
+    private renderer: Renderer2
   ) {}
+
+  ngAfterViewInit(): void {
+    this.changeBg(this.noteRef.nativeElement);
+  }
 
   ngOnInit(): void {
     this.editNoteService.onCloseEditMode.subscribe(
       () => (this.editModeOpened = false)
     );
+  }
+
+  setBg(color: any, noteRef: HTMLElement) {
+    this.note.color = color;
+    this.notesService.saveToLocalStorage();
+    this.changeBg(noteRef);
+  }
+
+  changeBg(noteRef: HTMLElement) {
+    console.log(this.note.color);
+
+    if (this.note.color !== undefined) {
+      this.renderer.setStyle(
+        noteRef,
+        'background-color',
+        this.note.color.value
+      );
+    } else {
+      this.renderer.removeStyle(noteRef, 'background-color');
+    }
   }
 
   toggleArchive() {
@@ -99,6 +141,10 @@ export class NoteFieldComponent implements OnInit {
     this.moreOptionsActive = !this.moreOptionsActive;
   }
 
+  toggleBgMenu() {
+    this.changeBgMenuActive = !this.changeBgMenuActive;
+  }
+
   togglePin() {
     if (this.inArchive) return;
     this.notesService.togglePin(this.note);
@@ -111,15 +157,17 @@ export class NoteFieldComponent implements OnInit {
     }
   }
 
-  onMouseEnter() {
+  onMouseEnter(noteRef: HTMLElement) {
     this.showButtons = true;
     this.mouseInNote = true;
+    this.renderer.setStyle(noteRef, 'z-index', '20');
   }
 
-  onMouseLeave() {
+  onMouseLeave(noteRef: HTMLElement) {
     this.showButtons = false;
     this.mouseInNote = false;
     this.moreOptionsActive = false;
+    this.renderer.setStyle(noteRef, 'z-index', '0');
   }
 
   getTitle() {
