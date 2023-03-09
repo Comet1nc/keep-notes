@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AppService, Theme } from './services/app.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private appService: AppService
   ) {}
 
   toggleSideNav() {
@@ -37,10 +39,16 @@ export class AppComponent {
       this.document.body,
       this.isDarkMode ? 'theme-dark' : 'theme-light'
     );
+
     this.isDarkMode = !this.isDarkMode;
+
     this.renderer.addClass(
       this.document.body,
       this.isDarkMode ? 'theme-dark' : 'theme-light'
+    );
+
+    this.appService.onThemeChanged.next(
+      this.isDarkMode ? Theme.dark : Theme.light
     );
   }
 }

@@ -75,7 +75,11 @@
           class="custom-colors"
           *ngFor="let color of colors"
           [matTooltip]="color.name"
-          [ngStyle]="{ 'background-color': color.value }"
+          [ngStyle]="{
+            'background-color': currentTheme
+              ? color.valueDarkTheme
+              : color.valueLightTheme
+          }"
           (click)="setBg(color, noteRef)"
         ></div>
       </div>

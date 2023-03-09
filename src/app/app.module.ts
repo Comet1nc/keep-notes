@@ -16,6 +16,7 @@ import { LocalStorageService } from './services/local-storage.service';
 import { SearchBarService } from './main-components/tool-bar/search-bar.service';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { FormsModule } from '@angular/forms';
+import { AppService } from './services/app.service';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
@@ -40,6 +41,7 @@ import { FormsModule } from '@angular/forms';
     BinService,
     LocalStorageService,
     SearchBarService,
+    AppService,
   ],
   bootstrap: [AppComponent],
 })

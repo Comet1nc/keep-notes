@@ -6,6 +6,7 @@ import { Note } from 'src/app/models/note.model';
 export class EditNoteService {
   onOpenEditMode = new Subject<Note>();
   onCloseEditMode = new Subject<void>();
+  onBgChanged = new Subject<void>();
 
   constructor() {}
 

@@ -6,8 +6,10 @@ import {
   Input,
   ViewChild,
   ElementRef,
+  Renderer2,
 } from '@angular/core';
 import { Note, NoteCategory } from 'src/app/models/note.model';
+import { AppService, Theme } from 'src/app/services/app.service';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -55,6 +57,10 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   moreOptionsActive = false;
 
+  changeBgMenuActive = false;
+  currentTheme: Theme = Theme.light;
+
+  @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
   @ViewChild('inputField') inputField!: ElementRef;
 
   @Input() activeNote!: Note;
@@ -62,12 +68,60 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @Input() inBin = false;
   @Input() fromCategory!: NoteCategory;
 
+  colors = [
+    { name: 'red', valueLightTheme: '#F28B82', valueDarkTheme: '#5C2B29' },
+    { name: 'green', valueLightTheme: '#CCFF90', valueDarkTheme: '#345920' },
+    { name: 'yellow', valueLightTheme: '#FFF475', valueDarkTheme: '#635D19' },
+    { name: 'teal', valueLightTheme: '#A7FFEB', valueDarkTheme: '#16504B' },
+    { name: 'blue', valueLightTheme: '#AECBFA', valueDarkTheme: '#1E3A5F' },
+    { name: 'purple', valueLightTheme: '#D7AEFB', valueDarkTheme: '#42275E' },
+  ];
+
   constructor(
     private editNoteService: EditNoteService,
     private notesService: NotesService,
     private archiveService: ArchiveService,
-    private binService: BinService
+    private binService: BinService,
+    private renderer: Renderer2,
+    private appService: AppService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.inputField.nativeElement.innerText = this.newNoteText;
+
+    this.changeBg(this.noteRef.nativeElement);
+
+    this.appService.onThemeChanged.subscribe((theme) => {
+      this.currentTheme = theme;
+
+      this.changeBg(this.noteRef.nativeElement);
+    });
+  }
+
+  setBg(color: any, noteRef: HTMLElement) {
+    this.activeNote.color = color;
+    this.notesService.saveToLocalStorage();
+    this.changeBg(noteRef);
+  }
+
+  changeBg(noteRef: HTMLElement) {
+    if (this.activeNote.color !== undefined) {
+      this.renderer.setStyle(
+        noteRef,
+        'background-color',
+        this.currentTheme === Theme.light
+          ? this.activeNote.color.valueLightTheme
+          : this.activeNote.color.valueDarkTheme
+      );
+    } else {
+      this.renderer.removeStyle(noteRef, 'background-color');
+    }
+
+    this.editNoteService.onBgChanged.next();
+  }
+  toggleBgMenu() {
+    this.changeBgMenuActive = !this.changeBgMenuActive;
+  }
 
   ngOnInit(): void {
     this.titleText = this.activeNote.title;
@@ -139,10 +193,6 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     } else {
       this.notesService.onNotesChanged.next();
     }
-  }
-
-  ngAfterViewInit(): void {
-    this.inputField.nativeElement.innerText = this.newNoteText;
   }
 
   input(e: any) {

@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnInit,
   Renderer2,
@@ -10,6 +11,7 @@ import {
 } from '@angular/core';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { NotesRoutingModule } from 'src/app/pages/notes/notes-routing.module';
+import { AppService, Theme } from 'src/app/services/app.service';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -59,10 +61,15 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   editModeOpened = false;
   moreOptionsActive = false;
   changeBgMenuActive = false;
+  currentTheme: Theme = Theme.light;
 
   colors = [
-    { name: 'red', value: '#F28B82' },
-    { name: 'green', value: '#CCFF90' },
+    { name: 'red', valueLightTheme: '#F28B82', valueDarkTheme: '#5C2B29' },
+    { name: 'green', valueLightTheme: '#CCFF90', valueDarkTheme: '#345920' },
+    { name: 'yellow', valueLightTheme: '#FFF475', valueDarkTheme: '#635D19' },
+    { name: 'teal', valueLightTheme: '#A7FFEB', valueDarkTheme: '#16504B' },
+    { name: 'blue', valueLightTheme: '#AECBFA', valueDarkTheme: '#1E3A5F' },
+    { name: 'purple', valueLightTheme: '#D7AEFB', valueDarkTheme: '#42275E' },
   ];
 
   constructor(
@@ -70,11 +77,22 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     private editNoteService: EditNoteService,
     private archiveService: ArchiveService,
     private binService: BinService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private appService: AppService
   ) {}
 
   ngAfterViewInit(): void {
     this.changeBg(this.noteRef.nativeElement);
+
+    this.appService.onThemeChanged.subscribe((theme) => {
+      this.currentTheme = theme;
+
+      this.changeBg(this.noteRef.nativeElement);
+    });
+
+    this.editNoteService.onBgChanged.subscribe(() => {
+      this.changeBg(this.noteRef.nativeElement);
+    });
   }
 
   ngOnInit(): void {
@@ -90,13 +108,13 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   }
 
   changeBg(noteRef: HTMLElement) {
-    console.log(this.note.color);
-
     if (this.note.color !== undefined) {
       this.renderer.setStyle(
         noteRef,
         'background-color',
-        this.note.color.value
+        this.currentTheme === Theme.light
+          ? this.note.color.valueLightTheme
+          : this.note.color.valueDarkTheme
       );
     } else {
       this.renderer.removeStyle(noteRef, 'background-color');
@@ -160,10 +178,12 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   onMouseEnter(noteRef: HTMLElement) {
     this.showButtons = true;
     this.mouseInNote = true;
-    this.renderer.setStyle(noteRef, 'z-index', '20');
+    this.renderer.setStyle(noteRef, 'z-index', '10');
   }
 
   onMouseLeave(noteRef: HTMLElement) {
+    if (this.changeBgMenuActive) return;
+
     this.showButtons = false;
     this.mouseInNote = false;
     this.moreOptionsActive = false;
