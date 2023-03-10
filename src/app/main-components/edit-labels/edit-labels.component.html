@@ -1,0 +1,70 @@
+<div class="edit-labels" *ngIf="editLabelsOpened">
+  <div class="bg" (click)="closeEditLabels()"></div>
+  <div class="container">
+    <header>
+      <h1>Edit Labels</h1>
+      <div class="create-new-label">
+        <button class="clear-input">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="18px"
+            width="18px"
+            viewBox="0 0 18 18"
+          >
+            <path d="m0 0h18v18h-18zh18v18h-18z" fill="none" />
+            <path
+              d="m14.53 4.53l-1.06-1.06-4.47 4.47-4.47-4.47-1.06 1.06 4.47 4.47-4.47 4.47 1.06 1.06 4.47-4.47 4.47 4.47 1.06-1.06-4.47-4.47z"
+            />
+          </svg>
+        </button>
+        <input type="text" placeholder="Create new label" />
+        <button class="create">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="18px"
+            width="18px"
+            viewBox="0 0 18 18"
+          >
+            <path d="m0 0h18v18h-18z" fill="none" />
+            <path
+              d="m6.61 11.89l-3.11-3.11-1.06 1.06 4.17 4.16 8.95-8.95-1.06-1.05z"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="label" *ngFor="let label of labels">
+        <button class="delete-label">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="18px"
+            width="18px"
+            viewBox="0 0 48 48"
+            fill="#000000"
+          >
+            <path
+              d="m12 38c0 2.21 1.79 4 4 4h16c2.21 0 4-1.79 4-4v-24h-24v24zm26-30h-7l-2-2h-10l-2 2h-7v4h28v-4z"
+            />
+            <path d="m0 0h48v48h-48z" fill="none" />
+          </svg>
+        </button>
+        <input type="text" placeholder="Enter label name" />
+        <button class="rename-label">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="18px"
+            width="18px"
+            viewBox="0 0 18 18"
+          >
+            <path d="m0 0h18v18h-18z" fill="none" />
+            <path
+              d="m6.61 11.89l-3.11-3.11-1.06 1.06 4.17 4.16 8.95-8.95-1.06-1.05z"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+    <footer>
+      <button (click)="closeEditLabels()">Done</button>
+    </footer>
+  </div>
+</div>

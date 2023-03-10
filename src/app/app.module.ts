@@ -17,9 +17,16 @@ import { SearchBarService } from './main-components/tool-bar/search-bar.service'
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { FormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
+import { EditLabelsComponent } from './main-components/edit-labels/edit-labels.component';
+import { EditLabelsService } from './main-components/edit-labels/edit-labels.service';
 
 @NgModule({
-  declarations: [AppComponent, ToolBarComponent, SettingsMenuComponent],
+  declarations: [
+    AppComponent,
+    ToolBarComponent,
+    SettingsMenuComponent,
+    EditLabelsComponent,
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -42,6 +49,7 @@ import { AppService } from './services/app.service';
     LocalStorageService,
     SearchBarService,
     AppService,
+    EditLabelsService,
   ],
   bootstrap: [AppComponent],
 })
