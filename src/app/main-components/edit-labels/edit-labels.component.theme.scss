@@ -1,0 +1,16 @@
+@mixin edit-labels-light {
+  app-edit-labels {
+    .container {
+      background-color: #fff;
+
+    }
+  }
+}
+
+@mixin edit-labels-dark {
+  app-edit-labels {
+    .container {
+      background-color: #313235;
+    }
+  }
+}

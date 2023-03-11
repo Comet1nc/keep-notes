@@ -3,6 +3,7 @@
 @use '@angular/material' as mat;
 @use './app/main-components/side-nav/side-nav.component.theme' as side-nav;
 @use './app/main-components/tool-bar/tool-bar.component.theme.scss' as tool-bar;
+@use './app/main-components/edit-labels/edit-labels.component.theme.scss' as edit-labels;
 @use './app/shared-components/input-bar/input-bar.component.theme.scss' as input-bar;
 @use './app/shared-components/note-field/note-field.component.theme.scss' as note-field;
 @use './app/shared-components/edit-note/edit-note.component.theme.scss' as edit-note;
@@ -44,6 +45,7 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
   @include input-bar.input-bar-light;
   @include note-field.note-field-light;
   @include edit-note.edit-note-light;
+  @include edit-labels.edit-labels-light;
 
   // @include side-nav.theme(false);
   // @include side-nav-theme($keep-notes-theme-light)
@@ -56,6 +58,8 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
   @include input-bar.input-bar-dark;
   @include note-field.note-field-dark;
   @include edit-note.edit-note-dark;
+  @include edit-labels.edit-labels-dark;
+
 
 
   // @include side-nav.theme(true);
