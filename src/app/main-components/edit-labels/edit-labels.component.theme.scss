@@ -2,7 +2,46 @@
   app-edit-labels {
     .container {
       background-color: #fff;
+      box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
 
+      header {
+        h1 {
+          color: #202124;
+        }
+
+        button {
+          svg {
+            fill: #767676;
+          }
+
+          &:hover {
+            svg {
+              fill: #222222;
+            }
+          }
+        }
+
+        .create-new-label,
+        .label {
+
+          input {
+            color: #55595B;
+
+            &:focus {
+              border-bottom: 1px solid rgba(0, 0, 0, .2);
+            }
+          }
+        }
+      }
+
+      footer {
+        border-top: 1px solid #dadce0;
+
+        button {
+          color: rgba(0, 0, 0, .87);
+
+        }
+      }
     }
   }
 }
@@ -11,6 +50,47 @@
   app-edit-labels {
     .container {
       background-color: #313235;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 60%), 0 4px 8px 3px rgb(0 0 0 / 30%);
+
+      header {
+        h1 {
+          color: #E8EAED;
+        }
+
+        button {
+          svg {
+            fill: #A0A0A2;
+          }
+
+          &:hover {
+            svg {
+              fill: #E4E4E4;
+            }
+          }
+        }
+
+        .create-new-label,
+        .label {
+
+          input {
+            color: #D0D2D5;
+
+            &:focus {
+              border-bottom: 1px solid #5f6368;
+            }
+          }
+        }
+      }
+
+      footer {
+        border-top: 1px solid #5f6368;
+
+        button {
+          color: #DADCE0;
+        }
+      }
+
+
     }
   }
 }
