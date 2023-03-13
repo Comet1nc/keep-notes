@@ -66,11 +66,12 @@
         <input
           type="text"
           placeholder="Enter label name"
-          [(ngModel)]="label.name"
+          [value]="label.name"
+          #input
         />
         <button
           class="rename-label"
-          (click)="renameLabel()"
+          (click)="renameLabel(input, label)"
           matTooltip="Rename label"
         >
           <svg

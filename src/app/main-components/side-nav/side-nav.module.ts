@@ -7,6 +7,7 @@ import { EditLabelsComponent } from './components/edit-labels/edit-labels.compon
 import { ArchiveComponent } from './components/archive/archive.component';
 import { BinComponent } from './components/bin/bin.component';
 import { RouterModule } from '@angular/router';
+import { CustomLabelComponent } from './components/custom-label/custom-label.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { RouterModule } from '@angular/router';
     EditLabelsComponent,
     ArchiveComponent,
     BinComponent,
+    CustomLabelComponent,
   ],
   imports: [CommonModule, RouterModule],
   exports: [SideNavComponent],

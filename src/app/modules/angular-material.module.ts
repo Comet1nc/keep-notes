@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSelectModule,
     MatRippleModule,
     MatTooltipModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatSidenavModule,
@@ -34,6 +36,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSelectModule,
     MatRippleModule,
     MatTooltipModule,
+    MatSnackBarModule,
   ],
 })
 export class AngularMaterialModule {}

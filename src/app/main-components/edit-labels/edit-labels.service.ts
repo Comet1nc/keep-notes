@@ -10,7 +10,7 @@ export class EditLabelsService {
     this.labels.push(new Label(name));
   }
 
-  renameLabel() {
+  labelRenamed() {
     return;
   }
 

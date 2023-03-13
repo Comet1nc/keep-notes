@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditLabelsService, Label } from './edit-labels.service';
 
 @Component({
@@ -11,7 +13,12 @@ export class EditLabelsComponent implements OnInit {
   labels!: Label[];
   newLabelName: string = '';
 
-  constructor(private editLabelsService: EditLabelsService) {}
+  constructor(
+    private editLabelsService: EditLabelsService,
+    private _snackBar: MatSnackBar,
+    private router: Router,
+    private activeRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.editLabelsService.openEditLabels.subscribe(() => {
@@ -35,8 +42,27 @@ export class EditLabelsComponent implements OnInit {
     this.editLabelsService.deleteLabel(label);
   }
 
-  renameLabel() {
-    this.editLabelsService.renameLabel();
+  renameLabel(input: HTMLInputElement, myLabel: Label) {
+    for (let label of this.labels) {
+      if (input.value === label.name) {
+        this._snackBar.open('Wrong name.', 'Close');
+        return;
+      }
+    }
+
+    let oldName = myLabel.name;
+    myLabel.name = input.value;
+
+    if (
+      this.activeRoute.snapshot.children[0].children[0].params['name'] ===
+      oldName
+    ) {
+      this.router.navigate(['custom-notes/' + myLabel.name]);
+    }
+
+    this._snackBar.open('Successfully renamed!', 'Close');
+
+    this.editLabelsService.labelRenamed();
   }
 
   closeEditLabels() {
