@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Note } from 'src/app/models/note.model';
 
 @Injectable()
 export class EditLabelsService {
@@ -12,6 +13,16 @@ export class EditLabelsService {
 
   labelRenamed() {
     return;
+  }
+
+  getLabelByName(name: string) {
+    for (let label of this.labels) {
+      if (label.name === name) {
+        return label;
+      }
+    }
+
+    return new Label('');
   }
 
   deleteLabel(label: Label) {
@@ -31,6 +42,8 @@ export class EditLabelsService {
 
 export class Label {
   name: string;
+  notes!: Note[];
+  notesPinned!: Note[];
 
   constructor(private _name: string) {
     this.name = _name;

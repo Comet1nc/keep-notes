@@ -1,0 +1,22 @@
+.input-container {
+  width: 100%;
+}
+
+.notes-container {
+  padding: 30px 100px;
+
+  .category-type {
+    font-size: 14px;
+    font-weight: 500;
+    color: #5F6368;
+  }
+
+  .unpinned-notes-container,
+  .pinned-notes-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding: 0 50px;
+  }
+}

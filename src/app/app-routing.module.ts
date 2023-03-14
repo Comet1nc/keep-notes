@@ -29,13 +29,13 @@ const routes: Routes = [
         (m) => m.RemindersModule
       ),
   },
-  {
-    path: 'custom-notes',
-    loadChildren: () =>
-      import('./pages/custom-notes/custom-notes.module').then(
-        (m) => m.CustomNotesModule
-      ),
-  },
+  // {
+  //   path: 'custom-notes',
+  //   loadChildren: () =>
+  //     import('./pages/custom-notes/custom-notes.module').then(
+  //       (m) => m.CustomNotesModule
+  //     ),
+  // },
 ];
 
 @NgModule({
