@@ -9,6 +9,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { NotesRoutingModule } from 'src/app/pages/notes/notes-routing.module';
 import { AppService, Theme } from 'src/app/services/app.service';
@@ -78,7 +79,8 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     private archiveService: ArchiveService,
     private binService: BinService,
     private renderer: Renderer2,
-    private appService: AppService
+    private appService: AppService,
+    private drawService: DrawService
   ) {}
 
   ngAfterViewInit(): void {
@@ -99,6 +101,10 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     this.editNoteService.onCloseEditMode.subscribe(
       () => (this.editModeOpened = false)
     );
+  }
+
+  draw() {
+    this.drawService.opedDraw.next();
   }
 
   setBg(color: any, noteRef: HTMLElement) {
