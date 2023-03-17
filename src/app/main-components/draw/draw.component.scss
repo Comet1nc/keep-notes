@@ -8,25 +8,41 @@
 
   header {
     padding: 15px 15px;
+    border-bottom: 1px solid lightgray;
+
+    .left-side {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .pallete-container {
+        position: relative;
+
+        .menu {
+          display: flex;
+          align-items: center;
+          background-color: #fff;
+          gap: 15px;
+          border-radius: 4px;
+          padding: 15px;
+          box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+          position: absolute;
+        }
+      }
+    }
 
     button {
-      width: 40px;
-      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
       padding: 7px;
       border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
 
       &:hover {
         border: 1px solid #dddddd;
       }
     }
   }
-
-  .p5Canvas {
-    width: 100%;
-    height: calc(100% - 70px);
-    background-color: #faaeae;
-
-  }
-
-
 }

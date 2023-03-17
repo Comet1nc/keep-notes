@@ -17,9 +17,12 @@ export class DrawComponent implements OnInit {
   drawOpened: boolean = false;
 
   canvas: any;
-  sw = 2;
-  c = [10];
-  strokeColor = 0;
+  defaultStrokeWeight = 5;
+
+  currentBrushColor: string = 'black';
+  currentBrushWeight: number = 5;
+
+  palleteIsOpened = false;
 
   constructor(private drawService: DrawService) {}
 
@@ -27,33 +30,22 @@ export class DrawComponent implements OnInit {
     this.drawService.opedDraw.subscribe(() => {
       this.drawOpened = true;
       setTimeout(() => {
-        this.sketch();
+        this.initSketch();
       }, 100);
     });
   }
 
-  sketch() {
+  initSketch() {
     const sketch = (s: any) => {
       s.setup = () => {
         let canvas2 = s.createCanvas(s.windowWidth, s.windowHeight - 70);
-        // creating a reference to the div here positions it so you can put things above and below
-        // where the sketch is displayed
+
         canvas2.parent('sketch-holder');
 
-        s.background(255);
-        s.strokeWeight(this.sw);
+        // s.background('#FAFAFA');
+        s.strokeWeight(this.defaultStrokeWeight);
 
-        this.c[0] = s.color(148, 0, 211);
-        this.c[1] = s.color(75, 0, 130);
-        this.c[2] = s.color(0, 0, 255);
-        this.c[3] = s.color(0, 255, 0);
-        this.c[4] = s.color(255, 255, 0);
-        this.c[5] = s.color(255, 127, 0);
-        this.c[6] = s.color(255, 0, 0);
-
-        s.rect(0, 0, s.width, s.height);
-
-        s.stroke(this.c[this.strokeColor]);
+        s.stroke(this.currentBrushColor);
       };
 
       s.draw = () => {
@@ -65,22 +57,37 @@ export class DrawComponent implements OnInit {
           }
         }
       };
-
-      s.mouseReleased = () => {
-        // modulo math forces the color to swap through the array provided
-        // this.strokeColor = (this.strokeColor + 1) % this.c.length;
-        s.stroke(this.c[this.strokeColor]);
-        // console.log(`color is now ${this.c[this.strokeColor]}`);
-      };
-
-      s.keyPressed = () => {
-        if (s.key === 'c') {
-          window.location.reload();
-        }
-      };
     };
 
     this.canvas = new p5(sketch);
+  }
+
+  openPalettte() {
+    this.palleteIsOpened = !this.palleteIsOpened;
+    this.canvas.noStroke();
+  }
+
+  changeBrush(colorInput: HTMLInputElement, weightInput: HTMLInputElement) {
+    this.currentBrushColor = colorInput.value;
+    this.currentBrushWeight = +weightInput.value;
+
+    this.selectBrush();
+
+    this.palleteIsOpened = false;
+    this.canvas.stroke();
+  }
+
+  selectBrush() {
+    this.canvas.strokeWeight(this.currentBrushWeight);
+    this.canvas.stroke(this.currentBrushColor);
+  }
+
+  erase() {
+    this.canvas.stroke('white');
+  }
+
+  clearCanvas() {
+    this.canvas.clear();
   }
 
   closeDraw() {
