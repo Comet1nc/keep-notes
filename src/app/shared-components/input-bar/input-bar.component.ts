@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note } from 'src/app/models/note.model';
 import { NotesService } from 'src/app/services/notes.service';
 
@@ -14,10 +15,17 @@ export class InputBarComponent {
   noteIsPinned: boolean = false;
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
 
-  constructor(private notesService: NotesService) {}
+  constructor(
+    private notesService: NotesService,
+    private drawService: DrawService
+  ) {}
 
   input(e: any) {
     this.mainNoteText = e.srcElement.innerText;
+  }
+
+  draw() {
+    this.drawService.openDraw.next();
   }
 
   openSection() {

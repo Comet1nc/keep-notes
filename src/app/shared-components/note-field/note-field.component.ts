@@ -104,7 +104,7 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   }
 
   draw() {
-    this.drawService.opedDraw.next();
+    this.drawService.openDraw.next();
   }
 
   setBg(color: any, noteRef: HTMLElement) {

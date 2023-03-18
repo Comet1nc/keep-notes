@@ -9,6 +9,8 @@
   header {
     padding: 15px 15px;
     border-bottom: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
 
     .left-side {
       display: flex;
@@ -39,6 +41,10 @@
       display: flex;
       align-items: center;
       font-size: 15px;
+
+      &.selected {
+        border: 1px solid #cecece;
+      }
 
       &:hover {
         border: 1px solid #dddddd;

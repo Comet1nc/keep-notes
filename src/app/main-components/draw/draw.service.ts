@@ -3,6 +3,6 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class DrawService {
-  opedDraw = new Subject<void>();
+  openDraw = new Subject<void>();
   constructor() {}
 }

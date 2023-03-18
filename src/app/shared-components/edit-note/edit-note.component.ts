@@ -8,6 +8,7 @@ import {
   ElementRef,
   Renderer2,
 } from '@angular/core';
+import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { ArchiveService } from 'src/app/services/archive.service';
@@ -83,7 +84,8 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     private archiveService: ArchiveService,
     private binService: BinService,
     private renderer: Renderer2,
-    private appService: AppService
+    private appService: AppService,
+    private drawService: DrawService
   ) {}
 
   ngAfterViewInit(): void {
@@ -96,6 +98,10 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
       this.changeBg(this.noteRef.nativeElement);
     });
+  }
+
+  draw() {
+    this.drawService.openDraw.next();
   }
 
   setBg(color: any, noteRef: HTMLElement) {
