@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Label } from 'src/app/main-components/edit-labels/edit-labels.service';
+import { Label } from 'src/app/services/custom-notes.service';
 
 @Component({
   selector: 'side-nav-custom-label',

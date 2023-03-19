@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EditLabelsService, Label } from './edit-labels.service';
+import {
+  CustomNotesService,
+  Label,
+} from 'src/app/services/custom-notes.service';
 
 @Component({
   selector: 'app-edit-labels',
@@ -14,24 +17,34 @@ export class EditLabelsComponent implements OnInit {
   newLabelName: string = '';
 
   constructor(
-    private editLabelsService: EditLabelsService,
+    private customNotesService: CustomNotesService,
     private _snackBar: MatSnackBar,
     private router: Router,
     private activeRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.editLabelsService.openEditLabels.subscribe(() => {
+    this.customNotesService.openEditLabels.subscribe(() => {
       this.editLabelsOpened = true;
     });
+    this.labels = this.customNotesService.labels;
 
-    this.labels = this.editLabelsService.labels;
+    if (!this.customNotesService.filled) {
+      this.customNotesService.loadDataFromLocalStorage();
+    }
   }
 
   createNewLabel() {
     if (this.newLabelName.trim() === '') return;
 
-    this.editLabelsService.addLabel(this.newLabelName);
+    for (let label of this.labels) {
+      if (this.newLabelName === label.name) {
+        this._snackBar.open('Wrong name.', 'Close');
+        return;
+      }
+    }
+
+    this.customNotesService.addLabel(this.newLabelName);
   }
 
   clearNewLabelName() {
@@ -39,7 +52,7 @@ export class EditLabelsComponent implements OnInit {
   }
 
   deleteLabel(label: Label) {
-    this.editLabelsService.deleteLabel(label);
+    this.customNotesService.deleteLabel(label);
   }
 
   renameLabel(input: HTMLInputElement, myLabel: Label) {
@@ -62,7 +75,7 @@ export class EditLabelsComponent implements OnInit {
 
     this._snackBar.open('Successfully renamed!', 'Close');
 
-    this.editLabelsService.labelRenamed();
+    this.customNotesService.labelRenamed();
   }
 
   closeEditLabels() {

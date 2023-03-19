@@ -13,6 +13,7 @@ import { Note, NoteCategory } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
+import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from './edit-note.service';
 
@@ -67,6 +68,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @Input() activeNote!: Note;
   @Input() inArchive = false;
   @Input() inBin = false;
+  @Input() inCustom = false;
   @Input() fromCategory!: NoteCategory;
 
   colors = [
@@ -85,7 +87,8 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     private binService: BinService,
     private renderer: Renderer2,
     private appService: AppService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    private customNotesService: CustomNotesService
   ) {}
 
   ngAfterViewInit(): void {
@@ -106,7 +109,11 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   setBg(color: any, noteRef: HTMLElement) {
     this.activeNote.color = color;
-    this.notesService.saveToLocalStorage();
+    if (this.inCustom) {
+      this.customNotesService.saveToLocalStorage();
+    } else {
+      this.notesService.saveToLocalStorage();
+    }
     this.changeBg(noteRef);
   }
 
@@ -144,7 +151,11 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
       this.archiveService.unArchiveNote.next(this.activeNote);
     } else {
-      this.notesService.deleteNote(this.activeNote);
+      if (this.inCustom) {
+        this.customNotesService.deleteNote(this.activeNote);
+      } else {
+        this.notesService.deleteNote(this.activeNote);
+      }
       this.activeNote.fromCategory = this.fromCategory;
 
       this.archiveService.saveNewNote(this.activeNote);
@@ -157,7 +168,11 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     if (this.inArchive) {
       this.archiveService.deleteNote(this.activeNote);
     } else {
-      this.notesService.deleteNote(this.activeNote);
+      if (this.inCustom) {
+        this.customNotesService.deleteNote(this.activeNote);
+      } else {
+        this.notesService.deleteNote(this.activeNote);
+      }
       this.activeNote.fromCategory = this.fromCategory;
     }
 
@@ -182,7 +197,11 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   togglePin() {
     if (this.inArchive) return;
-    this.notesService.togglePin(this.activeNote);
+    if (this.inCustom) {
+      this.customNotesService.togglePin(this.activeNote);
+    } else {
+      this.notesService.togglePin(this.activeNote);
+    }
   }
 
   closeEditMode() {
@@ -197,7 +216,11 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     } else if (this.inBin) {
       this.binService.onNotesChanged.next();
     } else {
-      this.notesService.onNotesChanged.next();
+      if (this.inCustom) {
+        this.customNotesService.onNotesChanged.next();
+      } else {
+        this.notesService.onNotesChanged.next();
+      }
     }
   }
 

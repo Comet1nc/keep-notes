@@ -18,9 +18,9 @@ import { AngularMaterialModule } from './modules/angular-material.module';
 import { FormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
 import { EditLabelsComponent } from './main-components/edit-labels/edit-labels.component';
-import { EditLabelsService } from './main-components/edit-labels/edit-labels.service';
 import { DrawComponent } from './main-components/draw/draw.component';
 import { DrawService } from './main-components/draw/draw.service';
+import { CustomNotesService } from './services/custom-notes.service';
 
 @NgModule({
   declarations: [
@@ -52,8 +52,8 @@ import { DrawService } from './main-components/draw/draw.service';
     LocalStorageService,
     SearchBarService,
     AppService,
-    EditLabelsService,
     DrawService,
+    CustomNotesService,
   ],
   bootstrap: [AppComponent],
 })

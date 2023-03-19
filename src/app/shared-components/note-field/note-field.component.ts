@@ -15,6 +15,7 @@ import { NotesRoutingModule } from 'src/app/pages/notes/notes-routing.module';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
+import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from '../edit-note/edit-note.service';
 
@@ -53,6 +54,7 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
   @Input() inArchive = false;
   @Input() inBin = false;
+  @Input() inCustom = false;
   @Input() fromCategory!: NoteCategory;
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
@@ -80,7 +82,8 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     private binService: BinService,
     private renderer: Renderer2,
     private appService: AppService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    private customNotesService: CustomNotesService
   ) {}
 
   ngAfterViewInit(): void {
@@ -109,7 +112,11 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
 
   setBg(color: any, noteRef: HTMLElement) {
     this.note.color = color;
-    this.notesService.saveToLocalStorage();
+    if (this.inCustom) {
+      this.customNotesService.saveToLocalStorage();
+    } else {
+      this.notesService.saveToLocalStorage();
+    }
     this.changeBg(noteRef);
   }
 
@@ -133,7 +140,11 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
 
       this.archiveService.unArchiveNote.next(this.note);
     } else {
-      this.notesService.deleteNote(this.note);
+      if (this.inCustom) {
+        this.customNotesService.deleteNote(this.note);
+      } else {
+        this.notesService.deleteNote(this.note);
+      }
       this.note.fromCategory = this.fromCategory;
 
       this.archiveService.saveNewNote(this.note);
@@ -144,7 +155,11 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     if (this.inArchive) {
       this.archiveService.deleteNote(this.note);
     } else {
-      this.notesService.deleteNote(this.note);
+      if (this.inCustom) {
+        this.customNotesService.deleteNote(this.note);
+      } else {
+        this.notesService.deleteNote(this.note);
+      }
       this.note.fromCategory = this.fromCategory;
     }
 
@@ -171,7 +186,11 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
 
   togglePin() {
     if (this.inArchive) return;
-    this.notesService.togglePin(this.note);
+    if (this.inCustom) {
+      this.customNotesService.togglePin(this.note);
+    } else {
+      this.notesService.togglePin(this.note);
+    }
   }
 
   openEditMode() {

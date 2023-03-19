@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { EditLabelsService, Label } from '../edit-labels/edit-labels.service';
+import {
+  CustomNotesService,
+  Label,
+} from 'src/app/services/custom-notes.service';
 
 @Component({
   selector: 'side-nav',
@@ -17,7 +20,7 @@ export class SideNavComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private editLabelsService: EditLabelsService
+    private customNotes: CustomNotesService
   ) {}
 
   ngOnInit(): void {
@@ -25,7 +28,7 @@ export class SideNavComponent implements OnInit {
       this.isSideNavOpened = !this.isSideNavOpened;
     });
 
-    this.customLabels = this.editLabelsService.labels;
+    this.customLabels = this.customNotes.labels;
   }
 
   getClassByState() {

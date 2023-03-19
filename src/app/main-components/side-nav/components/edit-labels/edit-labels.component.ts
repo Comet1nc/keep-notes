@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EditLabelsService } from 'src/app/main-components/edit-labels/edit-labels.service';
+import { CustomNotesService } from 'src/app/services/custom-notes.service';
 
 @Component({
   selector: 'side-nav-edit-labels',
@@ -13,7 +13,7 @@ export class EditLabelsComponent {
   @Input() svgPaths: string[] = [''];
   @Input() isSelectedNote = false;
 
-  constructor(private editLabelsService: EditLabelsService) {}
+  constructor(private customNotesService: CustomNotesService) {}
 
   getLabelClass() {
     if (this.isSideNavOpened) {
@@ -24,6 +24,6 @@ export class EditLabelsComponent {
   }
 
   openEditLabels() {
-    this.editLabelsService.openEditLabels.next();
+    this.customNotesService.openEditLabels.next();
   }
 }

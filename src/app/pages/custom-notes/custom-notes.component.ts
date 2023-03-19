@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { EditLabelsService } from 'src/app/main-components/edit-labels/edit-labels.service';
+import { ActivatedRoute, Params } from '@angular/router';
 import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
+import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
@@ -21,11 +21,10 @@ export class CustomNotesComponent implements OnInit, OnDestroy {
   fromCategory = NoteCategory.custom;
 
   constructor(
-    private notesService: NotesService,
+    private notesService: CustomNotesService,
     private editNoteService: EditNoteService,
     private searchBarService: SearchBarService,
-    private activeRoute: ActivatedRoute,
-    private labelsService: EditLabelsService
+    private activeRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -39,11 +38,9 @@ export class CustomNotesComponent implements OnInit, OnDestroy {
       this.showEditMode = false;
     });
 
-    let customLabelName =
-      this.activeRoute.snapshot.children[0].children[0].params['name'];
-    //
+    let customLabelName = this.activeRoute.snapshot.params['name'];
 
-    let myLabel = this.labelsService.getLabelByName(customLabelName);
+    let myLabel = this.notesService.getLabelByName(customLabelName);
     this.notesService.notesContainer = myLabel.notes;
     this.notesService.notesContainerPinned = myLabel.notesPinned;
 
@@ -55,6 +52,30 @@ export class CustomNotesComponent implements OnInit, OnDestroy {
     if (!this.notesService.filled) {
       this.notesService.loadDataFromLocalStorage();
     }
+
+    for (let index = 0; index < this.notesService.labels.length; index++) {
+      if (this.notesService.labels[index].name === customLabelName) {
+        this.notesService.currentLabelIndex = index;
+      }
+    }
+
+    // subscribing to route changes
+    this.activeRoute.params.subscribe((params: Params) => {
+      let customLabelName = params['name'];
+      let myLabel = this.notesService.getLabelByName(customLabelName);
+
+      this.notesService.notesContainer = myLabel.notes;
+      this.notesService.notesContainerPinned = myLabel.notesPinned;
+
+      this.notes = this.notesService.notesContainer;
+      this.pinnedNotes = this.notesService.notesContainerPinned;
+
+      for (let index = 0; index < this.notesService.labels.length; index++) {
+        if (this.notesService.labels[index].name === customLabelName) {
+          this.notesService.currentLabelIndex = index;
+        }
+      }
+    });
 
     // searching
     this.searchBarService.startSearch.subscribe(() => {
