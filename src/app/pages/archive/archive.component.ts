@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';

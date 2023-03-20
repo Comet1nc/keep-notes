@@ -3,7 +3,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
-import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
 @Component({

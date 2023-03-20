@@ -3,7 +3,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  HostListener,
   Input,
   OnInit,
   Renderer2,
@@ -11,7 +10,6 @@ import {
 } from '@angular/core';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
-import { NotesRoutingModule } from 'src/app/pages/notes/notes-routing.module';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';

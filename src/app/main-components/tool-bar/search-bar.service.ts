@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
@@ -57,6 +57,8 @@ export class SearchBarService {
     switch (route) {
       case 'notes':
         return [...this.notesServiceData, ...this.notesServiceDataPinned];
+      case 'custom-notes':
+        return [...this.notesServiceData, ...this.notesServiceDataPinned];
       case 'bin': {
         array = this.binService.getNotesForSearch();
         break;
@@ -66,6 +68,9 @@ export class SearchBarService {
         break;
       }
       default:
+        console.log(
+          'GET ARRAY FUNC IN SEARCH BAR SERVICE RETURNED UNDEFINED, check switch-case'
+        );
         array = undefined;
         break;
     }

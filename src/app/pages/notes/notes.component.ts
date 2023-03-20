@@ -45,6 +45,11 @@ export class NotesComponent implements OnInit, OnDestroy {
     }
 
     // searching
+    this.searchBarService.notesServiceData = this.notesService.notesContainer;
+    this.searchBarService.notesServiceDataPinned =
+      this.notesService.notesContainerPinned;
+    //
+
     this.searchBarService.startSearch.subscribe(() => {
       this.notes = [];
       this.pinnedNotes = [];
@@ -58,11 +63,6 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.searchBarService.newSearchResults.subscribe((notes) => {
       this.notes = notes;
     });
-
-    this.searchBarService.notesServiceData = this.notesService.notesContainer;
-    this.searchBarService.notesServiceDataPinned =
-      this.notesService.notesContainerPinned;
-    //
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SearchBarService } from './search-bar.service';
 
 @Component({

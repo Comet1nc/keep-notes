@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
-import { SearchBarService } from '../main-components/tool-bar/search-bar.service';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
 import { LocalStorageService } from './local-storage.service';
