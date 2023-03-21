@@ -7,7 +7,7 @@ import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
 export class CustomNotesService {
-  labels: Label[] = [new Label('custom')];
+  labels: Label[] = [];
   currentLabelIndex!: number;
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];

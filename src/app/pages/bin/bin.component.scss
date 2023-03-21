@@ -2,8 +2,23 @@
   width: 100%;
 }
 
-.notes-container {
+.container {
   padding: 80px 100px;
+}
+
+.empty-bin {
+  color: #1a73e8;
+  font-weight: 600;
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-size: 15px;
+
+  &:hover {
+    background-color: #ecf2ff;
+  }
+}
+
+.notes-container {
 
   .category-type {
     font-size: 14px;

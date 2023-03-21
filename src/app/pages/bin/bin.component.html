@@ -3,12 +3,16 @@
   [activeNote]="editModeNoteData"
   [inBin]="isBin"
 ></app-edit-note>
-<div class="notes-container">
-  <div class="unpinned-notes-container">
-    <app-note-field
-      *ngFor="let note of notes"
-      [note]="note"
-      [inBin]="isBin"
-    ></app-note-field>
+<div class="container">
+  <button class="empty-bin" (click)="clearBin()">Empty bin</button>
+
+  <div class="notes-container">
+    <div class="unpinned-notes-container">
+      <app-note-field
+        *ngFor="let note of notes"
+        [note]="note"
+        [inBin]="isBin"
+      ></app-note-field>
+    </div>
   </div>
 </div>

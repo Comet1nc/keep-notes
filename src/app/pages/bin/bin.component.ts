@@ -55,4 +55,9 @@ export class BinComponent {
 
     this.searchBarService.notesServiceData = this.binService.notesContainer;
   }
+
+  clearBin() {
+    this.notes = [];
+    this.binService.clear();
+  }
 }

@@ -20,6 +20,12 @@ export class BinService {
     });
   }
 
+  clear() {
+    this.notesContainer = [];
+
+    this.saveToLocalStorage();
+  }
+
   getNotesForSearch() {
     return this.notesContainer;
   }
