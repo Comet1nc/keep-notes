@@ -19,8 +19,8 @@ export class CustomNotesService {
   myCategory!: NoteCategory;
 
   constructor(
-    private archive: ArchiveService,
-    private bin: BinService,
+    public archive: ArchiveService,
+    public bin: BinService,
     private localStorageService: LocalStorageService
   ) {
     archive.unArchiveNote.subscribe(this.restoreNoteFn);

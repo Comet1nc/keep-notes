@@ -47,7 +47,8 @@ export class DrawComponent implements OnInit {
       };
 
       s.draw = () => {
-        if (s.mouseIsPressed) {
+        if (s.mouseIsPressed && s.mouseY > 0) {
+          console.log(s);
           if (s.mouseButton === s.LEFT) {
             s.line(s.mouseX, s.mouseY, s.pmouseX, s.pmouseY);
           } else if (s.mouseButton === s.CENTER) {
