@@ -38,7 +38,7 @@ export class NotesService {
       if (note.isPinned) {
         this.saveNewNoteToPinned(note);
       } else {
-        this.saveNewNote(note);
+        this.saveNewNoteToUnpinned(note);
       }
 
       this.saveToLocalStorage();
@@ -116,7 +116,7 @@ export class NotesService {
     this.saveToLocalStorage();
   }
 
-  saveNewNote(note: Note) {
+  saveNewNoteToUnpinned(note: Note) {
     this.notesContainer.push(note);
 
     note.createdAt = new Date();

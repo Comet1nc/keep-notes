@@ -2,6 +2,7 @@
   *ngIf="showEditMode"
   [activeNote]="editModeNoteData"
   [inBin]="isBin"
+  (onNotesChanged)="notesChanged()"
 ></app-edit-note>
 <div class="container">
   <button class="empty-bin" (click)="clearBin()">Empty bin</button>

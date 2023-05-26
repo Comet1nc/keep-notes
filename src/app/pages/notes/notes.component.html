@@ -2,9 +2,14 @@
   *ngIf="showEditMode"
   [activeNote]="editModeNoteData"
   [fromCategory]="fromCategory"
+  (onNotesChanged)="notesChanged()"
+  (onToggleArchive)="archiveNote($event)"
+  (onDeleteNote)="deleteNote($event)"
+  (onTogglePin)="togglePin($event)"
+  (saveNotesToLocalStorage)="saveNotesToLocalStorage()"
 ></app-edit-note>
 <div class="input-container">
-  <app-input-bar></app-input-bar>
+  <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
 </div>
 <div class="notes-container">
   <div class="category-type" *ngIf="pinnedNotes.length > 0">PINNED</div>
@@ -13,6 +18,9 @@
       *ngFor="let note of pinnedNotes; let i = index"
       [note]="note"
       [fromCategory]="fromCategory"
+      (onToggleArchive)="archiveNote($event)"
+      (onDeleteNote)="deleteNote($event)"
+      (onTogglePin)="togglePin($event)"
     ></app-note-field>
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
@@ -21,6 +29,9 @@
       *ngFor="let note of notes"
       [note]="note"
       [fromCategory]="fromCategory"
+      (onToggleArchive)="archiveNote($event)"
+      (onDeleteNote)="deleteNote($event)"
+      (onTogglePin)="togglePin($event)"
     ></app-note-field>
   </div>
 </div>

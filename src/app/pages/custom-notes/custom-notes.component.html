@@ -3,9 +3,14 @@
   [activeNote]="editModeNoteData"
   [inCustom]="true"
   [fromCategory]="fromCategory"
+  (onNotesChanged)="notesChanged()"
+  (onToggleArchive)="saveToArchive($event)"
+  (onDeleteNote)="deleteNote($event)"
+  (onTogglePin)="togglePin($event)"
+  (saveNotesToLocalStorage)="saveNotesToLocalStorage()"
 ></app-edit-note>
 <div class="input-container">
-  <app-input-bar [inCustom]="true"></app-input-bar>
+  <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
 </div>
 <div class="notes-container">
   <div class="category-type" *ngIf="pinnedNotes.length > 0">PINNED</div>
@@ -15,6 +20,9 @@
       [note]="note"
       [inCustom]="true"
       [fromCategory]="fromCategory"
+      (onToggleArchive)="saveToArchive($event)"
+      (onDeleteNote)="deleteNote($event)"
+      (onTogglePin)="togglePin($event)"
     ></app-note-field>
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
@@ -24,6 +32,9 @@
       [note]="note"
       [inCustom]="true"
       [fromCategory]="fromCategory"
+      (onToggleArchive)="saveToArchive($event)"
+      (onDeleteNote)="deleteNote($event)"
+      (onTogglePin)="togglePin($event)"
     ></app-note-field>
   </div>
 </div>

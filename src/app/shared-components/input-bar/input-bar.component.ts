@@ -1,4 +1,10 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note } from 'src/app/models/note.model';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
@@ -14,7 +20,7 @@ export class InputBarComponent {
   mainNoteText: string = '';
   isOpened: boolean = false;
   noteIsPinned: boolean = false;
-  @Input() inCustom = false;
+  @Output() saveNewNote = new EventEmitter<Note>();
 
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
 
@@ -50,19 +56,7 @@ export class InputBarComponent {
     newNote.isPinned = this.noteIsPinned;
 
     // saving
-    if (newNote.isPinned) {
-      if (this.inCustom) {
-        this.customNotesService.saveNewNoteToPinned(newNote);
-      } else {
-        this.notesService.saveNewNoteToPinned(newNote);
-      }
-    } else {
-      if (this.inCustom) {
-        this.customNotesService.saveNewNote(newNote);
-      } else {
-        this.notesService.saveNewNote(newNote);
-      }
-    }
+    this.saveNewNote.emit(newNote);
 
     // clearing input fields
     this.titleText = '';

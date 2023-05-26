@@ -16,7 +16,7 @@ export class CustomNotesService {
   filled = false;
   canSearch = false;
 
-  myCategory!: NoteCategory;
+  myCategory: NoteCategory = NoteCategory.custom;
 
   constructor(
     public archive: ArchiveService,
@@ -79,7 +79,7 @@ export class CustomNotesService {
       if (note.isPinned) {
         this.saveNewNoteToPinned(note);
       } else {
-        this.saveNewNote(note);
+        this.saveNewNoteToUnpinned(note);
       }
 
       this.saveToLocalStorage();
@@ -87,6 +87,7 @@ export class CustomNotesService {
   };
 
   loadDataFromLocalStorage() {
+    console.log('load data from local storage ');
     for (let index = 0; index < 10; index++) {
       let notes = this.localStorageService.getData(
         NoteCategory.custom + index.toString()
@@ -166,7 +167,7 @@ export class CustomNotesService {
     this.saveToLocalStorage();
   }
 
-  saveNewNote(note: Note) {
+  saveNewNoteToUnpinned(note: Note) {
     this.notesContainer.push(note);
 
     note.createdAt = new Date();

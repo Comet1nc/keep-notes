@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
+import { BinService } from 'src/app/services/bin.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class ArchiveComponent implements OnInit {
   constructor(
     private editNoteService: EditNoteService,
     private archiveService: ArchiveService,
-    private searchBarService: SearchBarService
+    private searchBarService: SearchBarService,
+    private binService: BinService
   ) {}
 
   ngOnInit(): void {
@@ -41,6 +43,12 @@ export class ArchiveComponent implements OnInit {
     this.notes = this.archiveService.notesContainer;
 
     // searching
+    this.searchBarSubscriptions();
+
+    this.searchBarService.notesServiceData = this.archiveService.notesContainer;
+  }
+
+  searchBarSubscriptions() {
     this.searchBarService.startSearch.subscribe(() => {
       this.notes = [];
     });
@@ -52,7 +60,19 @@ export class ArchiveComponent implements OnInit {
     this.searchBarService.newSearchResults.subscribe((notes) => {
       this.notes = notes;
     });
+  }
 
-    this.searchBarService.notesServiceData = this.archiveService.notesContainer;
+  restoreNote(note: Note) {
+    this.archiveService.deleteNote(note);
+    this.archiveService.unArchiveNote.next(note);
+  }
+
+  deleteNote(note: Note) {
+    this.archiveService.deleteNote(note);
+    this.binService.saveNewNote(note);
+  }
+
+  notesChanged() {
+    this.archiveService.onNotesChanged.next();
   }
 }

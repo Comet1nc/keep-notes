@@ -3,15 +3,16 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -55,6 +56,9 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() inBin = false;
   @Input() inCustom = false;
   @Input() fromCategory!: NoteCategory;
+  @Output() onToggleArchive = new EventEmitter<Note>();
+  @Output() onDeleteNote = new EventEmitter<Note>();
+  @Output() onTogglePin = new EventEmitter<Note>();
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
 
@@ -70,7 +74,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   constructor(
     private notesService: NotesService,
     private editNoteService: EditNoteService,
-    private archiveService: ArchiveService,
     private binService: BinService,
     private renderer: Renderer2,
     private appService: AppService,
@@ -127,35 +130,11 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   }
 
   toggleArchive() {
-    if (this.inArchive) {
-      this.archiveService.deleteNote(this.note);
-
-      this.archiveService.unArchiveNote.next(this.note);
-    } else {
-      if (this.inCustom) {
-        this.customNotesService.deleteNote(this.note);
-      } else {
-        this.notesService.deleteNote(this.note);
-      }
-      this.note.fromCategory = this.fromCategory;
-
-      this.archiveService.saveNewNote(this.note);
-    }
+    this.onToggleArchive.emit(this.note);
   }
 
   deleteNote() {
-    if (this.inArchive) {
-      this.archiveService.deleteNote(this.note);
-    } else {
-      if (this.inCustom) {
-        this.customNotesService.deleteNote(this.note);
-      } else {
-        this.notesService.deleteNote(this.note);
-      }
-      this.note.fromCategory = this.fromCategory;
-    }
-
-    this.binService.saveNewNote(this.note);
+    this.onDeleteNote.emit(this.note);
   }
 
   deleteForever() {
@@ -177,12 +156,7 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   }
 
   togglePin() {
-    if (this.inArchive) return;
-    if (this.inCustom) {
-      this.customNotesService.togglePin(this.note);
-    } else {
-      this.notesService.togglePin(this.note);
-    }
+    this.onTogglePin.emit(this.note);
   }
 
   openEditMode() {
@@ -195,7 +169,7 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   onMouseEnter(noteRef: HTMLElement) {
     this.showButtons = true;
     this.mouseInNote = true;
-    this.renderer.setStyle(noteRef, 'z-index', '10');
+    // this.renderer.setStyle(noteRef, 'z-index', '10');
   }
 
   onMouseLeave(noteRef: HTMLElement) {

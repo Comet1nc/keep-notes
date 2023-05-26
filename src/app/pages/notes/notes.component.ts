@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
+import { ArchiveService } from 'src/app/services/archive.service';
+import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
@@ -21,7 +23,9 @@ export class NotesComponent implements OnInit, OnDestroy {
   constructor(
     private notesService: NotesService,
     private editNoteService: EditNoteService,
-    private searchBarService: SearchBarService
+    private searchBarService: SearchBarService,
+    private archiveService: ArchiveService,
+    private binService: BinService
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +54,10 @@ export class NotesComponent implements OnInit, OnDestroy {
       this.notesService.notesContainerPinned;
     //
 
+    this.searchBarSubscriptions();
+  }
+
+  searchBarSubscriptions() {
     this.searchBarService.startSearch.subscribe(() => {
       this.notes = [];
       this.pinnedNotes = [];
@@ -68,5 +76,38 @@ export class NotesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.searchBarService.notesServiceData = [];
     this.searchBarService.notesServiceDataPinned = [];
+  }
+
+  archiveNote(note: Note) {
+    this.notesService.deleteNote(note);
+
+    note.fromCategory = this.fromCategory;
+    this.archiveService.saveNewNote(note);
+  }
+
+  deleteNote(note: Note) {
+    this.notesService.deleteNote(note);
+    note.fromCategory = this.fromCategory;
+    this.binService.saveNewNote(note);
+  }
+
+  togglePin(note: Note) {
+    this.notesService.togglePin(note);
+  }
+
+  saveNewNote(note: Note) {
+    if (note.isPinned) {
+      this.notesService.saveNewNoteToPinned(note);
+    } else {
+      this.notesService.saveNewNoteToUnpinned(note);
+    }
+  }
+
+  notesChanged() {
+    this.notesService.onNotesChanged.next();
+  }
+
+  saveNotesToLocalStorage() {
+    this.notesService.saveToLocalStorage();
   }
 }

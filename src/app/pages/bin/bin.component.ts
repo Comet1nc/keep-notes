@@ -41,6 +41,12 @@ export class BinComponent {
     this.notes = this.binService.notesContainer;
 
     // searching
+    this.searchBarSubscriptions();
+
+    this.searchBarService.notesServiceData = this.binService.notesContainer;
+  }
+
+  searchBarSubscriptions() {
     this.searchBarService.startSearch.subscribe(() => {
       this.notes = [];
     });
@@ -52,12 +58,14 @@ export class BinComponent {
     this.searchBarService.newSearchResults.subscribe((notes) => {
       this.notes = notes;
     });
-
-    this.searchBarService.notesServiceData = this.binService.notesContainer;
   }
 
   clearBin() {
     this.notes = [];
     this.binService.clear();
+  }
+
+  notesChanged() {
+    this.binService.onNotesChanged.next();
   }
 }

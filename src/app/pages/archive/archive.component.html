@@ -2,6 +2,9 @@
   *ngIf="showEditMode"
   [activeNote]="editModeNoteData"
   [inArchive]="isArchive"
+  (onNotesChanged)="notesChanged()"
+  (onToggleArchive)="restoreNote($event)"
+  (onDeleteNote)="deleteNote($event)"
 ></app-edit-note>
 <div class="notes-container">
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
@@ -9,6 +12,8 @@
       *ngFor="let note of notes"
       [note]="note"
       [inArchive]="isArchive"
+      (onToggleArchive)="restoreNote($event)"
+      (onDeleteNote)="deleteNote($event)"
     ></app-note-field>
   </div>
 </div>

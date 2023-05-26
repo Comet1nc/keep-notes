@@ -7,14 +7,13 @@ import {
   ViewChild,
   ElementRef,
   Renderer2,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
-import { CustomNotesService } from 'src/app/services/custom-notes.service';
-import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from './edit-note.service';
 import { noteColors } from 'src/app/models/note-colors.model';
 
@@ -72,17 +71,20 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @Input() inCustom = false;
   @Input() fromCategory!: NoteCategory;
 
+  @Output() onNotesChanged = new EventEmitter<void>();
+  @Output() onToggleArchive = new EventEmitter<Note>();
+  @Output() onDeleteNote = new EventEmitter<Note>();
+  @Output() onTogglePin = new EventEmitter<Note>();
+  @Output() saveNotesToLocalStorage = new EventEmitter<void>();
+
   colors = noteColors;
 
   constructor(
     private editNoteService: EditNoteService,
-    private notesService: NotesService,
-    private archiveService: ArchiveService,
     private binService: BinService,
     private renderer: Renderer2,
     private appService: AppService,
-    private drawService: DrawService,
-    private customNotesService: CustomNotesService
+    private drawService: DrawService
   ) {}
 
   ngAfterViewInit(): void {
@@ -103,11 +105,9 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   setBg(color: any, noteRef: HTMLElement) {
     this.activeNote.color = color;
-    if (this.inCustom) {
-      this.customNotesService.saveToLocalStorage();
-    } else {
-      this.notesService.saveToLocalStorage();
-    }
+
+    this.saveNotesToLocalStorage.emit();
+
     this.changeBg(noteRef);
   }
 
@@ -126,6 +126,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
     this.editNoteService.onBgChanged.next();
   }
+
   toggleBgMenu() {
     this.changeBgMenuActive = !this.changeBgMenuActive;
   }
@@ -140,37 +141,13 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   }
 
   toggleArchive() {
-    if (this.inArchive) {
-      this.archiveService.deleteNote(this.activeNote);
-
-      this.archiveService.unArchiveNote.next(this.activeNote);
-    } else {
-      if (this.inCustom) {
-        this.customNotesService.deleteNote(this.activeNote);
-      } else {
-        this.notesService.deleteNote(this.activeNote);
-      }
-      this.activeNote.fromCategory = this.fromCategory;
-
-      this.archiveService.saveNewNote(this.activeNote);
-    }
+    this.onToggleArchive.emit(this.activeNote);
 
     this.closeEditMode();
   }
 
   deleteNote() {
-    if (this.inArchive) {
-      this.archiveService.deleteNote(this.activeNote);
-    } else {
-      if (this.inCustom) {
-        this.customNotesService.deleteNote(this.activeNote);
-      } else {
-        this.notesService.deleteNote(this.activeNote);
-      }
-      this.activeNote.fromCategory = this.fromCategory;
-    }
-
-    this.binService.saveNewNote(this.activeNote);
+    this.onDeleteNote.emit(this.activeNote);
 
     this.closeEditMode();
   }
@@ -190,12 +167,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   }
 
   togglePin() {
-    if (this.inArchive) return;
-    if (this.inCustom) {
-      this.customNotesService.togglePin(this.activeNote);
-    } else {
-      this.notesService.togglePin(this.activeNote);
-    }
+    this.onTogglePin.emit(this.activeNote);
   }
 
   closeEditMode() {
@@ -205,17 +177,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     this.activeNote.content = this.newNoteText;
     this.activeNote.lastEditAt = new Date();
 
-    if (this.inArchive) {
-      this.archiveService.onNotesChanged.next();
-    } else if (this.inBin) {
-      this.binService.onNotesChanged.next();
-    } else {
-      if (this.inCustom) {
-        this.customNotesService.onNotesChanged.next();
-      } else {
-        this.notesService.onNotesChanged.next();
-      }
-    }
+    this.onNotesChanged.emit();
   }
 
   input(e: any) {
