@@ -1,0 +1,14 @@
+button {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgb(205 205 205 / 30%);
+    border-radius: 50%;
+    opacity: 1;
+  }
+}

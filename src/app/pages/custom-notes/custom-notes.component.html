@@ -4,7 +4,7 @@
   [inCustom]="true"
   [fromCategory]="fromCategory"
   (onNotesChanged)="notesChanged()"
-  (onToggleArchive)="saveToArchive($event)"
+  (onToggleArchive)="archiveNote($event)"
   (onDeleteNote)="deleteNote($event)"
   (onTogglePin)="togglePin($event)"
   (saveNotesToLocalStorage)="saveNotesToLocalStorage()"
@@ -20,9 +20,14 @@
       [note]="note"
       [inCustom]="true"
       [fromCategory]="fromCategory"
-      (onToggleArchive)="saveToArchive($event)"
-      (onDeleteNote)="deleteNote($event)"
       (onTogglePin)="togglePin($event)"
+    >
+      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-draw></app-btn-draw>
+      <app-btn-more-options
+        (deleteNote)="deleteNote(note)"
+      ></app-btn-more-options
     ></app-note-field>
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
@@ -32,9 +37,14 @@
       [note]="note"
       [inCustom]="true"
       [fromCategory]="fromCategory"
-      (onToggleArchive)="saveToArchive($event)"
-      (onDeleteNote)="deleteNote($event)"
       (onTogglePin)="togglePin($event)"
+    >
+      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-draw></app-btn-draw>
+      <app-btn-more-options
+        (deleteNote)="deleteNote(note)"
+      ></app-btn-more-options
     ></app-note-field>
   </div>
 </div>

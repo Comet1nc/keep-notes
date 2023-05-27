@@ -94,7 +94,7 @@ export class CustomNotesComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveToArchive(note: Note) {
+  archiveNote(note: Note) {
     this.notesService.deleteNote(note);
     note.fromCategory = this.fromCategory;
     this.archiveService.saveNewNote(note);

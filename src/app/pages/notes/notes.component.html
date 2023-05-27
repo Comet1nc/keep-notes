@@ -18,10 +18,15 @@
       *ngFor="let note of pinnedNotes; let i = index"
       [note]="note"
       [fromCategory]="fromCategory"
-      (onToggleArchive)="archiveNote($event)"
-      (onDeleteNote)="deleteNote($event)"
       (onTogglePin)="togglePin($event)"
-    ></app-note-field>
+    >
+      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-draw></app-btn-draw>
+      <app-btn-more-options
+        (deleteNote)="deleteNote(note)"
+      ></app-btn-more-options>
+    </app-note-field>
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
@@ -29,9 +34,14 @@
       *ngFor="let note of notes"
       [note]="note"
       [fromCategory]="fromCategory"
-      (onToggleArchive)="archiveNote($event)"
-      (onDeleteNote)="deleteNote($event)"
       (onTogglePin)="togglePin($event)"
-    ></app-note-field>
+    >
+      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-draw></app-btn-draw>
+      <app-btn-more-options
+        (deleteNote)="deleteNote(note)"
+      ></app-btn-more-options>
+    </app-note-field>
   </div>
 </div>

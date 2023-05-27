@@ -1,0 +1,21 @@
+.more-options {
+  position: relative;
+
+  .more-options-menu {
+    position: absolute;
+    bottom: 35px;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 6px 0;
+    border-radius: 4px;
+    width: 79px;
+    align-items: center;
+
+    .delete-btn {
+      padding: 3px 0;
+      width: 100%;
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+}

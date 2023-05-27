@@ -1,0 +1,27 @@
+.change-bg {
+  position: relative;
+
+  .change-bg-menu {
+    position: absolute;
+    bottom: 0;
+    left: -40px;
+    bottom: 40px;
+    display: flex;
+    padding: 10px;
+    gap: 5px;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+
+    .custom-colors,
+    .default-option {
+      width: 40px;
+      height: 40px;
+      border-radius: 50px;
+      background-color: inherit;
+    }
+
+    .default-option {
+      border: 1px gray solid;
+    }
+  }
+}
