@@ -13,7 +13,6 @@ import {
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { BinService } from 'src/app/services/bin.service';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from '../edit-note/edit-note.service';
@@ -52,12 +51,9 @@ import { noteColors } from 'src/app/models/note-colors.model';
 })
 export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
-  @Input() inArchive = false;
   @Input() inBin = false;
   @Input() inCustom = false;
   @Input() fromCategory!: NoteCategory;
-  @Output() onToggleArchive = new EventEmitter<Note>();
-  @Output() onDeleteNote = new EventEmitter<Note>();
   @Output() onTogglePin = new EventEmitter<Note>();
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
@@ -74,7 +70,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   constructor(
     private notesService: NotesService,
     private editNoteService: EditNoteService,
-    private binService: BinService,
     private renderer: Renderer2,
     private appService: AppService,
     private drawService: DrawService,
@@ -127,24 +122,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     } else {
       this.renderer.removeStyle(noteRef, 'background-color');
     }
-  }
-
-  toggleArchive() {
-    this.onToggleArchive.emit(this.note);
-  }
-
-  deleteNote() {
-    this.onDeleteNote.emit(this.note);
-  }
-
-  deleteForever() {
-    this.binService.deleteNote(this.note);
-  }
-
-  restoreFromBin() {
-    this.binService.deleteNote(this.note);
-
-    this.binService.restoreNote.next(this.note);
   }
 
   toggleMenu() {

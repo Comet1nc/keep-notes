@@ -68,4 +68,14 @@ export class BinComponent {
   notesChanged() {
     this.binService.onNotesChanged.next();
   }
+
+  deleteForever(note: Note) {
+    this.binService.deleteNote(note);
+  }
+
+  restoreFromBin(note: Note) {
+    this.binService.deleteNote(note);
+
+    this.binService.restoreNote.next(note);
+  }
 }

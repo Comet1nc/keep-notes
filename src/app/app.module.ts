@@ -9,7 +9,6 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { ToolBarComponent } from './main-components/tool-bar/tool-bar.component';
 import { SideNavModule } from './main-components/side-nav/side-nav.module';
 import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
-import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { ArchiveService } from './services/archive.service';
 import { BinService } from './services/bin.service';
 import { LocalStorageService } from './services/local-storage.service';
@@ -21,6 +20,7 @@ import { EditLabelsComponent } from './main-components/edit-labels/edit-labels.c
 import { DrawComponent } from './main-components/draw/draw.component';
 import { DrawService } from './main-components/draw/draw.service';
 import { CustomNotesService } from './services/custom-notes.service';
+import { SharedComponentsModule } from './shared-components/shared-components.module';
 
 @NgModule({
   declarations: [

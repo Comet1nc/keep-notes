@@ -5,6 +5,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './btn-archive.component.html',
   styleUrls: ['./btn-archive.component.scss', '../action-buttons.scss'],
 })
-export class ArchiveComponent {
+export class BtnArchiveComponent {
   @Output() archiveNote = new EventEmitter<void>();
 }

@@ -5,32 +5,42 @@ import { FormsModule } from '@angular/forms';
 import { NoteFieldComponent } from './note-field/note-field.component';
 import { EditNoteComponent } from './edit-note/edit-note.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ArchiveComponent } from './action-buttons/btn-archive/btn-archive.component';
-import { BtnChangeBgComponent } from './action-buttons/btn-change-bg/btn-change-bg.component';
-import { BtnAddImageComponent } from './action-buttons/btn-add-image/btn-add-image.component';
-import { BtnDrawComponent } from './action-buttons/btn-draw/btn-draw.component';
-import { BtnMoreOptionsComponent } from './action-buttons/btn-more-options/btn-more-options.component';
+import { BtnAddImageComponent } from './buttons/note-action-buttons/btn-add-image/btn-add-image.component';
+import { BtnChangeBgComponent } from './buttons/note-action-buttons/btn-change-bg/btn-change-bg.component';
+import { BtnDeleteForeverComponent } from './buttons/note-action-buttons/btn-delete-forever/btn-delete-forever.component';
+import { BtnDrawComponent } from './buttons/note-action-buttons/btn-draw/btn-draw.component';
+import { BtnMoreOptionsComponent } from './buttons/note-action-buttons/btn-more-options/btn-more-options.component';
+import { BtnRestoreComponent } from './buttons/note-action-buttons/btn-restore/btn-restore.component';
+import { BtnUnarchiveComponent } from './buttons/note-action-buttons/btn-unarchive/btn-unarchive.component';
+import { BtnArchiveComponent } from './buttons/note-action-buttons/btn-archive/btn-archive.component';
 
 @NgModule({
   declarations: [
     InputBarComponent,
     NoteFieldComponent,
     EditNoteComponent,
-    ArchiveComponent,
+    BtnArchiveComponent,
     BtnChangeBgComponent,
     BtnAddImageComponent,
     BtnDrawComponent,
     BtnMoreOptionsComponent,
+    BtnDeleteForeverComponent,
+    BtnRestoreComponent,
+    BtnUnarchiveComponent,
   ],
   imports: [CommonModule, FormsModule, MatTooltipModule],
   exports: [
     InputBarComponent,
     NoteFieldComponent,
     EditNoteComponent,
-    ArchiveComponent,
+    BtnArchiveComponent,
     BtnChangeBgComponent,
+    BtnAddImageComponent,
     BtnDrawComponent,
     BtnMoreOptionsComponent,
+    BtnDeleteForeverComponent,
+    BtnRestoreComponent,
+    BtnUnarchiveComponent,
   ],
 })
 export class SharedComponentsModule {}

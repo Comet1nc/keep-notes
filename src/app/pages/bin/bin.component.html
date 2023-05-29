@@ -8,11 +8,14 @@
   <button class="empty-bin" (click)="clearBin()">Empty bin</button>
   <div class="notes-container">
     <div class="unpinned-notes-container">
-      <app-note-field
-        *ngFor="let note of notes"
-        [note]="note"
-        [inBin]="isBin"
-      ></app-note-field>
+      <app-note-field *ngFor="let note of notes" [note]="note" [inBin]="isBin">
+        <app-btn-delete-forever
+          (deleteForeverEvent)="deleteForever(note)"
+        ></app-btn-delete-forever>
+        <app-btn-restore
+          (restoreFromBinEvent)="restoreFromBin(note)"
+        ></app-btn-restore>
+      </app-note-field>
     </div>
   </div>
 </div>

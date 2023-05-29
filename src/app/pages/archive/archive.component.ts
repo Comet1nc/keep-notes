@@ -62,11 +62,6 @@ export class ArchiveComponent implements OnInit {
     });
   }
 
-  restoreNote(note: Note) {
-    this.archiveService.deleteNote(note);
-    this.archiveService.unArchiveNote.next(note);
-  }
-
   deleteNote(note: Note) {
     this.archiveService.deleteNote(note);
     this.binService.saveNewNote(note);
@@ -74,5 +69,10 @@ export class ArchiveComponent implements OnInit {
 
   notesChanged() {
     this.archiveService.onNotesChanged.next();
+  }
+
+  unarchive(note: Note) {
+    this.archiveService.deleteNote(note);
+    this.archiveService.unArchiveNote.next(note);
   }
 }
