@@ -14,7 +14,7 @@ export class ArchiveComponent implements OnInit {
   notes: Note[] = [];
 
   showEditMode = false;
-  editModeNoteData!: Note;
+  editModeNote!: Note;
 
   readonly isArchive = true;
 
@@ -33,7 +33,7 @@ export class ArchiveComponent implements OnInit {
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
       this.showEditMode = true;
 
-      this.editModeNoteData = note;
+      this.editModeNote = note;
     });
 
     this.editNoteService.onCloseEditMode.subscribe(() => {

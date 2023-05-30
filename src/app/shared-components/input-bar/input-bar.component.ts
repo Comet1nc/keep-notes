@@ -7,8 +7,6 @@ import {
 } from '@angular/core';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note } from 'src/app/models/note.model';
-import { CustomNotesService } from 'src/app/services/custom-notes.service';
-import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
   selector: 'app-input-bar',
@@ -24,11 +22,7 @@ export class InputBarComponent {
 
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
 
-  constructor(
-    private notesService: NotesService,
-    private drawService: DrawService,
-    private customNotesService: CustomNotesService
-  ) {}
+  constructor(private drawService: DrawService) {}
 
   input(e: any) {
     this.mainNoteText = e.srcElement.innerText;

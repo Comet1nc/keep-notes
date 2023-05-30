@@ -1,14 +1,21 @@
 <app-edit-note
   *ngIf="showEditMode"
-  [activeNote]="editModeNoteData"
-  [inBin]="isBin"
+  [activeNote]="editModeNote"
+  [canEditNote]="canEditNote"
   (onNotesChanged)="notesChanged()"
+>
+  <app-btn-delete-forever
+    (deleteForeverEvent)="deleteForever(editModeNote)"
+  ></app-btn-delete-forever>
+  <app-btn-restore
+    (restoreFromBinEvent)="restoreFromBin(editModeNote)"
+  ></app-btn-restore
 ></app-edit-note>
 <div class="container">
   <button class="empty-bin" (click)="clearBin()">Empty bin</button>
   <div class="notes-container">
     <div class="unpinned-notes-container">
-      <app-note-field *ngFor="let note of notes" [note]="note" [inBin]="isBin">
+      <app-note-field *ngFor="let note of notes" [note]="note">
         <app-btn-delete-forever
           (deleteForeverEvent)="deleteForever(note)"
         ></app-btn-delete-forever>

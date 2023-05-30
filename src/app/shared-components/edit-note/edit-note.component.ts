@@ -10,10 +10,8 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { DrawService } from 'src/app/main-components/draw/draw.service';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { BinService } from 'src/app/services/bin.service';
 import { EditNoteService } from './edit-note.service';
 import { noteColors } from 'src/app/models/note-colors.model';
 
@@ -66,25 +64,17 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @ViewChild('inputField') inputField!: ElementRef;
 
   @Input() activeNote!: Note;
-  @Input() inArchive = false;
-  @Input() inBin = false;
-  @Input() inCustom = false;
-  @Input() fromCategory!: NoteCategory;
+  @Input() canEditNote = false;
 
   @Output() onNotesChanged = new EventEmitter<void>();
-  @Output() onToggleArchive = new EventEmitter<Note>();
-  @Output() onDeleteNote = new EventEmitter<Note>();
-  @Output() onTogglePin = new EventEmitter<Note>();
   @Output() saveNotesToLocalStorage = new EventEmitter<void>();
 
   colors = noteColors;
 
   constructor(
     private editNoteService: EditNoteService,
-    private binService: BinService,
     private renderer: Renderer2,
-    private appService: AppService,
-    private drawService: DrawService
+    private appService: AppService
   ) {}
 
   ngAfterViewInit(): void {
@@ -97,10 +87,6 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
       this.changeBg(this.noteRef.nativeElement);
     });
-  }
-
-  draw() {
-    this.drawService.openDraw.next();
   }
 
   setBg(color: any, noteRef: HTMLElement) {
@@ -138,36 +124,6 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   toggleMenu() {
     this.moreOptionsActive = !this.moreOptionsActive;
-  }
-
-  toggleArchive() {
-    this.onToggleArchive.emit(this.activeNote);
-
-    this.closeEditMode();
-  }
-
-  deleteNote() {
-    this.onDeleteNote.emit(this.activeNote);
-
-    this.closeEditMode();
-  }
-
-  deleteForever() {
-    this.binService.deleteNote(this.activeNote);
-
-    this.closeEditMode();
-  }
-
-  restoreFromBin() {
-    this.binService.deleteNote(this.activeNote);
-
-    this.binService.restoreNote.next(this.activeNote);
-
-    this.closeEditMode();
-  }
-
-  togglePin() {
-    this.onTogglePin.emit(this.activeNote);
   }
 
   closeEditMode() {

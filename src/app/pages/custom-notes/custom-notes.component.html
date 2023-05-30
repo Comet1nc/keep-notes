@@ -1,13 +1,20 @@
 <app-edit-note
   *ngIf="showEditMode"
-  [activeNote]="editModeNoteData"
-  [inCustom]="true"
-  [fromCategory]="fromCategory"
+  [activeNote]="editModeNote"
   (onNotesChanged)="notesChanged()"
-  (onToggleArchive)="archiveNote($event)"
-  (onDeleteNote)="deleteNote($event)"
-  (onTogglePin)="togglePin($event)"
   (saveNotesToLocalStorage)="saveNotesToLocalStorage()"
+>
+  <app-btn-pin
+    [isNotePinned]="editModeNote.isPinned"
+    (togglePin)="togglePin(editModeNote)"
+    pin
+  ></app-btn-pin>
+  <app-btn-change-bg></app-btn-change-bg>
+  <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive>
+  <app-btn-draw></app-btn-draw>
+  <app-btn-more-options
+    (deleteNote)="deleteNote(editModeNote)"
+  ></app-btn-more-options
 ></app-edit-note>
 <div class="input-container">
   <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
@@ -19,9 +26,12 @@
       *ngFor="let note of pinnedNotes; let i = index"
       [note]="note"
       [inCustom]="true"
-      [fromCategory]="fromCategory"
-      (onTogglePin)="togglePin($event)"
     >
+      <app-btn-pin
+        [isNotePinned]="note.isPinned"
+        (togglePin)="togglePin(note)"
+        pin
+      ></app-btn-pin>
       <app-btn-change-bg></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
@@ -32,13 +42,12 @@
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
-    <app-note-field
-      *ngFor="let note of notes"
-      [note]="note"
-      [inCustom]="true"
-      [fromCategory]="fromCategory"
-      (onTogglePin)="togglePin($event)"
-    >
+    <app-note-field *ngFor="let note of notes" [note]="note" [inCustom]="true">
+      <app-btn-pin
+        [isNotePinned]="note.isPinned"
+        (togglePin)="togglePin(note)"
+        pin
+      ></app-btn-pin>
       <app-btn-change-bg></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>

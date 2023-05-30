@@ -13,9 +13,9 @@ export class BinComponent {
   notes: Note[] = [];
 
   showEditMode = false;
-  editModeNoteData!: Note;
+  editModeNote!: Note;
 
-  readonly isBin = true;
+  readonly canEditNote = false;
 
   constructor(
     private editNoteService: EditNoteService,
@@ -31,7 +31,7 @@ export class BinComponent {
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
       this.showEditMode = true;
 
-      this.editModeNoteData = note;
+      this.editModeNote = note;
     });
 
     this.editNoteService.onCloseEditMode.subscribe(() => {

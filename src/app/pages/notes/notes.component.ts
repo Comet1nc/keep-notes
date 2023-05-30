@@ -18,7 +18,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   notes: Note[] = [];
 
   showEditMode = false;
-  editModeNoteData!: Note;
+  editModeNote!: Note;
 
   fromCategory = NoteCategory.notes;
 
@@ -34,7 +34,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
       this.showEditMode = true;
 
-      this.editModeNoteData = note;
+      this.editModeNote = note;
     });
 
     this.editNoteService.onCloseEditMode.subscribe(() => {

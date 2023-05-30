@@ -3,15 +3,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -51,10 +49,7 @@ import { noteColors } from 'src/app/models/note-colors.model';
 })
 export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
-  @Input() inBin = false;
   @Input() inCustom = false;
-  @Input() fromCategory!: NoteCategory;
-  @Output() onTogglePin = new EventEmitter<Note>();
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
 
@@ -96,10 +91,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     );
   }
 
-  draw() {
-    this.drawService.openDraw.next();
-  }
-
   setBg(color: any, noteRef: HTMLElement) {
     this.note.color = color;
     if (this.inCustom) {
@@ -130,10 +121,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
 
   toggleBgMenu() {
     this.changeBgMenuActive = !this.changeBgMenuActive;
-  }
-
-  togglePin() {
-    this.onTogglePin.emit(this.note);
   }
 
   openEditMode() {

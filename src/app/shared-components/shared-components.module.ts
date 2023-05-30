@@ -13,6 +13,7 @@ import { BtnMoreOptionsComponent } from './buttons/note-action-buttons/btn-more-
 import { BtnRestoreComponent } from './buttons/note-action-buttons/btn-restore/btn-restore.component';
 import { BtnUnarchiveComponent } from './buttons/note-action-buttons/btn-unarchive/btn-unarchive.component';
 import { BtnArchiveComponent } from './buttons/note-action-buttons/btn-archive/btn-archive.component';
+import { BtnPinComponent } from './buttons/note-action-buttons/btn-pin/btn-pin.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { BtnArchiveComponent } from './buttons/note-action-buttons/btn-archive/b
     BtnDeleteForeverComponent,
     BtnRestoreComponent,
     BtnUnarchiveComponent,
+    BtnPinComponent,
   ],
   imports: [CommonModule, FormsModule, MatTooltipModule],
   exports: [
@@ -41,6 +43,7 @@ import { BtnArchiveComponent } from './buttons/note-action-buttons/btn-archive/b
     BtnDeleteForeverComponent,
     BtnRestoreComponent,
     BtnUnarchiveComponent,
+    BtnPinComponent,
   ],
 })
 export class SharedComponentsModule {}

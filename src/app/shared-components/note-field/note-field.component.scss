@@ -37,25 +37,6 @@
     white-space: pre-line;
   }
 
-  .pin-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      background-color: rgb(205 205 205 / 30%);
-      border-radius: 50%;
-      opacity: 1;
-    }
-  }
-
   .action-buttons {
     display: flex;
     gap: 10px;
