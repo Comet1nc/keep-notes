@@ -6,3 +6,9 @@ export const noteColors = [
   { name: 'blue', valueLightTheme: '#AECBFA', valueDarkTheme: '#1E3A5F' },
   { name: 'purple', valueLightTheme: '#D7AEFB', valueDarkTheme: '#42275E' },
 ];
+
+export interface NoteColor {
+  name: string;
+  valueLightTheme: string;
+  valueDarkTheme: string;
+}

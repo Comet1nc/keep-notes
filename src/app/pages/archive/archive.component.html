@@ -3,7 +3,10 @@
   [activeNote]="editModeNote"
   (onNotesChanged)="notesChanged()"
 >
-  <app-btn-change-bg></app-btn-change-bg>
+  <app-btn-change-bg
+    [note]="editModeNote"
+    (saveData)="saveNotesToLocalStorage()"
+  ></app-btn-change-bg>
   <app-btn-unarchive
     (unarchiveEvent)="unarchive(editModeNote)"
   ></app-btn-unarchive>
@@ -15,7 +18,10 @@
 <div class="notes-container">
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
     <app-note-field *ngFor="let note of notes" [note]="note">
-      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-change-bg
+        [note]="note"
+        (saveData)="saveNotesToLocalStorage()"
+      ></app-btn-change-bg>
       <app-btn-unarchive (unarchiveEvent)="unarchive(note)"></app-btn-unarchive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options

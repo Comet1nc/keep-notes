@@ -1,6 +1,6 @@
 <div class="bg" (click)="closeEditMode()" [@bg]></div>
 <div class="container" [@note] #noteRef>
-  <div class="edit-fields" *ngIf="!canEditNote">
+  <div class="edit-fields" *ngIf="canEditNote">
     <div class="title-wrapper">
       <input
         type="text"
@@ -35,7 +35,7 @@
       ></div>
     </div>
   </div>
-  <div class="read-only-fields" *ngIf="canEditNote">
+  <div class="read-only-fields" *ngIf="!canEditNote">
     <div class="title-wrapper">
       <div class="title-input" [innerText]="titleText"></div>
     </div>

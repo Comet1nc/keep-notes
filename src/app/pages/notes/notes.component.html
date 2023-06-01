@@ -9,7 +9,10 @@
     (togglePin)="togglePin(editModeNote)"
     pin
   ></app-btn-pin>
-  <app-btn-change-bg></app-btn-change-bg>
+  <app-btn-change-bg
+    [note]="editModeNote"
+    (saveData)="saveNotesToLocalStorage()"
+  ></app-btn-change-bg>
   <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive>
   <app-btn-draw></app-btn-draw>
   <app-btn-more-options
@@ -31,7 +34,10 @@
         (togglePin)="togglePin(note)"
         pin
       ></app-btn-pin>
-      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-change-bg
+        [note]="note"
+        (saveData)="saveNotesToLocalStorage()"
+      ></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
@@ -47,7 +53,10 @@
         (togglePin)="togglePin(note)"
         pin
       ></app-btn-pin>
-      <app-btn-change-bg></app-btn-change-bg>
+      <app-btn-change-bg
+        [note]="note"
+        (saveData)="saveNotesToLocalStorage()"
+      ></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options

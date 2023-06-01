@@ -19,12 +19,15 @@
       <circle cx="17.5" cy="11.5" r="1.5" />
     </svg>
   </button>
-  <div class="change-bg-menu" *ngIf="changeBgMenuActive">
-    <!-- TO DO -->
-    <!-- <div 
+  <div
+    class="change-bg-menu"
+    *ngIf="changeBgMenuActive"
+    (mouseleave)="toggleBgMenu()"
+  >
+    <div
       class="default-option"
       matTooltip="default"
-      (click)="setBg(undefined, noteRef, note)"
+      (click)="setBg(undefined)"
     ></div>
     <div
       class="custom-colors"
@@ -35,7 +38,7 @@
           ? color.valueDarkTheme
           : color.valueLightTheme
       }"
-      (click)="setBg(color, noteRef, note)"
-    ></div> -->
+      (click)="setBg(color)"
+    ></div>
   </div>
 </div>

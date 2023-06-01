@@ -75,4 +75,8 @@ export class ArchiveComponent implements OnInit {
     this.archiveService.deleteNote(note);
     this.archiveService.unArchiveNote.next(note);
   }
+
+  saveNotesToLocalStorage() {
+    this.archiveService.saveToLocalStorage();
+  }
 }
