@@ -60,6 +60,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   test() {
     console.log('test works');
   }
+
   searchBarSubscriptions() {
     this.searchBarService.startSearch.subscribe(() => {
       this.notes = [];

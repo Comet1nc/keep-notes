@@ -18,10 +18,7 @@ export class SideNavComponent implements OnInit {
 
   customLabels: Label[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private customNotes: CustomNotesService
-  ) {}
+  constructor(private customNotes: CustomNotesService) {}
 
   ngOnInit(): void {
     this.sub.subscribe(() => {

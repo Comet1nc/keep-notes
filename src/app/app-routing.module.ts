@@ -23,11 +23,9 @@ const routes: Routes = [
       import('./pages/archive/archive.module').then((m) => m.ArchiveModule),
   },
   {
-    path: 'reminders',
+    path: 'search',
     loadChildren: () =>
-      import('./pages/reminders/reminders.module').then(
-        (m) => m.RemindersModule
-      ),
+      import('./pages/search/search.module').then((m) => m.SearchModule),
   },
   {
     path: 'custom-notes',

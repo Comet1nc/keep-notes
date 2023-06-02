@@ -14,13 +14,14 @@ import { Note } from 'src/app/models/note.model';
   styleUrls: ['./input-bar.component.scss'],
 })
 export class InputBarComponent {
+  @Output() saveNewNote = new EventEmitter<Note>();
+  @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
+
+  isOpened: boolean = false;
+
+  noteIsPinned: boolean = false;
   titleText: string = '';
   mainNoteText: string = '';
-  isOpened: boolean = false;
-  noteIsPinned: boolean = false;
-  @Output() saveNewNote = new EventEmitter<Note>();
-
-  @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
 
   constructor(private drawService: DrawService) {}
 

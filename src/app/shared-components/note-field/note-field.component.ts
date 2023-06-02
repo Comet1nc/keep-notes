@@ -8,13 +8,9 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { CustomNotesService } from 'src/app/services/custom-notes.service';
-import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from '../edit-note/edit-note.service';
-import { noteColors } from 'src/app/models/note-colors.model';
 
 @Component({
   selector: 'app-note-field',
@@ -49,26 +45,18 @@ import { noteColors } from 'src/app/models/note-colors.model';
 })
 export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
-  @Input() inCustom = false;
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
 
   showButtons = false;
   mouseInNote = false;
   editModeOpened = false;
-  moreOptionsActive = false;
-  changeBgMenuActive = false;
   currentTheme: Theme = Theme.light;
 
-  colors = noteColors;
-
   constructor(
-    private notesService: NotesService,
     private editNoteService: EditNoteService,
     private renderer: Renderer2,
-    private appService: AppService,
-    private drawService: DrawService,
-    private customNotesService: CustomNotesService
+    private appService: AppService
   ) {}
 
   ngAfterViewInit(): void {
@@ -91,16 +79,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     );
   }
 
-  setBg(color: any, noteRef: HTMLElement) {
-    this.note.color = color;
-    if (this.inCustom) {
-      this.customNotesService.saveToLocalStorage();
-    } else {
-      this.notesService.saveToLocalStorage();
-    }
-    this.changeBg(noteRef);
-  }
-
   changeBg(noteRef: HTMLElement) {
     if (this.note.color !== undefined) {
       this.renderer.setStyle(
@@ -113,14 +91,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     } else {
       this.renderer.removeStyle(noteRef, 'background-color');
     }
-  }
-
-  toggleMenu() {
-    this.moreOptionsActive = !this.moreOptionsActive;
-  }
-
-  toggleBgMenu() {
-    this.changeBgMenuActive = !this.changeBgMenuActive;
   }
 
   openEditMode() {
@@ -137,11 +107,8 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   }
 
   onMouseLeave(noteRef: HTMLElement) {
-    if (this.changeBgMenuActive) return;
-
     this.showButtons = false;
     this.mouseInNote = false;
-    this.moreOptionsActive = false;
     this.renderer.setStyle(noteRef, 'z-index', '0');
   }
 

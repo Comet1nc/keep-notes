@@ -13,7 +13,6 @@ import {
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from './edit-note.service';
-import { noteColors } from 'src/app/models/note-colors.model';
 
 @Component({
   selector: 'app-edit-note',
@@ -51,15 +50,6 @@ import { noteColors } from 'src/app/models/note-colors.model';
   ],
 })
 export class EditNoteComponent implements OnInit, AfterViewInit {
-  titleText: string = '';
-  newNoteText: string = '';
-  createdAt: string = '';
-
-  moreOptionsActive = false;
-
-  changeBgMenuActive = false;
-  currentTheme: Theme = Theme.light;
-
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
   @ViewChild('inputField') inputField!: ElementRef;
 
@@ -69,7 +59,11 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @Output() onNotesChanged = new EventEmitter<void>();
   @Output() saveNotesToLocalStorage = new EventEmitter<void>();
 
-  colors = noteColors;
+  currentTheme: Theme = Theme.light;
+
+  titleText: string = '';
+  newNoteText: string = '';
+  createdAt: string = '';
 
   constructor(
     private editNoteService: EditNoteService,
@@ -77,8 +71,17 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     private appService: AppService
   ) {}
 
+  ngOnInit(): void {
+    this.titleText = this.activeNote.title;
+    this.newNoteText = this.activeNote.content;
+  }
+
   ngAfterViewInit(): void {
-    this.inputField.nativeElement.innerText = this.newNoteText;
+    this.renderer.setProperty(
+      this.inputField.nativeElement,
+      'innerText',
+      this.newNoteText
+    );
 
     this.changeBg(this.noteRef.nativeElement);
 
@@ -87,14 +90,10 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
       this.changeBg(this.noteRef.nativeElement);
     });
-  }
 
-  setBg(color: any, noteRef: HTMLElement) {
-    this.activeNote.color = color;
-
-    this.saveNotesToLocalStorage.emit();
-
-    this.changeBg(noteRef);
+    this.editNoteService.onBgChanged.subscribe(() => {
+      this.changeBg(this.noteRef.nativeElement);
+    });
   }
 
   changeBg(noteRef: HTMLElement) {
@@ -109,21 +108,6 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     } else {
       this.renderer.removeStyle(noteRef, 'background-color');
     }
-
-    this.editNoteService.onBgChanged.next();
-  }
-
-  toggleBgMenu() {
-    this.changeBgMenuActive = !this.changeBgMenuActive;
-  }
-
-  ngOnInit(): void {
-    this.titleText = this.activeNote.title;
-    this.newNoteText = this.activeNote.content;
-  }
-
-  toggleMenu() {
-    this.moreOptionsActive = !this.moreOptionsActive;
   }
 
   closeEditMode() {

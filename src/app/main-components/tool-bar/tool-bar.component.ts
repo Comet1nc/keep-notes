@@ -41,4 +41,3 @@ export class ToolBarComponent {
     this.onToggleSideNav.emit();
   }
 }
-// d

@@ -28,7 +28,6 @@
     <app-note-field
       *ngFor="let note of pinnedNotes; let i = index"
       [note]="note"
-      [inCustom]="true"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
@@ -48,7 +47,7 @@
   </div>
   <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
-    <app-note-field *ngFor="let note of notes" [note]="note" [inCustom]="true">
+    <app-note-field *ngFor="let note of notes" [note]="note">
       <app-btn-pin
         [isNotePinned]="note.isPinned"
         (togglePin)="togglePin(note)"
