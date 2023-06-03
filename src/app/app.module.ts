@@ -12,7 +12,6 @@ import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/
 import { ArchiveService } from './services/archive.service';
 import { BinService } from './services/bin.service';
 import { LocalStorageService } from './services/local-storage.service';
-import { SearchBarService } from './main-components/tool-bar/search-bar.service';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { FormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
@@ -50,7 +49,6 @@ import { SharedComponentsModule } from './shared-components/shared-components.mo
     ArchiveService,
     BinService,
     LocalStorageService,
-    SearchBarService,
     AppService,
     DrawService,
     CustomNotesService,

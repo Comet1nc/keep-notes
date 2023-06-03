@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { SearchBarService } from './search-bar.service';
+import { SearchService } from 'src/app/pages/search/search.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -16,19 +16,20 @@ export class ToolBarComponent {
   searchText: string = '';
   isDarkMode = false;
 
-  constructor(private searchBarService: SearchBarService) {}
+  constructor(private searchService: SearchService) {}
 
-  search() {
-    if (this.searchText === '' && this.searchBarService.searching === true) {
+  startSearch() {
+    if (this.searchText === '' && this.searchService.searching === true) {
       this.endSearch();
     } else {
-      this.searchBarService.search(this.searchText);
+      // this.searchBarService.search(this.searchText);
+      this.searchService.search(this.searchText);
     }
   }
 
   endSearch() {
-    this.searchBarService.endSearch.next();
-    this.searchBarService.searching = false;
+    this.searchService.endSearch.next();
+    this.searchService.searching = false;
     this.searchText = '';
   }
 

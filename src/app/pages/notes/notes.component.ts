@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
+import { SearchService } from '../search/search.service';
 
 @Component({
   selector: 'app-notes',
@@ -23,7 +23,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   constructor(
     private notesService: NotesService,
     private editNoteService: EditNoteService,
-    private searchBarService: SearchBarService,
+    private searchService: SearchService,
     private archiveService: ArchiveService,
     private binService: BinService
   ) {}
@@ -49,8 +49,8 @@ export class NotesComponent implements OnInit, OnDestroy {
     }
 
     // searching
-    this.searchBarService.notesServiceData = this.notesService.notesContainer;
-    this.searchBarService.notesServiceDataPinned =
+    this.searchService.notesServiceData = this.notesService.notesContainer;
+    this.searchService.notesServiceDataPinned =
       this.notesService.notesContainerPinned;
     //
 
@@ -62,24 +62,24 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   searchBarSubscriptions() {
-    this.searchBarService.startSearch.subscribe(() => {
+    this.searchService.startSearch.subscribe(() => {
       this.notes = [];
       this.pinnedNotes = [];
     });
 
-    this.searchBarService.endSearch.subscribe(() => {
+    this.searchService.endSearch.subscribe(() => {
       this.notes = this.notesService.notesContainer;
       this.pinnedNotes = this.notesService.notesContainerPinned;
     });
 
-    this.searchBarService.newSearchResults.subscribe((notes) => {
+    this.searchService.newSearchResults.subscribe((notes) => {
       this.notes = notes;
     });
   }
 
   ngOnDestroy(): void {
-    this.searchBarService.notesServiceData = [];
-    this.searchBarService.notesServiceDataPinned = [];
+    this.searchService.notesServiceData = [];
+    this.searchService.notesServiceDataPinned = [];
   }
 
   archiveNote(note: Note) {

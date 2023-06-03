@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchBarService } from 'src/app/main-components/tool-bar/search-bar.service';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
+import { SearchService } from '../search/search.service';
 
 @Component({
   selector: 'app-archive',
@@ -21,7 +21,7 @@ export class ArchiveComponent implements OnInit {
   constructor(
     private editNoteService: EditNoteService,
     private archiveService: ArchiveService,
-    private searchBarService: SearchBarService,
+    private searchService: SearchService,
     private binService: BinService
   ) {}
 
@@ -45,19 +45,19 @@ export class ArchiveComponent implements OnInit {
     // searching
     this.searchBarSubscriptions();
 
-    this.searchBarService.notesServiceData = this.archiveService.notesContainer;
+    this.searchService.notesServiceData = this.archiveService.notesContainer;
   }
 
   searchBarSubscriptions() {
-    this.searchBarService.startSearch.subscribe(() => {
+    this.searchService.startSearch.subscribe(() => {
       this.notes = [];
     });
 
-    this.searchBarService.endSearch.subscribe(() => {
+    this.searchService.endSearch.subscribe(() => {
       this.notes = this.archiveService.notesContainer;
     });
 
-    this.searchBarService.newSearchResults.subscribe((notes) => {
+    this.searchService.newSearchResults.subscribe((notes) => {
       this.notes = notes;
     });
   }
