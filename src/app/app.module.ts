@@ -20,6 +20,8 @@ import { DrawComponent } from './main-components/draw/draw.component';
 import { DrawService } from './main-components/draw/draw.service';
 import { CustomNotesService } from './services/custom-notes.service';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
+import { NotesModule } from './pages/notes/notes.module';
+import { NotesService } from './services/notes.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { SharedComponentsModule } from './shared-components/shared-components.mo
     AngularMaterialModule,
   ],
   providers: [
+    NotesService,
     ArchiveService,
     BinService,
     LocalStorageService,

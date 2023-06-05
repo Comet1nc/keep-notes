@@ -52,30 +52,6 @@ export class CustomNotesComponent implements OnInit, OnDestroy {
       //
       this.getDataAndSetup(customLabelName);
     });
-
-    // searching
-    this.searchBarSubscriptions();
-
-    this.searchService.notesServiceData = this.notesService.notesContainer;
-    this.searchService.notesServiceDataPinned =
-      this.notesService.notesContainerPinned;
-    //
-  }
-
-  searchBarSubscriptions() {
-    this.searchService.startSearch.subscribe(() => {
-      this.notes = [];
-      this.pinnedNotes = [];
-    });
-
-    this.searchService.endSearch.subscribe(() => {
-      this.notes = this.notesService.notesContainer;
-      this.pinnedNotes = this.notesService.notesContainerPinned;
-    });
-
-    this.searchService.newSearchResults.subscribe((notes) => {
-      this.notes = notes;
-    });
   }
 
   getDataAndSetup(customLabelName: string) {

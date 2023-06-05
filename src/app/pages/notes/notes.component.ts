@@ -47,34 +47,10 @@ export class NotesComponent implements OnInit, OnDestroy {
     if (!this.notesService.filled) {
       this.notesService.loadDataFromLocalStorage();
     }
-
-    // searching
-    this.searchService.notesServiceData = this.notesService.notesContainer;
-    this.searchService.notesServiceDataPinned =
-      this.notesService.notesContainerPinned;
-    //
-
-    this.searchBarSubscriptions();
   }
 
   test() {
     console.log('test works');
-  }
-
-  searchBarSubscriptions() {
-    this.searchService.startSearch.subscribe(() => {
-      this.notes = [];
-      this.pinnedNotes = [];
-    });
-
-    this.searchService.endSearch.subscribe(() => {
-      this.notes = this.notesService.notesContainer;
-      this.pinnedNotes = this.notesService.notesContainerPinned;
-    });
-
-    this.searchService.newSearchResults.subscribe((notes) => {
-      this.notes = notes;
-    });
   }
 
   ngOnDestroy(): void {

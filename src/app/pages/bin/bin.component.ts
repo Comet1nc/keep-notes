@@ -39,25 +39,6 @@ export class BinComponent {
     });
 
     this.notes = this.binService.notesContainer;
-
-    // searching
-    this.searchBarSubscriptions();
-
-    this.searchService.notesServiceData = this.binService.notesContainer;
-  }
-
-  searchBarSubscriptions() {
-    this.searchService.startSearch.subscribe(() => {
-      this.notes = [];
-    });
-
-    this.searchService.endSearch.subscribe(() => {
-      this.notes = this.binService.notesContainer;
-    });
-
-    this.searchService.newSearchResults.subscribe((notes) => {
-      this.notes = notes;
-    });
   }
 
   clearBin() {

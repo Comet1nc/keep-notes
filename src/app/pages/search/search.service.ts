@@ -17,9 +17,11 @@ export class SearchService implements OnInit {
   searchResult: Note[] = [];
 
   searching = false;
-  startSearch = new Subject<void>();
-  endSearch = new Subject<void>();
-  newSearchResults = new Subject<Note[]>();
+
+  notesResult = new Subject<Note[]>();
+  archiveNotesResult = new Subject<Note[]>();
+
+  searchText: string = '';
 
   constructor(
     private ac: ActivatedRoute,
@@ -31,51 +33,75 @@ export class SearchService implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.endSearch.subscribe(() => {
-      console.log('WORKS');
-      this.router.navigate(['notes']);
-    });
+    // this.endSearch.subscribe(() => {
+    //   console.log('WORKS');
+    //   this.router.navigate(['notes']);
+    // });
   }
 
   search(searchText: string) {
     this.router.navigate(['search']);
 
-    if (!this.searching) {
-      this.startSearch.next();
-      this.searching = true;
-    }
+    this.searchText = searchText;
 
-    let array = this.getArray();
-    if (array === undefined) return;
+    // if (!this.searching) {
+    //   this.startSearch.next();
+    //   this.searching = true;
+    // }
 
+    // let array = this.getArray();
+    // if (array === undefined) return;
+
+    let notesSearchResult = this.searchInArray(
+      this.notesService.notesContainer.concat(
+        this.notesService.notesContainerPinned
+      )
+    );
+
+    if (notesSearchResult.length > 0) this.notesResult.next(notesSearchResult);
+
+    let archiveNotesSearchResult = this.searchInArray(
+      this.archiveService.notesContainer
+    );
+
+    if (archiveNotesSearchResult.length > 0)
+      this.archiveNotesResult.next(archiveNotesSearchResult);
+    //
+
+    // this.newSearchResults.next(result.slice());
+  }
+
+  searchInArray(notes: Note[]): Note[] {
     let result: Note[] = [];
 
-    for (const note of array) {
+    for (const note of notes) {
       if (
-        note.title.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())
+        note.title
+          .toLocaleLowerCase()
+          .includes(this.searchText.toLocaleLowerCase())
       ) {
         result.push(note);
       } else if (
         note.content
           .toLocaleLowerCase()
-          .includes(searchText.toLocaleLowerCase())
+          .includes(this.searchText.toLocaleLowerCase())
       ) {
         result.push(note);
       }
     }
 
-    this.newSearchResults.next(result.slice());
+    return result;
   }
 
   getArray() {
-    let route = this.ac.snapshot.children[0].url[0].path;
-    let array = this.notesService.notesContainer.concat(
-      this.notesService.notesContainerPinned,
-      this.customNotesService.notesContainer,
-      this.customNotesService.notesContainerPinned,
-      this.archiveService.notesContainer,
-      this.binService.notesContainer
-    );
+    // let route = this.ac.snapshot.children[0].url[0].path;
+    // let array = this.notesService.notesContainer.concat(
+    //   this.notesService.notesContainerPinned,
+    //   this.customNotesService.notesContainer,
+    //   this.customNotesService.notesContainerPinned,
+    //   this.archiveService.notesContainer,
+    //   this.binService.notesContainer
+    // );
     // switch (route) {
     //   case 'notes':
     //     return [...this.notesServiceData, ...this.notesServiceDataPinned];
@@ -96,7 +122,6 @@ export class SearchService implements OnInit {
     //     array = undefined;
     //     break;
     // }
-
-    return array;
+    // return array;
   }
 }

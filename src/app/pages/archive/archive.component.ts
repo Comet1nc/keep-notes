@@ -41,25 +41,6 @@ export class ArchiveComponent implements OnInit {
     });
 
     this.notes = this.archiveService.notesContainer;
-
-    // searching
-    this.searchBarSubscriptions();
-
-    this.searchService.notesServiceData = this.archiveService.notesContainer;
-  }
-
-  searchBarSubscriptions() {
-    this.searchService.startSearch.subscribe(() => {
-      this.notes = [];
-    });
-
-    this.searchService.endSearch.subscribe(() => {
-      this.notes = this.archiveService.notesContainer;
-    });
-
-    this.searchService.newSearchResults.subscribe((notes) => {
-      this.notes = notes;
-    });
   }
 
   deleteNote(note: Note) {

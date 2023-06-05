@@ -28,8 +28,9 @@ export class ToolBarComponent {
   }
 
   endSearch() {
-    this.searchService.endSearch.next();
-    this.searchService.searching = false;
+    // this.searchService.endSearch.next();
+    // const newLocal = this;
+    // newLocal.searchService.searching = false;
     this.searchText = '';
   }
 
