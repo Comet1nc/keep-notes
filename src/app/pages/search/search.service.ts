@@ -40,6 +40,11 @@ export class SearchService implements OnInit {
   }
 
   search(searchText: string) {
+    if (searchText.length < 1) {
+      this.router.navigate(['notes']);
+      return;
+    }
+
     this.router.navigate(['search']);
 
     this.searchText = searchText;
@@ -57,15 +62,17 @@ export class SearchService implements OnInit {
         this.notesService.notesContainerPinned
       )
     );
-
-    if (notesSearchResult.length > 0) this.notesResult.next(notesSearchResult);
+    notesSearchResult.length > 0
+      ? this.notesResult.next(notesSearchResult)
+      : this.notesResult.next([]);
+    //
 
     let archiveNotesSearchResult = this.searchInArray(
       this.archiveService.notesContainer
     );
-
-    if (archiveNotesSearchResult.length > 0)
-      this.archiveNotesResult.next(archiveNotesSearchResult);
+    archiveNotesSearchResult.length > 0
+      ? this.archiveNotesResult.next(archiveNotesSearchResult)
+      : this.archiveNotesResult.next([]);
     //
 
     // this.newSearchResults.next(result.slice());
