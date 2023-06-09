@@ -21,7 +21,7 @@ export class SearchService implements OnInit {
   notesResult = new Subject<Note[]>();
   archiveNotesResult = new Subject<Note[]>();
 
-  searchText: string = '';
+  lastSearchText: string = '';
 
   constructor(
     private ac: ActivatedRoute,
@@ -46,8 +46,7 @@ export class SearchService implements OnInit {
     }
 
     this.router.navigate(['search']);
-
-    this.searchText = searchText;
+    this.lastSearchText = searchText;
 
     // if (!this.searching) {
     //   this.startSearch.next();
@@ -85,13 +84,13 @@ export class SearchService implements OnInit {
       if (
         note.title
           .toLocaleLowerCase()
-          .includes(this.searchText.toLocaleLowerCase())
+          .includes(this.lastSearchText.toLocaleLowerCase())
       ) {
         result.push(note);
       } else if (
         note.content
           .toLocaleLowerCase()
-          .includes(this.searchText.toLocaleLowerCase())
+          .includes(this.lastSearchText.toLocaleLowerCase())
       ) {
         result.push(note);
       }

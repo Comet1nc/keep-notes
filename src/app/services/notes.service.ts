@@ -112,6 +112,7 @@ export class NotesService {
     this.notesContainerPinned.push(note);
 
     note.createdAt = new Date();
+    note.fromCategory = this.myCategory;
 
     this.saveToLocalStorage();
   }
@@ -120,6 +121,7 @@ export class NotesService {
     this.notesContainer.push(note);
 
     note.createdAt = new Date();
+    note.fromCategory = this.myCategory;
 
     this.saveToLocalStorage();
   }
