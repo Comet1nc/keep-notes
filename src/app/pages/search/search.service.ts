@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { Label } from 'src/app/models/label.model';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
@@ -11,15 +12,13 @@ import { NotesService } from 'src/app/services/notes.service';
   providedIn: 'root',
 })
 export class SearchService implements OnInit {
-  notesServiceData: Note[] = [];
-  notesServiceDataPinned: Note[] = [];
-
   searchResult: Note[] = [];
 
   searching = false;
 
   notesResult = new Subject<Note[]>();
   archiveNotesResult = new Subject<Note[]>();
+  customNotesResult = new Subject<Label[]>();
 
   lastSearchText: string = '';
 
@@ -48,15 +47,7 @@ export class SearchService implements OnInit {
     this.router.navigate(['search']);
     this.lastSearchText = searchText;
 
-    // if (!this.searching) {
-    //   this.startSearch.next();
-    //   this.searching = true;
-    // }
-
-    // let array = this.getArray();
-    // if (array === undefined) return;
-
-    let notesSearchResult = this.searchInArray(
+    let notesSearchResult: Note[] = this.searchInArray(
       this.notesService.notesContainer.concat(
         this.notesService.notesContainerPinned
       )
@@ -66,12 +57,31 @@ export class SearchService implements OnInit {
       : this.notesResult.next([]);
     //
 
-    let archiveNotesSearchResult = this.searchInArray(
+    let archiveNotesSearchResult: Note[] = this.searchInArray(
       this.archiveService.notesContainer
     );
     archiveNotesSearchResult.length > 0
       ? this.archiveNotesResult.next(archiveNotesSearchResult)
       : this.archiveNotesResult.next([]);
+    //
+
+    let customNotesSearchResult: Label[] = [];
+    for (let label of this.customNotesService.labels) {
+      let result: Note[] = this.searchInArray(
+        label.notes.concat(label.notesPinned)
+      );
+
+      let labelWithResult = new Label(label.name);
+      labelWithResult.notes = result;
+      labelWithResult.storageIndex = label.storageIndex;
+
+      if (result.length > 0) {
+        customNotesSearchResult.push(labelWithResult);
+      }
+    }
+    customNotesSearchResult.length > 0
+      ? this.customNotesResult.next(customNotesSearchResult)
+      : this.customNotesResult.next([]);
     //
 
     // this.newSearchResults.next(result.slice());

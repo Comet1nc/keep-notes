@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import {
-  CustomNotesService,
-  Label,
-} from 'src/app/services/custom-notes.service';
+import { Label } from 'src/app/models/label.model';
+import { CustomNotesService } from 'src/app/services/custom-notes.service';
 
 @Component({
   selector: 'side-nav',

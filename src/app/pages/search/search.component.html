@@ -32,22 +32,25 @@
       ></app-btn-more-options>
     </app-note-field>
   </div>
-  <!-- <div class="custom-notes">
-    <app-note-field *ngFor="let note of notes" [note]="note">
-      <app-btn-pin
-        [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
-        pin
-      ></app-btn-pin>
-      <app-btn-change-bg
-        [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
-      ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
-      <app-btn-draw></app-btn-draw>
-      <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
-      ></app-btn-more-options
-    ></app-note-field>
-  </div> -->
+  <div class="label" *ngFor="let label of labels">
+    <div class="custom-notes" *ngIf="label.notes.length > 0">
+      <p class="category-type">{{ label.name }}</p>
+      <app-note-field *ngFor="let note of label.notes" [note]="note">
+        <app-btn-pin
+          [isNotePinned]="note.isPinned"
+          (togglePin)="togglePin(note)"
+          pin
+        ></app-btn-pin>
+        <app-btn-change-bg
+          [note]="note"
+          (saveData)="saveNotesToLocalStorage()"
+        ></app-btn-change-bg>
+        <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+        <app-btn-draw></app-btn-draw>
+        <app-btn-more-options
+          (deleteNote)="deleteNote(note)"
+        ></app-btn-more-options
+      ></app-note-field>
+    </div>
+  </div>
 </div>

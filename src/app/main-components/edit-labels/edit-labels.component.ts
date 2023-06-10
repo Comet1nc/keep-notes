@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  CustomNotesService,
-  Label,
-} from 'src/app/services/custom-notes.service';
+import { Label } from 'src/app/models/label.model';
+import { CustomNotesService } from 'src/app/services/custom-notes.service';
 
 @Component({
   selector: 'app-edit-labels',

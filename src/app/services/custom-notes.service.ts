@@ -4,6 +4,7 @@ import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
 import { LocalStorageService } from './local-storage.service';
+import { Label } from '../models/label.model';
 
 @Injectable()
 export class CustomNotesService {
@@ -208,16 +209,5 @@ export class CustomNotesService {
       NoteCategory.custom + labelIndex.toString(),
       mergedNotes
     );
-  }
-}
-
-export class Label {
-  name: string;
-  notes: Note[] = [];
-  notesPinned: Note[] = [];
-  storageIndex!: string;
-
-  constructor(private _name: string) {
-    this.name = _name;
   }
 }

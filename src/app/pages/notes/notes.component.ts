@@ -11,7 +11,7 @@ import { SearchService } from '../search/search.service';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
 })
-export class NotesComponent implements OnInit, OnDestroy {
+export class NotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
 
@@ -51,11 +51,6 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   test() {
     console.log('test works');
-  }
-
-  ngOnDestroy(): void {
-    this.searchService.notesServiceData = [];
-    this.searchService.notesServiceDataPinned = [];
   }
 
   archiveNote(note: Note) {

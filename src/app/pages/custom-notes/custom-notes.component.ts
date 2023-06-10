@@ -12,7 +12,7 @@ import { SearchService } from '../search/search.service';
   templateUrl: './custom-notes.component.html',
   styleUrls: ['./custom-notes.component.scss'],
 })
-export class CustomNotesComponent implements OnInit, OnDestroy {
+export class CustomNotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
 
@@ -84,11 +84,6 @@ export class CustomNotesComponent implements OnInit, OnDestroy {
 
   togglePin(note: Note) {
     this.notesService.togglePin(note);
-  }
-
-  ngOnDestroy(): void {
-    this.searchService.notesServiceData = [];
-    this.searchService.notesServiceDataPinned = [];
   }
 
   saveNewNote(note: Note) {
