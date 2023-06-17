@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
-import { SearchService } from '../search/search.service';
 
 @Component({
   selector: 'app-custom-notes',
@@ -24,7 +23,6 @@ export class CustomNotesComponent implements OnInit {
   constructor(
     private notesService: CustomNotesService,
     private editNoteService: EditNoteService,
-    private searchService: SearchService,
     private activeRoute: ActivatedRoute,
     private archiveService: ArchiveService,
     private binService: BinService

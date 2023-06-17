@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, merge } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
 import { LocalStorageService } from './local-storage.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class NotesService {
@@ -19,13 +20,15 @@ export class NotesService {
   constructor(
     private archive: ArchiveService,
     private bin: BinService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private http: HttpClient
   ) {
     archive.unArchiveNote.subscribe(this.restoreNoteFn);
     bin.restoreNote.subscribe(this.restoreNoteFn);
 
     this.onNotesChanged.subscribe(() => {
-      this.saveToLocalStorage();
+      // this.saveToLocalStorage();
+      this.saveNotes();
     });
   }
 
@@ -41,23 +44,48 @@ export class NotesService {
         this.saveNewNoteToUnpinned(note);
       }
 
-      this.saveToLocalStorage();
+      // this.saveToLocalStorage();
+      this.saveNotes();
     }
   };
 
-  loadDataFromLocalStorage() {
-    let notes = this.localStorageService.getData(this.myCategory);
-    if (notes === null) return;
-    let parsed: Note[] = JSON.parse(notes);
-    for (const note of parsed) {
-      if (note.isPinned === true) {
-        this.notesContainerPinned.push(note);
-      } else {
-        this.notesContainer.push(note);
-      }
-    }
+  loadData() {
+    this.http
+      .get(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json?orderBy="isPinned"&equalTo=true'
+      )
+      .subscribe((notes: any) => {
+        for (let note of Object.values(notes)) {
+          this.notesContainerPinned.push(note as Note);
+        }
+      });
+
+    this.http
+      .get(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json?orderBy="isPinned"&equalTo=false'
+      )
+      .subscribe((notes) => {
+        for (let note of Object.values(notes)) {
+          this.notesContainer.push(note as Note);
+        }
+      });
+
     this.filled = true;
   }
+
+  // loadDataFromLocalStorage() {
+  //   let notes = this.localStorageService.getData(this.myCategory);
+  //   if (notes === null) return;
+  //   let parsed: Note[] = JSON.parse(notes);
+  //   for (const note of parsed) {
+  //     if (note.isPinned === true) {
+  //       this.notesContainerPinned.push(note);
+  //     } else {
+  //       this.notesContainer.push(note);
+  //     }
+  //   }
+  //   this.filled = true;
+  // }
 
   deleteNote(note: Note, _exitArray?: Note[]) {
     let exitArray = _exitArray;
@@ -82,7 +110,8 @@ export class NotesService {
       exitArray.splice(noteIndex, 1);
     }
 
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   togglePin(note: Note) {
@@ -105,7 +134,8 @@ export class NotesService {
 
     this.deleteNote(note, exitArray);
 
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   saveNewNoteToPinned(note: Note) {
@@ -114,7 +144,8 @@ export class NotesService {
     note.createdAt = new Date();
     note.fromCategory = this.myCategory;
 
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   saveNewNoteToUnpinned(note: Note) {
@@ -123,7 +154,8 @@ export class NotesService {
     note.createdAt = new Date();
     note.fromCategory = this.myCategory;
 
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   changeNote(note: Note) {
@@ -135,15 +167,28 @@ export class NotesService {
       this.notesContainerPinned[noteIndex] = note;
     }
 
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
+    this.saveNotes();
   }
 
-  saveToLocalStorage() {
-    let mergedNotes = JSON.stringify([
-      ...this.notesContainer,
-      ...this.notesContainerPinned,
-    ]);
+  // saveToLocalStorage() {
+  //   let mergedNotes = JSON.stringify([
+  //     ...this.notesContainer,
+  //     ...this.notesContainerPinned,
+  //   ]);
 
-    this.localStorageService.saveData(this.myCategory, mergedNotes);
+  //   this.localStorageService.saveData(this.myCategory, mergedNotes);
+  // }
+
+  saveNotes() {
+    let mergedNotes = this.notesContainer.concat(this.notesContainerPinned);
+
+    this.http
+      .put(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json',
+        mergedNotes
+      )
+      .subscribe(console.log);
+    //
   }
 }

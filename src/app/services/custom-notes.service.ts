@@ -160,6 +160,37 @@ export class CustomNotesService {
     this.saveToLocalStorage();
   }
 
+  togglePinByOtherLable(note: Note) {
+    let enterArray: Note[] = [];
+    let exitArray: Note[] = [];
+
+    if (note.isPinned) {
+      for (let label of this.labels) {
+        if (label.notesPinned.find((value: Note) => value === note)) {
+          enterArray = label.notes;
+          exitArray = label.notesPinned;
+        }
+      }
+
+      note.isPinned = false;
+    } else {
+      for (let label of this.labels) {
+        if (label.notes.find((value: Note) => value === note)) {
+          enterArray = label.notesPinned;
+          exitArray = label.notes;
+        }
+      }
+
+      note.isPinned = true;
+    }
+
+    enterArray.push(note);
+
+    this.deleteNote(note, exitArray);
+
+    this.saveToLocalStorage();
+  }
+
   saveNewNoteToPinned(note: Note) {
     this.notesContainerPinned.push(note);
 

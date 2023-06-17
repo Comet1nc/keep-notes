@@ -45,7 +45,7 @@ export class NotesComponent implements OnInit {
     this.notesService.myCategory = this.fromCategory;
 
     if (!this.notesService.filled) {
-      this.notesService.loadDataFromLocalStorage();
+      this.notesService.loadData();
     }
   }
 
@@ -83,6 +83,6 @@ export class NotesComponent implements OnInit {
   }
 
   saveNotesToLocalStorage() {
-    this.notesService.saveToLocalStorage();
+    this.notesService.saveNotes();
   }
 }

@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit {
   }
 
   saveNotesToLocalStorage() {
-    this.notesService.saveToLocalStorage();
+    this.notesService.saveNotes();
   }
 
   saveNotesToLocalStorageFromArchive() {

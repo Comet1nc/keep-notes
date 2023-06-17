@@ -4,7 +4,7 @@ export class Label {
   name: string;
   notes: Note[] = [];
   notesPinned: Note[] = [];
-  storageIndex!: string;
+  storageIndex!: number;
 
   constructor(private _name: string) {
     this.name = _name;
