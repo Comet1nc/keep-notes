@@ -27,7 +27,7 @@ export class ArchiveComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.archiveService.filled) {
-      this.archiveService.loadDataFromLocalStorage();
+      this.archiveService.loadData();
     }
 
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
@@ -58,6 +58,6 @@ export class ArchiveComponent implements OnInit {
   }
 
   saveNotesToLocalStorage() {
-    this.archiveService.saveToLocalStorage();
+    this.archiveService.saveNotes();
   }
 }

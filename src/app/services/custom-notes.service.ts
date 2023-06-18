@@ -241,4 +241,40 @@ export class CustomNotesService {
       mergedNotes
     );
   }
+
+  // loadData() {
+  //   this.http
+  //     .get(
+  //       'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json?orderBy="isPinned"&equalTo=true'
+  //     )
+  //     .subscribe((notes: any) => {
+  //       for (let note of Object.values(notes)) {
+  //         this.notesContainerPinned.push(note as Note);
+  //       }
+  //     });
+
+  //   this.http
+  //     .get(
+  //       'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json?orderBy="isPinned"&equalTo=false'
+  //     )
+  //     .subscribe((notes) => {
+  //       for (let note of Object.values(notes)) {
+  //         this.notesContainer.push(note as Note);
+  //       }
+  //     });
+
+  //   this.filled = true;
+  // }
+
+  // saveNotes() {
+  //   let mergedNotes = this.notesContainer.concat(this.notesContainerPinned);
+
+  //   this.http
+  //     .put(
+  //       'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json',
+  //       mergedNotes
+  //     )
+  //     .subscribe();
+  //   //
+  // }
 }

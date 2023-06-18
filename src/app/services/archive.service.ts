@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
-import { LocalStorageService } from './local-storage.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ArchiveService {
@@ -14,9 +14,9 @@ export class ArchiveService {
 
   notesContainer: Note[] = [];
 
-  constructor(private localStorageService: LocalStorageService) {
+  constructor(private http: HttpClient) {
     this.onNotesChanged.subscribe(() => {
-      this.saveToLocalStorage();
+      this.saveNotes();
     });
   }
 
@@ -24,18 +24,28 @@ export class ArchiveService {
     return this.notesContainer;
   }
 
-  loadDataFromLocalStorage() {
-    let notes = this.localStorageService.getData(this.myCategory);
-    if (notes === null) return;
+  loadData() {
+    this.http
+      .get(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/archived-notes.json'
+      )
+      .subscribe((notes: any) => {
+        for (let note of Object.values(notes)) {
+          this.notesContainer.push(note as Note);
+        }
+      });
 
-    let parsed: Note[] = JSON.parse(notes);
-    this.notesContainer = [...parsed];
     this.filled = true;
   }
 
-  saveToLocalStorage() {
-    let notes = JSON.stringify(this.notesContainer);
-    this.localStorageService.saveData(this.myCategory, notes);
+  saveNotes() {
+    this.http
+      .put(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/archived-notes.json',
+        this.notesContainer
+      )
+      .subscribe();
+    //
   }
 
   deleteNote(note: Note, _exitArray?: Note[]) {
@@ -59,19 +69,19 @@ export class ArchiveService {
       exitArray.splice(noteIndex, 1);
     }
 
-    this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   saveNewNote(note: Note) {
     this.notesContainer.push(note);
 
-    this.saveToLocalStorage();
+    this.saveNotes();
   }
 
   changeNote(note: Note) {
     let noteIndex = this.notesContainer.indexOf(note);
     this.notesContainer[noteIndex] = note;
 
-    this.saveToLocalStorage();
+    this.saveNotes();
   }
 }
