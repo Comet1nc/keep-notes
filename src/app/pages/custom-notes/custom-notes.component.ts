@@ -55,17 +55,15 @@ export class CustomNotesComponent implements OnInit {
   getDataAndSetup(customLabelName: string) {
     let myLabel = this.notesService.getLabelByName(customLabelName);
 
-    this.notesService.notesContainer = myLabel.notes;
-    this.notesService.notesContainerPinned = myLabel.notesPinned;
+    if (myLabel.notes || myLabel.notesPinned) {
+      this.notesService.notesContainer = myLabel?.notes;
+      this.notesService.notesContainerPinned = myLabel?.notesPinned;
+    }
 
     this.notes = this.notesService.notesContainer;
     this.pinnedNotes = this.notesService.notesContainerPinned;
 
-    for (let index = 0; index < this.notesService.labels.length; index++) {
-      if (this.notesService.labels[index].name === customLabelName) {
-        this.notesService.currentLabelIndex = index;
-      }
-    }
+    console.log(this.notes);
   }
 
   archiveNote(note: Note) {
@@ -97,6 +95,6 @@ export class CustomNotesComponent implements OnInit {
   }
 
   saveNotesToLocalStorage() {
-    this.notesService.saveToLocalStorage();
+    this.notesService.saveLabels();
   }
 }

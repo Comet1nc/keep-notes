@@ -11,7 +11,6 @@ import { SideNavModule } from './main-components/side-nav/side-nav.module';
 import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
 import { ArchiveService } from './services/archive.service';
 import { BinService } from './services/bin.service';
-import { LocalStorageService } from './services/local-storage.service';
 import { AngularMaterialModule } from './modules/angular-material.module';
 import { FormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
@@ -52,7 +51,6 @@ import { HttpClientModule } from '@angular/common/http';
     NotesService,
     ArchiveService,
     BinService,
-    LocalStorageService,
     AppService,
     DrawService,
     CustomNotesService,

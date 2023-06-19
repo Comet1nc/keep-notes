@@ -28,7 +28,7 @@ export class EditLabelsComponent implements OnInit {
     this.labels = this.customNotesService.labels;
 
     if (!this.customNotesService.filled) {
-      this.customNotesService.loadDataFromLocalStorage();
+      this.customNotesService.loadData();
     }
   }
 

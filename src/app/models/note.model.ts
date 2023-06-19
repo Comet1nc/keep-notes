@@ -18,6 +18,5 @@ export enum NoteCategory {
   notes = 'notes',
   archive = 'archive',
   bin = 'bin',
-  reminders = 'reminders',
   custom = 'custom',
 }

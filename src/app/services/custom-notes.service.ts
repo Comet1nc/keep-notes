@@ -3,13 +3,12 @@ import { Subject } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
-import { LocalStorageService } from './local-storage.service';
 import { Label } from '../models/label.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CustomNotesService {
   labels: Label[] = [];
-  currentLabelIndex!: number;
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
   onNotesChanged = new Subject<void>();
@@ -22,13 +21,13 @@ export class CustomNotesService {
   constructor(
     public archive: ArchiveService,
     public bin: BinService,
-    private localStorageService: LocalStorageService
+    private http: HttpClient
   ) {
     archive.unArchiveNote.subscribe(this.restoreNoteFn);
     bin.restoreNote.subscribe(this.restoreNoteFn);
 
     this.onNotesChanged.subscribe(() => {
-      this.saveToLocalStorage();
+      this.saveLabels();
     });
   }
 
@@ -36,12 +35,15 @@ export class CustomNotesService {
 
   addLabel(name: string) {
     if (this.labels.length >= 10) return;
-    this.labels.push(new Label(name));
-    this.saveToLocalStorage(this.labels.length);
+    let newLabel = new Label(name);
+    newLabel.notes = [];
+    newLabel.notesPinned = [];
+    this.labels.push(newLabel);
+    this.saveLabels();
   }
 
   labelRenamed() {
-    this.saveToLocalStorage();
+    this.saveLabels();
     return;
   }
 
@@ -68,7 +70,7 @@ export class CustomNotesService {
       this.labels.splice(index, 1);
     }
 
-    this.localStorageService.removeItem(NoteCategory.custom + index.toString());
+    this.saveLabels();
   }
 
   getNotesForSearch() {
@@ -83,33 +85,9 @@ export class CustomNotesService {
         this.saveNewNoteToUnpinned(note);
       }
 
-      this.saveToLocalStorage();
+      this.saveLabels();
     }
   };
-
-  loadDataFromLocalStorage() {
-    console.log('load data from local storage ');
-    for (let index = 0; index < 10; index++) {
-      let notes = this.localStorageService.getData(
-        NoteCategory.custom + index.toString()
-      );
-
-      if (notes === null || notes === undefined) return;
-
-      let parsed: any[] = JSON.parse(notes);
-      this.labels[index] = new Label(parsed[0]);
-      parsed.shift();
-      for (const note of parsed) {
-        if (note.isPinned === false) {
-          this.labels[index].notes.push(note);
-        } else {
-          this.labels[index].notesPinned.push(note);
-        }
-      }
-    }
-
-    this.filled = true;
-  }
 
   deleteNote(note: Note, _exitArray?: Note[]) {
     let exitArray = _exitArray;
@@ -134,7 +112,7 @@ export class CustomNotesService {
       exitArray.splice(noteIndex, 1);
     }
 
-    this.saveToLocalStorage();
+    this.saveLabels();
   }
 
   togglePin(note: Note) {
@@ -157,7 +135,7 @@ export class CustomNotesService {
 
     this.deleteNote(note, exitArray);
 
-    this.saveToLocalStorage();
+    this.saveLabels();
   }
 
   togglePinByOtherLable(note: Note) {
@@ -188,7 +166,7 @@ export class CustomNotesService {
 
     this.deleteNote(note, exitArray);
 
-    this.saveToLocalStorage();
+    this.saveLabels();
   }
 
   saveNewNoteToPinned(note: Note) {
@@ -197,7 +175,7 @@ export class CustomNotesService {
     note.createdAt = new Date();
     note.fromCategory = this.myCategory;
 
-    this.saveToLocalStorage();
+    this.saveLabels();
   }
 
   saveNewNoteToUnpinned(note: Note) {
@@ -206,7 +184,7 @@ export class CustomNotesService {
     note.createdAt = new Date();
     note.fromCategory = this.myCategory;
 
-    this.saveToLocalStorage();
+    this.saveLabels();
   }
 
   changeNote(note: Note) {
@@ -218,63 +196,31 @@ export class CustomNotesService {
       this.notesContainerPinned[noteIndex] = note;
     }
 
-    this.saveToLocalStorage();
+    this.saveLabels();
   }
 
-  saveToLocalStorage(labelIndex?: number) {
-    if (labelIndex === undefined) {
-      labelIndex = this.currentLabelIndex;
-    } else {
-      labelIndex = labelIndex - 1;
-    }
-    let notes = this.labels[labelIndex].notes;
-    let notesPinned = this.labels[labelIndex].notesPinned;
+  loadData() {
+    this.http
+      .get(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/labels.json'
+      )
+      .subscribe((labels: any) => {
+        for (let label of Object.values(labels)) {
+          this.labels.push(label as Label);
+        }
+      });
+    //
 
-    let mergedNotes = JSON.stringify([
-      this.labels[labelIndex].name,
-      ...notes,
-      ...notesPinned,
-    ]);
-
-    this.localStorageService.saveData(
-      NoteCategory.custom + labelIndex.toString(),
-      mergedNotes
-    );
+    this.filled = true;
   }
 
-  // loadData() {
-  //   this.http
-  //     .get(
-  //       'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json?orderBy="isPinned"&equalTo=true'
-  //     )
-  //     .subscribe((notes: any) => {
-  //       for (let note of Object.values(notes)) {
-  //         this.notesContainerPinned.push(note as Note);
-  //       }
-  //     });
-
-  //   this.http
-  //     .get(
-  //       'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json?orderBy="isPinned"&equalTo=false'
-  //     )
-  //     .subscribe((notes) => {
-  //       for (let note of Object.values(notes)) {
-  //         this.notesContainer.push(note as Note);
-  //       }
-  //     });
-
-  //   this.filled = true;
-  // }
-
-  // saveNotes() {
-  //   let mergedNotes = this.notesContainer.concat(this.notesContainerPinned);
-
-  //   this.http
-  //     .put(
-  //       'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json',
-  //       mergedNotes
-  //     )
-  //     .subscribe();
-  //   //
-  // }
+  saveLabels() {
+    this.http
+      .put(
+        'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/labels.json',
+        this.labels
+      )
+      .subscribe();
+    //
+  }
 }
