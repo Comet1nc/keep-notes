@@ -2,6 +2,7 @@ export class Note {
   title: string;
   content: string;
   isPinned: boolean = false;
+  labels: string[] = [];
   index!: number;
   fromCategory!: NoteCategory;
   createdAt!: Date;

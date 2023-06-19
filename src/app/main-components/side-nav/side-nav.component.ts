@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Label } from 'src/app/models/label.model';
+import { LabelOLD } from 'src/app/models/label.model';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
+import { LabelService } from 'src/app/services/label.service';
+import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
   selector: 'side-nav',
@@ -13,16 +15,18 @@ export class SideNavComponent implements OnInit {
 
   @Input() isSideNavOpened = true;
 
-  customLabels: Label[] = [];
+  labels: string[] = [];
 
-  constructor(private customNotes: CustomNotesService) {}
+  constructor(private labelService: LabelService) {}
 
   ngOnInit(): void {
     this.sub.subscribe(() => {
       this.isSideNavOpened = !this.isSideNavOpened;
     });
 
-    this.customLabels = this.customNotes.labels;
+    this.labels = this.labelService.labels;
+
+    this.labelService.loadLabels();
   }
 
   getClassByState() {

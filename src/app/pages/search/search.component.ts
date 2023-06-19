@@ -5,7 +5,7 @@ import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
-import { Label } from 'src/app/models/label.model';
+import { LabelOLD } from 'src/app/models/label.model';
 import { CustomNotesService } from 'src/app/services/custom-notes.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { CustomNotesService } from 'src/app/services/custom-notes.service';
 export class SearchComponent implements OnInit {
   notes: Note[] = [];
   archiveNotes: Note[] = [];
-  labels: Label[] = [];
+  labels: LabelOLD[] = [];
 
   constructor(
     private searchService: SearchService,
@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
       this.archiveNotes = notes;
     });
 
-    this.searchService.customNotesResult.subscribe((labels: Label[]) => {
+    this.searchService.customNotesResult.subscribe((labels: LabelOLD[]) => {
       this.labels = labels;
     });
   }

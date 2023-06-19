@@ -1,8 +1,5 @@
 <li class="label" [ngClass]="getLabelClass()">
-  <button
-    [routerLink]="['custom-notes', customLabel.name]"
-    routerLinkActive="active"
-  >
+  <button [routerLink]="['custom-notes', title]" routerLinkActive="active">
     <svg
       *ngIf="svgPath !== ''"
       xmlns="http://www.w3.org/2000/svg"

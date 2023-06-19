@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Label } from 'src/app/models/label.model';
-import { CustomNotesService } from 'src/app/services/custom-notes.service';
+import { LabelService } from 'src/app/services/label.service';
 
 @Component({
   selector: 'app-edit-labels',
@@ -11,69 +10,76 @@ import { CustomNotesService } from 'src/app/services/custom-notes.service';
 })
 export class EditLabelsComponent implements OnInit {
   editLabelsOpened = false;
-  labels!: Label[];
   newLabelName: string = '';
+  labels: string[] = [];
 
   constructor(
-    private customNotesService: CustomNotesService,
+    private labelService: LabelService,
     private _snackBar: MatSnackBar,
     private router: Router,
     private activeRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.customNotesService.openEditLabels.subscribe(() => {
+    this.labelService.openEditLabels.subscribe(() => {
       this.editLabelsOpened = true;
     });
-    this.labels = this.customNotesService.labels;
 
-    if (!this.customNotesService.filled) {
-      this.customNotesService.loadData();
-    }
+    this.labels = this.labelService.labels;
+
+    this.labelService.loadLabels();
   }
 
   createNewLabel() {
     if (this.newLabelName.trim() === '') return;
 
     for (let label of this.labels) {
-      if (this.newLabelName === label.name) {
+      if (this.newLabelName === label) {
         this._snackBar.open('Wrong name.', 'Close');
         return;
       }
     }
 
-    this.customNotesService.addLabel(this.newLabelName);
+    this.labels.push(this.newLabelName);
+
+    this.labelService.saveLabels(this.labels);
   }
 
   clearNewLabelName() {
     this.newLabelName = '';
   }
 
-  deleteLabel(label: Label) {
-    this.customNotesService.deleteLabel(label);
+  deleteLabel(label: string) {
+    const index = this.labels.indexOf(label);
+
+    if (index !== -1) {
+      this.labels.splice(index, 1);
+    }
+
+    this.labelService.saveLabels(this.labels);
   }
 
-  renameLabel(input: HTMLInputElement, myLabel: Label) {
+  renameLabel(input: HTMLInputElement, myLabel: string) {
     for (let label of this.labels) {
-      if (input.value === label.name) {
+      if (input.value === label) {
         this._snackBar.open('Wrong name.', 'Close');
         return;
       }
     }
 
-    let oldName = myLabel.name;
-    myLabel.name = input.value;
+    let oldName = myLabel;
+    myLabel = input.value;
 
     if (
       this.activeRoute.snapshot.children[0].children[0].params['name'] ===
       oldName
     ) {
-      this.router.navigate(['custom-notes/' + myLabel.name]);
+      this.router.navigate(['custom-notes/' + myLabel]);
     }
 
     this._snackBar.open('Successfully renamed!', 'Close');
 
-    this.customNotesService.labelRenamed();
+    this.labelService.saveLabels(this.labels);
   }
 
   closeEditLabels() {

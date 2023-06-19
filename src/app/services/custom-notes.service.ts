@@ -3,12 +3,12 @@ import { Subject } from 'rxjs';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
-import { Label } from '../models/label.model';
+import { LabelOLD } from '../models/label.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CustomNotesService {
-  labels: Label[] = [];
+  labels: LabelOLD[] = [];
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
   onNotesChanged = new Subject<void>();
@@ -31,20 +31,13 @@ export class CustomNotesService {
     });
   }
 
-  openEditLabels = new Subject<void>();
-
   addLabel(name: string) {
     if (this.labels.length >= 10) return;
-    let newLabel = new Label(name);
+    let newLabel = new LabelOLD(name);
     newLabel.notes = [];
     newLabel.notesPinned = [];
     this.labels.push(newLabel);
     this.saveLabels();
-  }
-
-  labelRenamed() {
-    this.saveLabels();
-    return;
   }
 
   getLabelByName(name: string) {
@@ -54,23 +47,7 @@ export class CustomNotesService {
       }
     }
 
-    return new Label('');
-  }
-
-  deleteLabel(label: Label) {
-    let index = this.labels.indexOf(label);
-
-    if (this.labels.length === 1) {
-      this.labels.pop();
-    } else if (index === 0) {
-      this.labels.shift();
-    } else if (index + 1 === this.labels.length) {
-      this.labels.pop();
-    } else {
-      this.labels.splice(index, 1);
-    }
-
-    this.saveLabels();
+    return new LabelOLD('');
   }
 
   getNotesForSearch() {
@@ -206,7 +183,7 @@ export class CustomNotesService {
       )
       .subscribe((labels: any) => {
         for (let label of Object.values(labels)) {
-          this.labels.push(label as Label);
+          this.labels.push(label as LabelOLD);
         }
       });
     //

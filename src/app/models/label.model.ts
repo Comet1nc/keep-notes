@@ -1,6 +1,6 @@
 import { Note } from './note.model';
 
-export class Label {
+export class LabelOLD {
   name: string;
   notes: Note[] = [];
   notesPinned: Note[] = [];

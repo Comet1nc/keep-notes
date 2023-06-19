@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Label } from 'src/app/models/label.model';
+import { LabelOLD } from 'src/app/models/label.model';
 
 @Component({
   selector: 'side-nav-custom-label',
@@ -12,7 +12,6 @@ export class CustomLabelComponent {
   @Input() svgPath: string = '';
   @Input() svgPaths: string[] = [''];
   @Input() isSelectedNote = false;
-  @Input() customLabel!: Label;
 
   getLabelClass() {
     if (this.isSideNavOpened) {

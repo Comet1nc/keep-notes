@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { Label } from 'src/app/models/label.model';
+import { LabelOLD } from 'src/app/models/label.model';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
@@ -18,7 +18,7 @@ export class SearchService implements OnInit {
 
   notesResult = new Subject<Note[]>();
   archiveNotesResult = new Subject<Note[]>();
-  customNotesResult = new Subject<Label[]>();
+  customNotesResult = new Subject<LabelOLD[]>();
 
   lastSearchText: string = '';
 
@@ -65,13 +65,13 @@ export class SearchService implements OnInit {
       : this.archiveNotesResult.next([]);
     //
 
-    let customNotesSearchResult: Label[] = [];
+    let customNotesSearchResult: LabelOLD[] = [];
     for (let label of this.customNotesService.labels) {
       let result: Note[] = this.searchInArray(
         label.notes.concat(label.notesPinned)
       );
 
-      let labelWithResult = new Label(label.name);
+      let labelWithResult = new LabelOLD(label.name);
       labelWithResult.notes = result;
       labelWithResult.storageIndex = label.storageIndex;
 
