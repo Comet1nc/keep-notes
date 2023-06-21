@@ -2,7 +2,7 @@
   *ngIf="showEditMode"
   [activeNote]="editModeNote"
   (onNotesChanged)="notesChanged()"
-  (saveNotesToLocalStorage)="saveNotesToLocalStorage()"
+  (saveNotesToLocalStorage)="saveNotes()"
 >
   <app-btn-pin
     [isNotePinned]="editModeNote.isPinned"
@@ -11,7 +11,7 @@
   ></app-btn-pin>
   <app-btn-change-bg
     [note]="editModeNote"
-    (saveData)="saveNotesToLocalStorage()"
+    (saveData)="saveNotes()"
   ></app-btn-change-bg>
   <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive>
   <app-btn-draw></app-btn-draw>
@@ -36,7 +36,7 @@
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
+        (saveData)="saveNotes()"
       ></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
@@ -55,7 +55,7 @@
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
+        (saveData)="saveNotes()"
       ></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>

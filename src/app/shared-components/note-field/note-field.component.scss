@@ -28,13 +28,25 @@
     font-size: 20px;
     font-weight: 500;
     line-break: anywhere;
-
   }
 
   .content {
     font-size: 15px;
     line-break: anywhere;
     white-space: pre-line;
+  }
+
+  .labels {
+    position: absolute;
+    bottom: 50px;
+    font-size: 11px;
+
+    .label {
+      background-color: #EBEBEB;
+      font-weight: 500;
+      border-radius: 20px;
+      padding: 4px 6px;
+    }
   }
 
   .action-buttons {

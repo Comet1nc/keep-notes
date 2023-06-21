@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
 import { LabelService } from 'src/app/services/label.service';
 
 @Component({
@@ -10,15 +8,10 @@ import { LabelService } from 'src/app/services/label.service';
 })
 export class EditLabelsComponent implements OnInit {
   editLabelsOpened = false;
-  newLabelName: string = '';
+  newLabel: string = '';
   labels: string[] = [];
 
-  constructor(
-    private labelService: LabelService,
-    private _snackBar: MatSnackBar,
-    private router: Router,
-    private activeRoute: ActivatedRoute
-  ) {}
+  constructor(private labelService: LabelService) {}
 
   ngOnInit(): void {
     this.labelService.openEditLabels.subscribe(() => {
@@ -31,55 +24,19 @@ export class EditLabelsComponent implements OnInit {
   }
 
   createNewLabel() {
-    if (this.newLabelName.trim() === '') return;
-
-    for (let label of this.labels) {
-      if (this.newLabelName === label) {
-        this._snackBar.open('Wrong name.', 'Close');
-        return;
-      }
-    }
-
-    this.labels.push(this.newLabelName);
-
-    this.labelService.saveLabels(this.labels);
+    this.labelService.createNewLabel(this.newLabel);
   }
 
   clearNewLabelName() {
-    this.newLabelName = '';
+    this.newLabel = '';
   }
 
   deleteLabel(label: string) {
-    const index = this.labels.indexOf(label);
-
-    if (index !== -1) {
-      this.labels.splice(index, 1);
-    }
-
-    this.labelService.saveLabels(this.labels);
+    this.labelService.deleteLabel(label);
   }
 
   renameLabel(input: HTMLInputElement, myLabel: string) {
-    for (let label of this.labels) {
-      if (input.value === label) {
-        this._snackBar.open('Wrong name.', 'Close');
-        return;
-      }
-    }
-
-    let oldName = myLabel;
-    myLabel = input.value;
-
-    if (
-      this.activeRoute.snapshot.children[0].children[0].params['name'] ===
-      oldName
-    ) {
-      this.router.navigate(['custom-notes/' + myLabel]);
-    }
-
-    this._snackBar.open('Successfully renamed!', 'Close');
-
-    this.labelService.saveLabels(this.labels);
+    this.labelService.renameLabel(myLabel, input.value);
   }
 
   closeEditLabels() {

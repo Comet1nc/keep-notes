@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Note, NoteCategory } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
-import { CustomNotesService } from 'src/app/services/custom-notes.service';
+import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 
 @Component({
@@ -15,13 +15,15 @@ export class CustomNotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
 
+  customLabelName: string = '';
+
   showEditMode = false;
   editModeNote!: Note;
 
   fromCategory = NoteCategory.custom;
 
   constructor(
-    private notesService: CustomNotesService,
+    private notesService: NotesService,
     private editNoteService: EditNoteService,
     private activeRoute: ActivatedRoute,
     private archiveService: ArchiveService,
@@ -39,62 +41,86 @@ export class CustomNotesComponent implements OnInit {
       this.showEditMode = false;
     });
 
-    //param from route
-    let customLabelName = this.activeRoute.snapshot.params['name'];
-    //
-    this.getDataAndSetup(customLabelName);
+    this.customLabelName = this.activeRoute.snapshot.params['name'];
+
+    if (!this.notesService.filled) {
+      this.notesService.loadData();
+    }
+
+    this.getDataAndSetup(this.customLabelName);
 
     // subscribing to route changes
     this.activeRoute.params.subscribe((params: Params) => {
-      let customLabelName = params['name'];
+      this.customLabelName = params['name'];
       //
-      this.getDataAndSetup(customLabelName);
+      this.getDataAndSetup(this.customLabelName);
     });
+
+    this.notesService.newNotesArrived.subscribe(() =>
+      this.getDataAndSetup(this.customLabelName)
+    );
   }
 
   getDataAndSetup(customLabelName: string) {
-    let myLabel = this.notesService.getLabelByName(customLabelName);
+    this.notes.splice(0);
+    this.pinnedNotes.splice(0);
 
-    if (myLabel.notes || myLabel.notesPinned) {
-      this.notesService.notesContainer = myLabel?.notes;
-      this.notesService.notesContainerPinned = myLabel?.notesPinned;
+    for (let note of this.notesService.notesContainer) {
+      if (!note.labels) continue;
+      if (note.labels.find((value: string) => value === customLabelName)) {
+        this.notes.push(note);
+      }
     }
 
-    this.notes = this.notesService.notesContainer;
-    this.pinnedNotes = this.notesService.notesContainerPinned;
-
-    console.log(this.notes);
+    for (let note of this.notesService.notesContainerPinned) {
+      if (!note.labels) continue;
+      if (note?.labels.find((value: string) => value === customLabelName)) {
+        this.pinnedNotes.push(note);
+      }
+    }
   }
 
   archiveNote(note: Note) {
     this.notesService.deleteNote(note);
     note.fromCategory = this.fromCategory;
     this.archiveService.saveNewNote(note);
+
+    this.getDataAndSetup(this.customLabelName);
   }
 
   deleteNote(note: Note) {
     this.notesService.deleteNote(note);
     note.fromCategory = this.fromCategory;
     this.binService.saveNewNote(note);
+
+    this.getDataAndSetup(this.customLabelName);
   }
 
   togglePin(note: Note) {
     this.notesService.togglePin(note);
+
+    this.getDataAndSetup(this.customLabelName);
   }
 
   saveNewNote(note: Note) {
+    if (this.customLabelName !== '') {
+      note.labels.push(this.customLabelName);
+    }
+
     if (note.isPinned) {
       this.notesService.saveNewNoteToPinned(note);
     } else {
       this.notesService.saveNewNoteToUnpinned(note);
     }
+
+    this.getDataAndSetup(this.customLabelName);
   }
 
   notesChanged() {
     this.notesService.onNotesChanged.next();
   }
 
-  saveNotesToLocalStorage() {
-    this.notesService.saveLabels();
+  saveNotes() {
+    this.notesService.saveNotes();
   }
 }

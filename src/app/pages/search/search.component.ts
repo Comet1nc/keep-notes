@@ -6,7 +6,6 @@ import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { LabelOLD } from 'src/app/models/label.model';
-import { CustomNotesService } from 'src/app/services/custom-notes.service';
 
 @Component({
   templateUrl: './search.component.html',
@@ -20,7 +19,6 @@ export class SearchComponent implements OnInit {
   constructor(
     private searchService: SearchService,
     private notesService: NotesService,
-    private customNotesService: CustomNotesService,
     private editNoteService: EditNoteService,
     private archiveService: ArchiveService,
     private binService: BinService

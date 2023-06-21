@@ -10,6 +10,7 @@ export class NotesService {
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
   onNotesChanged = new Subject<void>();
+  newNotesArrived = new Subject<void>();
 
   filled = false;
   canSearch = false;
@@ -54,6 +55,8 @@ export class NotesService {
         for (let note of Object.values(notes)) {
           this.notesContainerPinned.push(note as Note);
         }
+
+        this.newNotesArrived.next();
       });
 
     this.http
@@ -64,6 +67,8 @@ export class NotesService {
         for (let note of Object.values(notes)) {
           this.notesContainer.push(note as Note);
         }
+
+        this.newNotesArrived.next();
       });
 
     this.filled = true;

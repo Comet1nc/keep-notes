@@ -17,10 +17,10 @@ import { AppService } from './services/app.service';
 import { EditLabelsComponent } from './main-components/edit-labels/edit-labels.component';
 import { DrawComponent } from './main-components/draw/draw.component';
 import { DrawService } from './main-components/draw/draw.service';
-import { CustomNotesService } from './services/custom-notes.service';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { NotesService } from './services/notes.service';
 import { HttpClientModule } from '@angular/common/http';
+import { LabelService } from './services/label.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,7 @@ import { HttpClientModule } from '@angular/common/http';
     BinService,
     AppService,
     DrawService,
-    CustomNotesService,
+    LabelService,
   ],
   bootstrap: [AppComponent],
 })
