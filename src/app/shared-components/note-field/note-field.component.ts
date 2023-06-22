@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -45,6 +47,7 @@ import { EditNoteService } from '../edit-note/edit-note.service';
 })
 export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
+  @Output() onDeleteLabel = new EventEmitter<string>();
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
 
@@ -77,6 +80,10 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     this.editNoteService.onCloseEditMode.subscribe(
       () => (this.editModeOpened = false)
     );
+  }
+
+  deleteLabel(label: string) {
+    this.onDeleteLabel.emit(label);
   }
 
   changeBg(noteRef: HTMLElement) {

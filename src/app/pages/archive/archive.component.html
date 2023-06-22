@@ -17,7 +17,11 @@
 ></app-edit-note>
 <div class="notes-container">
   <div class="unpinned-notes-container" *ngIf="notes.length > 0">
-    <app-note-field *ngFor="let note of notes" [note]="note">
+    <app-note-field
+      *ngFor="let note of notes"
+      [note]="note"
+      (onDeleteLabel)="deleteLabel($event, note)"
+    >
       <app-btn-change-bg
         [note]="note"
         (saveData)="saveNotesToLocalStorage()"

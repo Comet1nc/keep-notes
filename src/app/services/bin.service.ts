@@ -30,6 +30,13 @@ export class BinService {
     return this.notesContainer;
   }
 
+  deleteLabel(label: string, note: Note) {
+    let index = note.labels.indexOf(label);
+    note.labels.splice(index, 1);
+
+    this.saveNotes();
+  }
+
   loadData() {
     this.notesContainer = [];
 

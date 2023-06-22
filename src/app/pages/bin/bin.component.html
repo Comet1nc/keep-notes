@@ -15,7 +15,11 @@
   <button class="empty-bin" (click)="clearBin()">Empty bin</button>
   <div class="notes-container">
     <div class="unpinned-notes-container">
-      <app-note-field *ngFor="let note of notes" [note]="note">
+      <app-note-field
+        *ngFor="let note of notes"
+        [note]="note"
+        (onDeleteLabel)="deleteLabel($event, note)"
+      >
         <app-btn-delete-forever
           (deleteForeverEvent)="deleteForever(note)"
         ></app-btn-delete-forever>

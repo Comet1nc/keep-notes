@@ -41,6 +41,10 @@ export class BinComponent {
     this.notes = this.binService.notesContainer;
   }
 
+  deleteLabel(event: string, note: Note) {
+    this.binService.deleteLabel(event, note);
+  }
+
   clearBin() {
     this.notes = [];
     this.binService.clear();

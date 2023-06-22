@@ -9,7 +9,21 @@
   <div class="title">{{ getTitle() }}</div>
   <div class="content">{{ getContent() }}</div>
   <div class="labels" *ngIf="note.labels">
-    <div class="label" *ngFor="let label of note.labels">{{ label }}</div>
+    <div class="label" *ngFor="let label of note.labels">
+      <div class="name">{{ label }}</div>
+      <button class="delete" (click)="deleteLabel(label)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="10"
+          viewBox="0 -960 960 960"
+          width="10"
+        >
+          <path
+            d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
   <div class="pin-button-container" *ngIf="showButtons" [@icons]>
     <ng-content select="[pin]"></ng-content>

@@ -49,8 +49,8 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  test() {
-    console.log('test works');
+  deleteLabel(event: string, note: Note) {
+    this.notesService.deleteLabel(event, note);
   }
 
   archiveNote(note: Note) {

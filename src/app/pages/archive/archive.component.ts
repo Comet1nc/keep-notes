@@ -43,6 +43,10 @@ export class ArchiveComponent implements OnInit {
     this.notes = this.archiveService.notesContainer;
   }
 
+  deleteLabel(event: string, note: Note) {
+    this.archiveService.deleteLabel(event, note);
+  }
+
   deleteNote(note: Note) {
     this.archiveService.deleteNote(note);
     this.binService.saveNewNote(note);

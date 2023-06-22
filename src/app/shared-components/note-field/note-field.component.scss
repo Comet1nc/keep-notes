@@ -42,10 +42,45 @@
     font-size: 11px;
 
     .label {
+      display: flex;
+      justify-content: center;
       background-color: #EBEBEB;
       font-weight: 500;
       border-radius: 20px;
-      padding: 4px 6px;
+      cursor: pointer;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      .name {
+        padding: 4px 6px;
+      }
+
+      &:hover {
+        .name {
+          padding-right: 2px;
+        }
+
+        .delete {
+          display: flex;
+        }
+
+      }
+
+      .delete {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 4px 6px;
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #d6d6d6;
+
+        }
+      }
     }
   }
 
