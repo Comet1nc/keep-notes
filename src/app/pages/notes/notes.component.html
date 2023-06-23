@@ -43,6 +43,8 @@
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
+        (onDeleteLabel)="deleteLabel($event, note)"
+        [note]="note"
       ></app-btn-more-options>
     </app-note-field>
   </div>
@@ -66,6 +68,9 @@
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
+        (onDeleteLabel)="deleteLabel($event, note)"
+        (onAddLabel)="addLabel($event, note)"
+        [note]="note"
       ></app-btn-more-options>
     </app-note-field>
   </div>

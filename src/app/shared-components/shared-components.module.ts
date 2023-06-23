@@ -14,7 +14,6 @@ import { BtnRestoreComponent } from './buttons/note-action-buttons/btn-restore/b
 import { BtnUnarchiveComponent } from './buttons/note-action-buttons/btn-unarchive/btn-unarchive.component';
 import { BtnArchiveComponent } from './buttons/note-action-buttons/btn-archive/btn-archive.component';
 import { BtnPinComponent } from './buttons/note-action-buttons/btn-pin/btn-pin.component';
-import { NotesService } from '../services/notes.service';
 import { EditNoteService } from './edit-note/edit-note.service';
 
 @NgModule({

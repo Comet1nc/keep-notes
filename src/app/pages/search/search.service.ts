@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { LabelOLD } from 'src/app/models/label.model';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
@@ -17,7 +16,6 @@ export class SearchService implements OnInit {
 
   notesResult = new Subject<Note[]>();
   archiveNotesResult = new Subject<Note[]>();
-  customNotesResult = new Subject<LabelOLD[]>();
 
   lastSearchText: string = '';
 

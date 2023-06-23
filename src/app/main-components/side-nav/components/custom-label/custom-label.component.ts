@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { LabelOLD } from 'src/app/models/label.model';
 
 @Component({
   selector: 'side-nav-custom-label',

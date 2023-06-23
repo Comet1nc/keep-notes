@@ -82,6 +82,8 @@ export class CustomNotesComponent implements OnInit {
 
   deleteLabel(event: string, note: Note) {
     this.notesService.deleteLabel(event, note);
+
+    this.getDataAndSetup(this.customLabelName);
   }
 
   archiveNote(note: Note) {

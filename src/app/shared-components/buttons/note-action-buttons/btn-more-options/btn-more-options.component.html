@@ -20,6 +20,25 @@
     </svg>
   </button>
   <div class="more-options-menu" *ngIf="moreOptionsActive">
-    <div class="delete-btn" (click)="deleteNote.emit()">Delete</div>
+    <div class="btn" (click)="deleteNote.emit()">Delete</div>
+    <div class="btn" (click)="openEditLabels()">Change labels</div>
+  </div>
+  <div
+    class="edit-labels-menu"
+    *ngIf="editLabelsMenuActive"
+    (mouseleave)="editLabelsMenuActive = false"
+  >
+    <div class="title">Label note</div>
+    <input type="text" placeholder="Enter label name" />
+    <div class="labels-list" *ngIf="allLabels">
+      <div class="label" *ngFor="let label of allLabels">
+        <input
+          type="checkbox"
+          [checked]="check(label)"
+          (click)="changeLabel(label)"
+        />
+        <div class="name">{{ label }}</div>
+      </div>
+    </div>
   </div>
 </div>
