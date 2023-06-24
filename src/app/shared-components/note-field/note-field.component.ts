@@ -110,13 +110,11 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   onMouseEnter(noteRef: HTMLElement) {
     this.showButtons = true;
     this.mouseInNote = true;
-    // this.renderer.setStyle(noteRef, 'z-index', '10');
   }
 
   onMouseLeave(noteRef: HTMLElement) {
     this.showButtons = false;
     this.mouseInNote = false;
-    this.renderer.setStyle(noteRef, 'z-index', '0');
   }
 
   getTitle() {

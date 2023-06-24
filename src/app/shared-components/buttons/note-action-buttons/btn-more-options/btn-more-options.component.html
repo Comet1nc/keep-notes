@@ -29,7 +29,11 @@
     (mouseleave)="editLabelsMenuActive = false"
   >
     <div class="title">Label note</div>
-    <input type="text" placeholder="Enter label name" />
+    <input
+      type="text"
+      placeholder="Enter label name"
+      (input)="searchLabel.next($event)"
+    />
     <div class="labels-list" *ngIf="allLabels">
       <div class="label" *ngFor="let label of allLabels">
         <input

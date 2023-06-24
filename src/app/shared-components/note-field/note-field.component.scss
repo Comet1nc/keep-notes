@@ -7,7 +7,6 @@
   margin: 10px;
   height: 100px;
   position: relative;
-  z-index: 0;
   transition: opacity 200ms ease-in-out;
 
   &.editmode {
@@ -37,6 +36,7 @@
   }
 
   .labels {
+    display: flex;
     position: absolute;
     bottom: 50px;
     font-size: 11px;
@@ -44,7 +44,6 @@
     .label {
       display: flex;
       justify-content: center;
-      background-color: #EBEBEB;
       font-weight: 500;
       border-radius: 20px;
       cursor: pointer;

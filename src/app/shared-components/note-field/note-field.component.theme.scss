@@ -27,6 +27,8 @@
         }
 
         .more-options {
+          background-color: white;
+
           .more-options-menu {
             background-color: white;
             box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
@@ -37,8 +39,39 @@
               }
             }
           }
+
+          .edit-labels-menu {
+            background-color: white;
+            box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+
+            input {
+              background-color: white;
+            }
+
+            .title {}
+
+            .labels-list {
+
+              .label {}
+            }
+          }
+
+        }
+
+
+      }
+
+      .labels {
+        .label {
+          background-color: #EBEBEB;
+
+          svg {
+            fill: white;
+          }
         }
       }
+
+
     }
   }
 
@@ -84,6 +117,33 @@
               }
             }
           }
+
+          .edit-labels-menu {
+            background-color: #303030;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 60%), 0 2px 6px 2px rgb(0 0 0 / 30%);
+
+            input {
+              background-color: #303030;
+            }
+
+            .title {}
+
+            .labels-list {
+
+              .label {}
+            }
+          }
+        }
+      }
+
+      .labels {
+
+        .label {
+          border: solid 1px;
+          border-color: #4A4D51;
+          background-color: #303030;
+
+
         }
       }
     }
