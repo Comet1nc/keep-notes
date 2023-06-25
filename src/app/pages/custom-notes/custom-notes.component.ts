@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -19,8 +19,6 @@ export class CustomNotesComponent implements OnInit {
 
   showEditMode = false;
   editModeNote!: Note;
-
-  fromCategory = NoteCategory.custom;
 
   constructor(
     private notesService: NotesService,
@@ -92,7 +90,6 @@ export class CustomNotesComponent implements OnInit {
 
   archiveNote(note: Note) {
     this.notesService.deleteNote(note);
-    note.fromCategory = this.fromCategory;
     this.archiveService.saveNewNote(note);
 
     this.getDataAndSetup(this.customLabelName);
@@ -100,7 +97,6 @@ export class CustomNotesComponent implements OnInit {
 
   deleteNote(note: Note) {
     this.notesService.deleteNote(note);
-    note.fromCategory = this.fromCategory;
     this.binService.saveNewNote(note);
 
     this.getDataAndSetup(this.customLabelName);
@@ -127,7 +123,7 @@ export class CustomNotesComponent implements OnInit {
   }
 
   notesChanged() {
-    this.notesService.onNotesChanged.next();
+    this.notesService.saveNotes();
   }
 
   saveNotes() {

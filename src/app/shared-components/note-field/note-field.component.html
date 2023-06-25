@@ -9,7 +9,7 @@
   <div class="title">{{ getTitle() }}</div>
   <div class="content">{{ getContent() }}</div>
   <div class="labels" *ngIf="note.labels">
-    <div class="label" *ngFor="let label of note.labels">
+    <div class="label" *ngFor="let label of note.labels.slice(0, 3)">
       <div class="name">{{ label }}</div>
       <button class="delete" (click)="deleteLabel(label)">
         <svg
@@ -23,6 +23,9 @@
           />
         </svg>
       </button>
+    </div>
+    <div class="more-notes-info" *ngIf="note.labels.length > 3">
+      +{{ note.labels.length - 3 }}
     </div>
   </div>
   <div class="pin-button-container" *ngIf="showButtons" [@icons]>

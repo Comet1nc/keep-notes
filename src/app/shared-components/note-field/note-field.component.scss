@@ -36,10 +36,11 @@
   }
 
   .labels {
-    display: flex;
     position: absolute;
+    display: flex;
     bottom: 50px;
     font-size: 11px;
+    gap: 5px;
 
     .label {
       display: flex;
@@ -53,7 +54,11 @@
       white-space: nowrap;
 
       .name {
-        padding: 4px 6px;
+        max-width: 60px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 5px 6px;
       }
 
       &:hover {
@@ -64,7 +69,6 @@
         .delete {
           display: flex;
         }
-
       }
 
       .delete {
@@ -74,12 +78,16 @@
         padding: 4px 6px;
         border-radius: 20px;
         cursor: pointer;
-
-        &:hover {
-          background-color: #d6d6d6;
-
-        }
       }
+    }
+
+    .more-notes-info {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-size: 11px;
+      border-radius: 2px;
+      padding: 5px 6px;
     }
   }
 

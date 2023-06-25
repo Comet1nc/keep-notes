@@ -38,6 +38,13 @@
         border-bottom-left-radius: 0;
         border-top-right-radius: 50px;
         border-bottom-right-radius: 50px;
+
+        span {
+          max-width: 160px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
       }
     }
 
@@ -47,7 +54,6 @@
         width: calc(100% - 15px);
         transition-delay: 0.35s;
         transition-property: border-radius, margin-left, padding-left;
-
       }
     }
   }

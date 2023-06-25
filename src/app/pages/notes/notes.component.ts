@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Component, OnInit } from '@angular/core';
+import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
@@ -17,8 +17,6 @@ export class NotesComponent implements OnInit {
 
   showEditMode = false;
   editModeNote!: Note;
-
-  fromCategory = NoteCategory.notes;
 
   constructor(
     private notesService: NotesService,
@@ -42,8 +40,6 @@ export class NotesComponent implements OnInit {
     this.notes = this.notesService.notesContainer;
     this.pinnedNotes = this.notesService.notesContainerPinned;
 
-    this.notesService.myCategory = this.fromCategory;
-
     if (!this.notesService.filled) {
       this.notesService.loadData();
     }
@@ -59,14 +55,11 @@ export class NotesComponent implements OnInit {
 
   archiveNote(note: Note) {
     this.notesService.deleteNote(note);
-
-    note.fromCategory = this.fromCategory;
     this.archiveService.saveNewNote(note);
   }
 
   deleteNote(note: Note) {
     this.notesService.deleteNote(note);
-    note.fromCategory = this.fromCategory;
     this.binService.saveNewNote(note);
   }
 
@@ -83,7 +76,7 @@ export class NotesComponent implements OnInit {
   }
 
   notesChanged() {
-    this.notesService.onNotesChanged.next();
+    this.notesService.saveNotes();
   }
 
   saveNotesToLocalStorage() {

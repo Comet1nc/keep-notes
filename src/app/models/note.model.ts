@@ -4,7 +4,6 @@ export class Note {
   isPinned: boolean = false;
   labels: string[] = [];
   index!: number;
-  fromCategory!: NoteCategory;
   createdAt!: Date;
   lastEditAt!: Date;
   color!: { name: string; valueLightTheme: string; valueDarkTheme: string };
@@ -13,11 +12,4 @@ export class Note {
     this.title = title;
     this.content = content;
   }
-}
-
-export enum NoteCategory {
-  notes = 'notes',
-  archive = 'archive',
-  bin = 'bin',
-  custom = 'custom',
 }

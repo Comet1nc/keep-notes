@@ -65,22 +65,24 @@
         .label {
           background-color: #EBEBEB;
 
-          svg {
-            fill: white;
+          .delete {
+            &:hover {
+              background-color: #d6d6d6;
+            }
           }
         }
+
+        .more-notes-info {
+          background-color: #EBEBEB;
+        }
       }
-
-
     }
   }
-
 }
 
 @mixin note-field-dark {
   app-note-field {
     .note {
-
       border-color: #4A4D51;
 
       &:hover {
@@ -137,14 +139,31 @@
       }
 
       .labels {
-
         .label {
+          background-color: #303030;
           border: solid 1px;
           border-color: #4A4D51;
-          background-color: #303030;
 
+          &:hover {
+            background-color: #303030;
 
+            svg {
+              fill: white;
+            }
+          }
+
+          .delete {
+            &:hover {
+              background-color: #424242;
+            }
+          }
         }
+      }
+
+      .more-notes-info {
+        background-color: #303030;
+        border: solid 1px;
+        border-color: #4A4D51;
       }
     }
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Note } from 'src/app/models/note.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -11,8 +11,6 @@ export class BinService {
   filled = false;
 
   notesContainer: Note[] = [];
-
-  myCategory: NoteCategory = NoteCategory.bin;
 
   constructor(private http: HttpClient) {
     this.onNotesChanged.subscribe(() => {
@@ -63,26 +61,13 @@ export class BinService {
     //
   }
 
-  deleteNote(note: Note, _exitArray?: Note[]) {
-    let exitArray = _exitArray;
-
-    if (exitArray !== undefined) {
-      // skipping
-    } else {
+  deleteNote(note: Note, exitArray?: Note[]) {
+    if (!exitArray) {
       exitArray = this.notesContainer;
     }
 
     let noteIndex = exitArray.indexOf(note);
-
-    if (exitArray.length === 1) {
-      exitArray.pop();
-    } else if (noteIndex === 0) {
-      exitArray.shift();
-    } else if (noteIndex + 1 === exitArray.length) {
-      exitArray.pop();
-    } else {
-      exitArray.splice(noteIndex, 1);
-    }
+    exitArray.splice(noteIndex, 1);
 
     this.saveNotes();
   }

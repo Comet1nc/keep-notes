@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Note, NoteCategory } from 'src/app/models/note.model';
+import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from './archive.service';
 import { BinService } from './bin.service';
 import { HttpClient } from '@angular/common/http';
@@ -9,13 +9,10 @@ import { HttpClient } from '@angular/common/http';
 export class NotesService {
   notesContainer: Note[] = [];
   notesContainerPinned: Note[] = [];
-  onNotesChanged = new Subject<void>();
   newNotesArrived = new Subject<void>();
 
   filled = false;
   canSearch = false;
-
-  myCategory!: NoteCategory;
 
   constructor(
     private archive: ArchiveService,
@@ -24,10 +21,6 @@ export class NotesService {
   ) {
     archive.unArchiveNote.subscribe(this.restoreNoteFn);
     bin.restoreNote.subscribe(this.restoreNoteFn);
-
-    this.onNotesChanged.subscribe(() => {
-      this.saveNotes();
-    });
   }
 
   addLabel(label: string, note: Note) {
@@ -51,15 +44,13 @@ export class NotesService {
   }
 
   restoreNoteFn = (note: Note) => {
-    if (note.fromCategory === this.myCategory) {
-      if (note.isPinned) {
-        this.saveNewNoteToPinned(note);
-      } else {
-        this.saveNewNoteToUnpinned(note);
-      }
-
-      this.saveNotes();
+    if (note.isPinned) {
+      this.saveNewNoteToPinned(note);
+    } else {
+      this.saveNewNoteToUnpinned(note);
     }
+
+    this.saveNotes();
   };
 
   loadData() {
@@ -90,28 +81,17 @@ export class NotesService {
     this.filled = true;
   }
 
-  deleteNote(note: Note, _exitArray?: Note[]) {
-    let exitArray = _exitArray;
-
-    if (exitArray !== undefined) {
-      // skipping
-    } else if (note.isPinned) {
-      exitArray = this.notesContainerPinned;
-    } else {
-      exitArray = this.notesContainer;
+  deleteNote(note: Note, exitArray?: Note[]) {
+    if (!exitArray) {
+      if (note.isPinned) {
+        exitArray = this.notesContainerPinned;
+      } else {
+        exitArray = this.notesContainer;
+      }
     }
 
     let noteIndex = exitArray.indexOf(note);
-
-    if (exitArray.length === 1) {
-      exitArray.pop();
-    } else if (noteIndex === 0) {
-      exitArray.shift();
-    } else if (noteIndex + 1 === exitArray.length) {
-      exitArray.pop();
-    } else {
-      exitArray.splice(noteIndex, 1);
-    }
+    exitArray.splice(noteIndex, 1);
 
     this.saveNotes();
   }
@@ -143,7 +123,6 @@ export class NotesService {
     this.notesContainerPinned.push(note);
 
     note.createdAt = new Date();
-    note.fromCategory = this.myCategory;
 
     this.saveNotes();
   }
@@ -152,7 +131,6 @@ export class NotesService {
     this.notesContainer.push(note);
 
     note.createdAt = new Date();
-    note.fromCategory = this.myCategory;
 
     this.saveNotes();
   }
