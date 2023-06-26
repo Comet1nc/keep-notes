@@ -5,6 +5,7 @@
 @use './app/shared-components/input-bar/input-bar.component.theme.scss' as input-bar;
 @use './app/shared-components/note-field/note-field.component.theme.scss' as note-field;
 @use './app/shared-components/edit-note/edit-note.component.theme.scss' as edit-note;
+@use './app/shared-components/buttons/note-action-buttons/btn-more-options/btn-more-options.component.theme.scss' as btn-more-options;
 
 @include mat.core();
 
@@ -32,6 +33,7 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
   @include note-field.note-field-light;
   @include edit-note.edit-note-light;
   @include edit-labels.edit-labels-light;
+  @include btn-more-options.btn-more-options-light;
 }
 
 .theme-dark {
@@ -42,6 +44,7 @@ $keep-notes-theme-dark: mat.define-dark-theme((color: (primary: $keep-notes-prim
   @include note-field.note-field-dark;
   @include edit-note.edit-note-dark;
   @include edit-labels.edit-labels-dark;
+  @include btn-more-options.btn-more-options-dark;
 }
 
 html,

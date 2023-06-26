@@ -21,6 +21,9 @@ import { SharedComponentsModule } from './shared-components/shared-components.mo
 import { NotesService } from './services/notes.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LabelService } from './services/label.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromApp from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { LabelService } from './services/label.service';
     SharedComponentsModule,
     AngularMaterialModule,
     HttpClientModule,
+    StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([]),
   ],
   providers: [
     NotesService,
