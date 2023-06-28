@@ -9,7 +9,10 @@ const initialState: State = {
   notes: [],
 };
 
-export function notesReducer(state, action: NotesActions.NotesActions) {
+export function notesReducer(
+  state = initialState,
+  action: NotesActions.NotesActions
+) {
   switch (action.type) {
     case NotesActions.SET_NOTES:
       return {

@@ -22,8 +22,11 @@ import { NotesService } from './services/notes.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LabelService } from './services/label.service';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import * as fromApp from './store/app.reducer';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { NotesEffects } from './store/notes-store/notes.effects';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,9 @@ import * as fromApp from './store/app.reducer';
     AngularMaterialModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([NotesEffects]),
+    StoreDevtoolsModule.instrument({ logOnly: isDevMode() }),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     NotesService,

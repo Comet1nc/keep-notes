@@ -24,8 +24,11 @@ export class LabelService {
       )
       .subscribe((labels: any) => {
         this.labels.splice(0);
-        for (let label of Object.values(labels)) {
-          this.labels.push(label as string);
+
+        if (labels) {
+          for (let label of Object.values(labels)) {
+            this.labels.push(label as string);
+          }
         }
       });
   }
