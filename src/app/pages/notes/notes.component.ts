@@ -5,6 +5,10 @@ import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { SearchService } from '../search/search.service';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
+import * as notesActions from '../../store/notes-store/notes.actions';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-notes',
@@ -15,6 +19,18 @@ export class NotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
 
+  pinnedNotes$ = this.store.select('notes').pipe(
+    map((data) => {
+      return data.notes.filter((note: Note) => note.isPinned);
+    })
+  );
+
+  notes$ = this.store.select('notes').pipe(
+    map((data) => {
+      return data.notes.filter((note: Note) => !note.isPinned);
+    })
+  );
+
   showEditMode = false;
   editModeNote!: Note;
 
@@ -23,7 +39,8 @@ export class NotesComponent implements OnInit {
     private editNoteService: EditNoteService,
     private searchService: SearchService,
     private archiveService: ArchiveService,
-    private binService: BinService
+    private binService: BinService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -45,8 +62,10 @@ export class NotesComponent implements OnInit {
     }
   }
 
-  addLabel(label: string, note: Note) {
-    this.notesService.addLabel(label, note);
+  addLabel(label: string, noteIndex: number) {
+    // this.notesService.addLabel(label, note);
+
+    this.store.dispatch(new notesActions.AddLabelToNote({ noteIndex, label }));
   }
 
   deleteLabel(label: string, note: Note) {
@@ -63,16 +82,34 @@ export class NotesComponent implements OnInit {
     this.binService.saveNewNote(note);
   }
 
-  togglePin(note: Note) {
-    this.notesService.togglePin(note);
+  togglePin(index: number) {
+    // this.notesService.togglePin(note);
+    // let newNote: Note = Object.assign(note);
+    // newNote.isPinned = !note.isPinned;
+
+    // this.store.dispatch(
+    //   new notesActions.UpdateNote({ index, newNote: newNote })
+    // );
+
+    this.store.dispatch(new notesActions.TogglePinNote(index));
+
+    this.store.dispatch(new notesActions.StoreNotes());
+
+    // console.log(note)
   }
 
   saveNewNote(note: Note) {
-    if (note.isPinned) {
-      this.notesService.saveNewNoteToPinned(note);
-    } else {
-      this.notesService.saveNewNoteToUnpinned(note);
-    }
+    // if (note.isPinned) {
+    //   this.notesService.saveNewNoteToPinned(note);
+    // } else {
+    //   this.notesService.saveNewNoteToUnpinned(note);
+    // }
+
+    note.createdAt = new Date();
+
+    this.store.dispatch(new notesActions.AddNote(note));
+
+    this.store.dispatch(new notesActions.StoreNotes());
   }
 
   notesChanged() {

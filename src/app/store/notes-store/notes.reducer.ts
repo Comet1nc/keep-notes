@@ -12,7 +12,7 @@ const initialState: State = {
 export function notesReducer(
   state = initialState,
   action: NotesActions.NotesActions
-) {
+): State {
   switch (action.type) {
     case NotesActions.SET_NOTES:
       return {
@@ -43,6 +43,43 @@ export function notesReducer(
         notes: state.notes.filter((note: Note, index: number) => {
           return index != action.payload;
         }), // filter return the new list so we dont need to mutate
+      };
+    case NotesActions.TOGGLE_PIN_NOTE:
+      const updatedPinNote: Note = {
+        ...state.notes[action.payload],
+        isPinned: !state.notes[action.payload].isPinned,
+      };
+
+      const notes = [...state.notes];
+      notes[action.payload] = updatedPinNote;
+
+      return {
+        ...state,
+        notes: notes,
+      };
+    case NotesActions.ADD_LABEL_TO_NOTE:
+      let updatedLabels;
+
+      if (state.notes[action.payload.noteIndex].labels) {
+        updatedLabels = [
+          ...state.notes[action.payload.noteIndex].labels,
+          action.payload.label,
+        ];
+      } else {
+        updatedLabels = [action.payload.label];
+      }
+
+      const noteWithNewLabel: Note = {
+        ...state.notes[action.payload.noteIndex],
+        labels: updatedLabels,
+      };
+
+      const resultNotes = [...state.notes];
+      resultNotes[action.payload.noteIndex] = noteWithNewLabel;
+
+      return {
+        ...state,
+        notes: resultNotes,
       };
     default:
       return state;

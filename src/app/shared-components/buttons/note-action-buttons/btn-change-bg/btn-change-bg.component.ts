@@ -1,14 +1,5 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { NoteColor, noteColors } from 'src/app/models/note-colors.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { noteColors } from 'src/app/models/note-colors.model';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';

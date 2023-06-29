@@ -34,7 +34,7 @@ export class NotesEffects {
         switchMap(([actionData, notesState]) => {
           return this.http.put(
             'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json',
-            notesState
+            notesState.notes
           );
         })
       );

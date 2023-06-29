@@ -4,11 +4,11 @@
   (onNotesChanged)="notesChanged()"
   (saveNotesToLocalStorage)="saveNotesToLocalStorage()"
 >
-  <app-btn-pin
+  <!-- <app-btn-pin
     [isNotePinned]="editModeNote.isPinned"
     (togglePin)="togglePin(editModeNote)"
     pin
-  ></app-btn-pin>
+  ></app-btn-pin> -->
   <app-btn-change-bg
     [note]="editModeNote"
     (saveData)="saveNotesToLocalStorage()"
@@ -23,16 +23,18 @@
   <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
 </div>
 <div class="notes-container">
-  <div class="category-type" *ngIf="pinnedNotes.length > 0">PINNED</div>
-  <div class="pinned-notes-container" *ngIf="pinnedNotes.length > 0">
+  <div class="category-type" *ngIf="(pinnedNotes$ | async).length > 0">
+    PINNED
+  </div>
+  <div class="pinned-notes-container" *ngIf="(pinnedNotes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of pinnedNotes; let i = index"
+      *ngFor="let note of pinnedNotes$ | async; let i = index"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
+        (togglePin)="togglePin(i)"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
@@ -44,21 +46,21 @@
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
         (onDeleteLabel)="deleteLabel($event, note)"
-        (onAddLabel)="addLabel($event, note)"
+        (onAddLabel)="addLabel($event, i)"
         [note]="note"
       ></app-btn-more-options>
     </app-note-field>
   </div>
-  <div class="category-type" *ngIf="pinnedNotes.length > 0">OTHERS</div>
-  <div class="unpinned-notes-container" *ngIf="notes.length > 0">
+  <div class="category-type" *ngIf="(notes$ | async).length > 0">OTHERS</div>
+  <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of notes"
+      *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
+        (togglePin)="togglePin(i)"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
@@ -70,7 +72,7 @@
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
         (onDeleteLabel)="deleteLabel($event, note)"
-        (onAddLabel)="addLabel($event, note)"
+        (onAddLabel)="addLabel($event, i)"
         [note]="note"
       ></app-btn-more-options>
     </app-note-field>
