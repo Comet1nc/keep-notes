@@ -30,7 +30,7 @@
     <app-note-field
       *ngFor="let note of pinnedNotes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, note)"
+      (onDeleteLabel)="deleteLabel($event, i)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
@@ -45,7 +45,7 @@
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
-        (onDeleteLabel)="deleteLabel($event, note)"
+        (onDeleteLabel)="deleteLabel($event, i)"
         (onAddLabel)="addLabel($event, i)"
         [note]="note"
       ></app-btn-more-options>
@@ -56,7 +56,7 @@
     <app-note-field
       *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, note)"
+      (onDeleteLabel)="deleteLabel($event, i)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
@@ -71,7 +71,7 @@
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
-        (onDeleteLabel)="deleteLabel($event, note)"
+        (onDeleteLabel)="deleteLabel($event, i)"
         (onAddLabel)="addLabel($event, i)"
         [note]="note"
       ></app-btn-more-options>

@@ -81,6 +81,23 @@ export function notesReducer(
         ...state,
         notes: resultNotes,
       };
+    case NotesActions.DELETE_LABEL_FROM_NOTE:
+      const labels = state.notes[action.payload.noteIndex].labels.filter(
+        (label) => label !== action.payload.label
+      );
+
+      const _note = {
+        ...state.notes[action.payload.noteIndex],
+        labels: labels,
+      };
+
+      const _resultNotes = [...state.notes];
+      _resultNotes[action.payload.noteIndex] = _note;
+
+      return {
+        ...state,
+        notes: _resultNotes,
+      };
     default:
       return state;
   }

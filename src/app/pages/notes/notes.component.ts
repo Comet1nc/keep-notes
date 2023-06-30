@@ -66,10 +66,18 @@ export class NotesComponent implements OnInit {
     // this.notesService.addLabel(label, note);
 
     this.store.dispatch(new notesActions.AddLabelToNote({ noteIndex, label }));
+
+    this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  deleteLabel(label: string, note: Note) {
-    this.notesService.deleteLabel(label, note);
+  deleteLabel(label: string, noteIndex: number) {
+    // this.notesService.deleteLabel(label, note);
+
+    this.store.dispatch(
+      new notesActions.DeleteLabelFromNote({ noteIndex, label })
+    );
+
+    this.store.dispatch(new notesActions.StoreNotes());
   }
 
   archiveNote(note: Note) {

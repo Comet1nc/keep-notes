@@ -9,6 +9,7 @@ export const DELETE_NOTE = '[NOTES] DELETE_NOTE';
 export const STORE_NOTES = '[NOTES] STORE_NOTES';
 export const TOGGLE_PIN_NOTE = '[NOTES] TOGGLE_PIN_NOTE';
 export const ADD_LABEL_TO_NOTE = '[NOTES] ADD_LABEL_TO_NOTE';
+export const DELETE_LABEL_FROM_NOTE = '[NOTES] DELETE_LABEL_FROM_NOTE';
 
 export class SetNotes implements Action {
   readonly type = SET_NOTES;
@@ -54,6 +55,12 @@ export class AddLabelToNote implements Action {
   constructor(public payload: { noteIndex: number; label: string }) {}
 }
 
+export class DeleteLabelFromNote implements Action {
+  readonly type = DELETE_LABEL_FROM_NOTE;
+
+  constructor(public payload: { noteIndex: number; label: string }) {}
+}
+
 export type NotesActions =
   | SetNotes
   | FetchNotes
@@ -62,4 +69,5 @@ export type NotesActions =
   | DeleteNote
   | StoreNotes
   | TogglePinNote
-  | AddLabelToNote;
+  | AddLabelToNote
+  | DeleteLabelFromNote;
