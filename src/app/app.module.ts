@@ -27,6 +27,7 @@ import { EffectsModule } from '@ngrx/effects';
 import * as fromApp from './store/app.reducer';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { NotesEffects } from './store/notes-store/notes.effects';
+import { LabelsEffects } from './store/labels-store/labels.effects';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { NotesEffects } from './store/notes-store/notes.effects';
     AngularMaterialModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([NotesEffects]),
+    EffectsModule.forRoot([NotesEffects, LabelsEffects]),
     StoreDevtoolsModule.instrument({ logOnly: isDevMode() }),
     StoreRouterConnectingModule.forRoot(),
   ],

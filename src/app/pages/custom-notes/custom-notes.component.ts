@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { combineLatest, filter, map, tap } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
+import * as fromApp from '../../store/app.reducer';
+import * as notesActions from '../../store/notes-store/notes.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-custom-notes',
@@ -15,7 +19,33 @@ export class CustomNotesComponent implements OnInit {
   pinnedNotes: Note[] = [];
   notes: Note[] = [];
 
-  customLabelName: string = '';
+  pinnedNotes$ = combineLatest([
+    this.activeRoute.params.pipe(map((params: Params) => params['name'])),
+    this.store.select('notes'),
+  ]).pipe(
+    map(([paramName, notesState]) => {
+      return notesState.notes.filter(
+        (note: Note) =>
+          note.isPinned &&
+          note.labels &&
+          note.labels.find((label) => label === paramName)
+      );
+    })
+  );
+
+  notes$ = combineLatest([
+    this.activeRoute.params.pipe(map((params: Params) => params['name'])),
+    this.store.select('notes'),
+  ]).pipe(
+    map(([paramName, notesState]) => {
+      return notesState.notes.filter(
+        (note: Note) =>
+          !note.isPinned &&
+          note.labels &&
+          note.labels.find((label) => label === paramName)
+      );
+    })
+  );
 
   showEditMode = false;
   editModeNote!: Note;
@@ -25,7 +55,8 @@ export class CustomNotesComponent implements OnInit {
     private editNoteService: EditNoteService,
     private activeRoute: ActivatedRoute,
     private archiveService: ArchiveService,
-    private binService: BinService
+    private binService: BinService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit(): void {
@@ -39,44 +70,46 @@ export class CustomNotesComponent implements OnInit {
       this.showEditMode = false;
     });
 
-    this.customLabelName = this.activeRoute.snapshot.params['name'];
+    // this.customLabelName = this.activeRoute.snapshot.params['name'];
 
     if (!this.notesService.filled) {
       this.notesService.loadData();
     }
 
-    this.getDataAndSetup(this.customLabelName);
+    // this.notes$.subscribe(console.log);
+
+    // this.getDataAndSetup(this.customLabelName);
 
     // subscribing to route changes
-    this.activeRoute.params.subscribe((params: Params) => {
-      this.customLabelName = params['name'];
-      //
-      this.getDataAndSetup(this.customLabelName);
-    });
+    // this.activeRoute.params.subscribe((params: Params) => {
+    //   this.customLabelName = params['name'];
+    //   //
+    //   this.getDataAndSetup(this.customLabelName);
+    // });
 
-    this.notesService.newNotesArrived.subscribe(() =>
-      this.getDataAndSetup(this.customLabelName)
-    );
+    // this.notesService.newNotesArrived.subscribe(() =>
+    //   this.getDataAndSetup(this.customLabelName)
+    // );
   }
 
-  getDataAndSetup(customLabelName: string) {
-    this.notes.splice(0);
-    this.pinnedNotes.splice(0);
+  // getDataAndSetup(customLabelName: string) {
+  //   this.notes.splice(0);
+  //   this.pinnedNotes.splice(0);
 
-    for (let note of this.notesService.notesContainer) {
-      if (!note.labels) continue;
-      if (note.labels.find((value: string) => value === customLabelName)) {
-        this.notes.push(note);
-      }
-    }
+  //   for (let note of this.notesService.notesContainer) {
+  //     if (!note.labels) continue;
+  //     if (note.labels.find((value: string) => value === customLabelName)) {
+  //       this.notes.push(note);
+  //     }
+  //   }
 
-    for (let note of this.notesService.notesContainerPinned) {
-      if (!note.labels) continue;
-      if (note?.labels.find((value: string) => value === customLabelName)) {
-        this.pinnedNotes.push(note);
-      }
-    }
-  }
+  //   for (let note of this.notesService.notesContainerPinned) {
+  //     if (!note.labels) continue;
+  //     if (note?.labels.find((value: string) => value === customLabelName)) {
+  //       this.pinnedNotes.push(note);
+  //     }
+  //   }
+  // }
 
   addLabel(label: string, note: Note) {
     this.notesService.addLabel(label, note);
@@ -85,33 +118,33 @@ export class CustomNotesComponent implements OnInit {
   deleteLabel(event: string, note: Note) {
     this.notesService.deleteLabel(event, note);
 
-    this.getDataAndSetup(this.customLabelName);
+    // this.getDataAndSetup(this.customLabelName);
   }
 
   archiveNote(note: Note) {
     this.notesService.deleteNote(note);
     this.archiveService.saveNewNote(note);
 
-    this.getDataAndSetup(this.customLabelName);
+    // this.getDataAndSetup(this.customLabelName);
   }
 
   deleteNote(note: Note) {
     this.notesService.deleteNote(note);
     this.binService.saveNewNote(note);
 
-    this.getDataAndSetup(this.customLabelName);
+    // this.getDataAndSetup(this.customLabelName);
   }
 
   togglePin(note: Note) {
     this.notesService.togglePin(note);
 
-    this.getDataAndSetup(this.customLabelName);
+    // this.getDataAndSetup(this.customLabelName);
   }
 
   saveNewNote(note: Note) {
-    if (this.customLabelName !== '') {
-      note.labels.push(this.customLabelName);
-    }
+    // if (this.customLabelName !== '') {
+    //   note.labels.push(this.customLabelName);
+    // }
 
     if (note.isPinned) {
       this.notesService.saveNewNoteToPinned(note);
@@ -119,7 +152,7 @@ export class CustomNotesComponent implements OnInit {
       this.notesService.saveNewNoteToUnpinned(note);
     }
 
-    this.getDataAndSetup(this.customLabelName);
+    // this.getDataAndSetup(this.customLabelName);
   }
 
   notesChanged() {

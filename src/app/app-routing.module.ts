@@ -35,6 +35,7 @@ const routes: Routes = [
       import('./pages/custom-notes/custom-notes.module').then(
         (m) => m.CustomNotesModule
       ),
+    resolve: [NotesResolverService],
   },
 ];
 
