@@ -9,6 +9,7 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
 import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import { Store } from '@ngrx/store';
+import { NoteColor } from 'src/app/models/note-colors.model';
 
 @Component({
   selector: 'app-custom-notes',
@@ -72,9 +73,9 @@ export class CustomNotesComponent implements OnInit {
 
     // this.customLabelName = this.activeRoute.snapshot.params['name'];
 
-    if (!this.notesService.filled) {
-      this.notesService.loadData();
-    }
+    // if (!this.notesService.filled) {
+    //   this.notesService.loadData();
+    // }
 
     // this.notes$.subscribe(console.log);
 
@@ -111,12 +112,28 @@ export class CustomNotesComponent implements OnInit {
   //   }
   // }
 
-  addLabel(label: string, note: Note) {
-    this.notesService.addLabel(label, note);
+  setNoteColor(color: NoteColor, noteIndex: number) {
+    this.store.dispatch(new notesActions.UpdateNoteColor({ noteIndex, color }));
+
+    this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  deleteLabel(event: string, note: Note) {
-    this.notesService.deleteLabel(event, note);
+  addLabel(label: string, noteIndex: number) {
+    // this.notesService.addLabel(label, note);
+
+    this.store.dispatch(new notesActions.AddLabelToNote({ noteIndex, label }));
+
+    this.store.dispatch(new notesActions.StoreNotes());
+  }
+
+  deleteLabel(label: string, noteIndex: number) {
+    // this.notesService.deleteLabel(event, note);
+
+    this.store.dispatch(
+      new notesActions.DeleteLabelFromNote({ noteIndex, label })
+    );
+
+    this.store.dispatch(new notesActions.StoreNotes());
 
     // this.getDataAndSetup(this.customLabelName);
   }
@@ -135,22 +152,34 @@ export class CustomNotesComponent implements OnInit {
     // this.getDataAndSetup(this.customLabelName);
   }
 
-  togglePin(note: Note) {
-    this.notesService.togglePin(note);
+  togglePin(noteIndex: number) {
+    // this.notesService.togglePin(note);
+
+    this.store.dispatch(new notesActions.TogglePinNote(noteIndex));
+
+    this.store.dispatch(new notesActions.StoreNotes());
 
     // this.getDataAndSetup(this.customLabelName);
   }
 
   saveNewNote(note: Note) {
-    // if (this.customLabelName !== '') {
-    //   note.labels.push(this.customLabelName);
+    // if (note.isPinned) {
+    //   this.notesService.saveNewNoteToPinned(note);
+    // } else {
+    //   this.notesService.saveNewNoteToUnpinned(note);
     // }
 
-    if (note.isPinned) {
-      this.notesService.saveNewNoteToPinned(note);
-    } else {
-      this.notesService.saveNewNoteToUnpinned(note);
+    const newLabel: string = this.activeRoute.snapshot.params['name'];
+
+    if (newLabel !== '') {
+      note.labels.push(newLabel);
     }
+
+    note.createdAt = new Date();
+
+    this.store.dispatch(new notesActions.AddNote(note));
+
+    this.store.dispatch(new notesActions.StoreNotes());
 
     // this.getDataAndSetup(this.customLabelName);
   }

@@ -98,6 +98,19 @@ export function notesReducer(
         ...state,
         notes: _resultNotes,
       };
+    case NotesActions.UPDATE_NOTE_COLOR:
+      const updatedNoteWithColor: Note = {
+        ...state.notes[action.payload.noteIndex],
+        color: action.payload.color,
+      };
+
+      const notes_ = [...state.notes];
+      notes_[action.payload.noteIndex] = updatedNoteWithColor;
+
+      return {
+        ...state,
+        notes: notes_,
+      };
     default:
       return state;
   }

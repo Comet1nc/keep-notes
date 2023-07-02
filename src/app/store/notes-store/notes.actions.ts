@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { NoteColor } from 'src/app/models/note-colors.model';
 import { Note } from 'src/app/models/note.model';
 
 export const SET_NOTES = '[NOTES] SET_NOTES';
@@ -10,6 +11,7 @@ export const STORE_NOTES = '[NOTES] STORE_NOTES';
 export const TOGGLE_PIN_NOTE = '[NOTES] TOGGLE_PIN_NOTE';
 export const ADD_LABEL_TO_NOTE = '[NOTES] ADD_LABEL_TO_NOTE';
 export const DELETE_LABEL_FROM_NOTE = '[NOTES] DELETE_LABEL_FROM_NOTE';
+export const UPDATE_NOTE_COLOR = '[NOTES] UPDATE_NOTE_COLOR';
 
 export class SetNotes implements Action {
   readonly type = SET_NOTES;
@@ -61,6 +63,12 @@ export class DeleteLabelFromNote implements Action {
   constructor(public payload: { noteIndex: number; label: string }) {}
 }
 
+export class UpdateNoteColor implements Action {
+  readonly type = UPDATE_NOTE_COLOR;
+
+  constructor(public payload: { noteIndex: number; color: NoteColor }) {}
+}
+
 export type NotesActions =
   | SetNotes
   | FetchNotes
@@ -70,4 +78,5 @@ export type NotesActions =
   | StoreNotes
   | TogglePinNote
   | AddLabelToNote
-  | DeleteLabelFromNote;
+  | DeleteLabelFromNote
+  | UpdateNoteColor;

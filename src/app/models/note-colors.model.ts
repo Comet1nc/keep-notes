@@ -1,4 +1,4 @@
-export const noteColors = [
+export const noteColors: NoteColor[] = [
   { name: 'red', valueLightTheme: '#F28B82', valueDarkTheme: '#5C2B29' },
   { name: 'green', valueLightTheme: '#CCFF90', valueDarkTheme: '#345920' },
   { name: 'yellow', valueLightTheme: '#FFF475', valueDarkTheme: '#635D19' },

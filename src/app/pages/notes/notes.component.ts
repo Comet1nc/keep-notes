@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import { map } from 'rxjs';
+import { NoteColor } from 'src/app/models/note-colors.model';
 
 @Component({
   selector: 'app-notes',
@@ -62,6 +63,12 @@ export class NotesComponent implements OnInit {
     }
   }
 
+  setNoteColor(color: NoteColor, noteIndex: number) {
+    this.store.dispatch(new notesActions.UpdateNoteColor({ noteIndex, color }));
+
+    this.store.dispatch(new notesActions.StoreNotes());
+  }
+
   addLabel(label: string, noteIndex: number) {
     // this.notesService.addLabel(label, note);
 
@@ -90,7 +97,7 @@ export class NotesComponent implements OnInit {
     this.binService.saveNewNote(note);
   }
 
-  togglePin(index: number) {
+  togglePin(noteIndex: number) {
     // this.notesService.togglePin(note);
     // let newNote: Note = Object.assign(note);
     // newNote.isPinned = !note.isPinned;
@@ -99,7 +106,7 @@ export class NotesComponent implements OnInit {
     //   new notesActions.UpdateNote({ index, newNote: newNote })
     // );
 
-    this.store.dispatch(new notesActions.TogglePinNote(index));
+    this.store.dispatch(new notesActions.TogglePinNote(noteIndex));
 
     this.store.dispatch(new notesActions.StoreNotes());
 

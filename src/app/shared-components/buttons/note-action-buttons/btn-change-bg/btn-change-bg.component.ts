@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { noteColors } from 'src/app/models/note-colors.model';
+import { NoteColor, noteColors } from 'src/app/models/note-colors.model';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
@@ -12,6 +12,7 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
 export class BtnChangeBgComponent implements OnInit {
   @Input() note!: Note;
   @Output() saveData = new EventEmitter<void>();
+  @Output() setNoteColor = new EventEmitter<NoteColor>();
 
   currentTheme: Theme = Theme.light;
   colors = noteColors;
@@ -33,9 +34,10 @@ export class BtnChangeBgComponent implements OnInit {
   }
 
   setBg(color: any) {
-    this.note.color = color;
+    // this.note.color = color;
 
-    this.saveData.emit();
+    // this.saveData.emit();
+    this.setNoteColor.emit(color);
 
     this.editNoteService.onBgChanged.next();
   }

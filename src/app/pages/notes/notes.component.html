@@ -39,7 +39,7 @@
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
+        (setNoteColor)="setNoteColor($event, i)"
       ></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
@@ -65,7 +65,7 @@
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
+        (setNoteColor)="setNoteColor($event, i)"
       ></app-btn-change-bg>
       <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
