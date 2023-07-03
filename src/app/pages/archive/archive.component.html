@@ -16,9 +16,9 @@
   ></app-btn-more-options
 ></app-edit-note>
 <div class="notes-container">
-  <div class="unpinned-notes-container" *ngIf="notes.length > 0">
+  <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of notes"
+      *ngFor="let note of notes$ | async"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note)"
     >

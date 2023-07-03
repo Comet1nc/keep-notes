@@ -5,14 +5,15 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Note } from '../models/note.model';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import * as NotesActions from '../store/notes-store/notes.actions';
+import * as ArchivedNotesActions from '../store/archive-store/archive.actions';
 import { Actions, ofType } from '@ngrx/effects';
-import { Observable, map, of, switchMap, take } from 'rxjs';
+import { Observable, combineLatest, map, of, switchMap, take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class NotesResolverService implements Resolve<Note[]> {
+export class NotesResolverService implements Resolve<Note[][]> {
   constructor(
     private store: Store<fromApp.AppState>,
     private actions$: Actions
@@ -21,19 +22,37 @@ export class NotesResolverService implements Resolve<Note[]> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Note[] | Observable<Note[]> {
-    return this.store.select('notes').pipe(
+  ): Note[][] | Observable<Note[][]> {
+    return combineLatest([
+      this.store.select('notes'),
+      this.store.select('archivedNotes'),
+    ]).pipe(
       take(1),
-      map((notesState) => {
-        return notesState.notes;
+      map(([notesState, archivedNotesState]) => {
+        return [notesState.notes, archivedNotesState.archivedNotes];
       }),
-      switchMap((notes) => {
-        if (notes.length === 0) {
-          this.store.dispatch(new NotesActions.FetchNotes());
+      switchMap(([notes, archivedNotes]) => {
+        const actionsToDispatch: Action[] = [];
 
-          return this.actions$.pipe(ofType(NotesActions.SET_NOTES), take(1));
+        if (notes.length === 0) {
+          actionsToDispatch.push(new NotesActions.FetchNotes());
+        }
+
+        if (archivedNotes.length === 0) {
+          actionsToDispatch.push(new ArchivedNotesActions.FetchNotes());
+        }
+
+        if (actionsToDispatch.length > 0) {
+          for (let action of actionsToDispatch) {
+            this.store.dispatch(action);
+          }
+
+          return this.actions$.pipe(
+            ofType(NotesActions.SET_NOTES, ArchivedNotesActions.SET_NOTES),
+            take(1)
+          );
         } else {
-          return of(notes);
+          return of([notes, archivedNotes]);
         }
       })
     );

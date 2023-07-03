@@ -8,6 +8,7 @@ import { SearchService } from '../search/search.service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
+import * as archivedNotesActions from '../../store/archive-store/archive.actions';
 import { map } from 'rxjs';
 import { NoteColor } from 'src/app/models/note-colors.model';
 
@@ -87,9 +88,12 @@ export class NotesComponent implements OnInit {
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  archiveNote(note: Note) {
-    this.notesService.deleteNote(note);
-    this.archiveService.saveNewNote(note);
+  archiveNote(note: Note, noteIndex: number) {
+    // this.notesService.deleteNote(note);
+    // this.archiveService.saveNewNote(note);
+
+    this.store.dispatch(new archivedNotesActions.AddNote(note));
+    this.store.dispatch(new notesActions.DeleteNote(noteIndex));
   }
 
   deleteNote(note: Note) {

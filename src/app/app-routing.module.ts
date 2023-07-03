@@ -23,6 +23,7 @@ const routes: Routes = [
     path: 'archive',
     loadChildren: () =>
       import('./pages/archive/archive.module').then((m) => m.ArchiveModule),
+    resolve: [NotesResolverService],
   },
   {
     path: 'search',

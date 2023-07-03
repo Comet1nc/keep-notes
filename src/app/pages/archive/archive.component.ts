@@ -4,6 +4,11 @@ import { ArchiveService } from 'src/app/services/archive.service';
 import { BinService } from 'src/app/services/bin.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { SearchService } from '../search/search.service';
+import * as ArchivedNotesActions from '../../store/archive-store/archive.actions';
+import * as fromApp from '../../store/app.reducer';
+import { Store } from '@ngrx/store';
+import { NoteColor } from 'src/app/models/note-colors.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-archive',
@@ -12,6 +17,9 @@ import { SearchService } from '../search/search.service';
 })
 export class ArchiveComponent implements OnInit {
   notes: Note[] = [];
+  notes$ = this.store
+    .select('archivedNotes')
+    .pipe(map((state) => state.archivedNotes));
 
   showEditMode = false;
   editModeNote!: Note;
@@ -22,7 +30,8 @@ export class ArchiveComponent implements OnInit {
     private editNoteService: EditNoteService,
     private archiveService: ArchiveService,
     private searchService: SearchService,
-    private binService: BinService
+    private binService: BinService,
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit(): void {
