@@ -13,7 +13,7 @@
     [note]="editModeNote"
     (saveData)="saveNotes()"
   ></app-btn-change-bg>
-  <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive>
+  <!-- <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive> -->
   <app-btn-draw></app-btn-draw>
   <app-btn-more-options
     (deleteNote)="deleteNote(editModeNote)"
@@ -41,7 +41,7 @@
         [note]="note"
         (setNoteColor)="setNoteColor($event, i)"
       ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-archive (archiveNote)="archiveNote(note, i)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
@@ -67,7 +67,7 @@
         [note]="note"
         (setNoteColor)="setNoteColor($event, i)"
       ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-archive (archiveNote)="archiveNote(note, i)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"

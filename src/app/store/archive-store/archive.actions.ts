@@ -8,6 +8,9 @@ export const ADD_NOTE = '[ARCHIVED_NOTES] ADD_NOTE';
 export const UPDATE_NOTE = '[ARCHIVED_NOTES] UPDATE_NOTE';
 export const DELETE_NOTE = '[ARCHIVED_NOTES] DELETE_NOTE';
 export const STORE_NOTES = '[ARCHIVED_NOTES] STORE_NOTES';
+export const ADD_LABEL_TO_NOTE = '[ARCHIVED_NOTES] ADD_LABEL_TO_NOTE';
+export const DELETE_LABEL_FROM_NOTE = '[ARCHIVED_NOTES] DELETE_LABEL_FROM_NOTE';
+export const UPDATE_NOTE_COLOR = '[ARCHIVED_NOTES] UPDATE_NOTE_COLOR';
 
 export class SetNotes implements Action {
   readonly type = SET_NOTES;
@@ -41,10 +44,31 @@ export class StoreNotes implements Action {
   readonly type = STORE_NOTES;
 }
 
+export class AddLabelToNote implements Action {
+  readonly type = ADD_LABEL_TO_NOTE;
+
+  constructor(public payload: { noteIndex: number; label: string }) {}
+}
+
+export class DeleteLabelFromNote implements Action {
+  readonly type = DELETE_LABEL_FROM_NOTE;
+
+  constructor(public payload: { noteIndex: number; label: string }) {}
+}
+
+export class UpdateNoteColor implements Action {
+  readonly type = UPDATE_NOTE_COLOR;
+
+  constructor(public payload: { noteIndex: number; color: NoteColor }) {}
+}
+
 export type ArchivedNotesActions =
   | SetNotes
   | FetchNotes
   | AddNote
   | UpdateNote
   | DeleteNote
-  | StoreNotes;
+  | StoreNotes
+  | AddLabelToNote
+  | DeleteLabelFromNote
+  | UpdateNoteColor;

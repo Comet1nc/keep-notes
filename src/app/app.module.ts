@@ -29,6 +29,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { NotesEffects } from './store/notes-store/notes.effects';
 import { LabelsEffects } from './store/labels-store/labels.effects';
 import { ArchivedNotesEffects } from './store/archive-store/archive.effects';
+import { DeletedNotesEffects } from './store/bin-store/bin.effects';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,12 @@ import { ArchivedNotesEffects } from './store/archive-store/archive.effects';
     AngularMaterialModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([NotesEffects, LabelsEffects, ArchivedNotesEffects]),
+    EffectsModule.forRoot([
+      NotesEffects,
+      LabelsEffects,
+      ArchivedNotesEffects,
+      DeletedNotesEffects,
+    ]),
     StoreDevtoolsModule.instrument({ logOnly: isDevMode() }),
     StoreRouterConnectingModule.forRoot(),
   ],

@@ -94,6 +94,9 @@ export class NotesComponent implements OnInit {
 
     this.store.dispatch(new archivedNotesActions.AddNote(note));
     this.store.dispatch(new notesActions.DeleteNote(noteIndex));
+
+    this.store.dispatch(new archivedNotesActions.StoreNotes());
+    this.store.dispatch(new notesActions.StoreNotes());
   }
 
   deleteNote(note: Note) {

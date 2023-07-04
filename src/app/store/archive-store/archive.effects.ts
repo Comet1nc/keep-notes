@@ -19,7 +19,7 @@ export class ArchivedNotesEffects {
           );
         }),
         map((notes) => {
-          return new ArchivedNotesActions.SetNotes(notes);
+          return new ArchivedNotesActions.SetNotes(notes ? notes : []);
         })
       );
     },

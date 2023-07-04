@@ -5,36 +5,36 @@ import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 import * as fromApp from '../app.reducer';
-import * as NotesActions from './notes.actions';
+import * as DeletedNotesActions from './bin.actions';
 
 @Injectable()
-export class NotesEffects {
-  fetchNotes = createEffect(
+export class DeletedNotesEffects {
+  fetchDeletedNotes = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(NotesActions.FETCH_NOTES),
+        ofType(DeletedNotesActions.FETCH_NOTES),
         switchMap(() => {
           return this.http.get<Note[]>(
-            'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json'
+            'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/bin.json'
           );
         }),
         map((notes) => {
-          return new NotesActions.SetNotes(notes ? notes : []);
+          return new DeletedNotesActions.SetNotes(notes ? notes : []);
         })
       );
     },
     { dispatch: true }
   );
 
-  storeNotes = createEffect(
+  storeDeletedNotes = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(NotesActions.STORE_NOTES),
-        withLatestFrom(this.store.select('notes')),
+        ofType(DeletedNotesActions.STORE_NOTES),
+        withLatestFrom(this.store.select('deletedNotes')),
         switchMap(([actionData, notesState]) => {
           return this.http.put(
-            'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/notes.json',
-            notesState.notes
+            'https://keep-notes-f33db-default-rtdb.europe-west1.firebasedatabase.app/bin.json',
+            notesState.deletedNotes
           );
         })
       );

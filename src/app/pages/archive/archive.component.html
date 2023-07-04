@@ -3,13 +3,13 @@
   [activeNote]="editModeNote"
   (onNotesChanged)="notesChanged()"
 >
-  <app-btn-change-bg
+  <!-- <app-btn-change-bg
     [note]="editModeNote"
     (saveData)="saveNotesToLocalStorage()"
-  ></app-btn-change-bg>
-  <app-btn-unarchive
+  ></app-btn-change-bg> -->
+  <!-- <app-btn-unarchive
     (unarchiveEvent)="unarchive(editModeNote)"
-  ></app-btn-unarchive>
+  ></app-btn-unarchive> -->
   <app-btn-draw></app-btn-draw>
   <app-btn-more-options
     (deleteNote)="deleteNote(editModeNote)"
@@ -18,20 +18,22 @@
 <div class="notes-container">
   <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of notes$ | async"
+      *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, note)"
+      (onDeleteLabel)="deleteLabel($event, i)"
     >
       <app-btn-change-bg
         [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
+        (setNoteColor)="setNoteColor($event, i)"
       ></app-btn-change-bg>
-      <app-btn-unarchive (unarchiveEvent)="unarchive(note)"></app-btn-unarchive>
+      <app-btn-unarchive
+        (unarchiveEvent)="unarchive(note, i)"
+      ></app-btn-unarchive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
         (deleteNote)="deleteNote(note)"
-        (onDeleteLabel)="deleteLabel($event, note)"
-        (onAddLabel)="addLabel($event, note)"
+        (onDeleteLabel)="deleteLabel($event, i)"
+        (onAddLabel)="addLabel($event, i)"
         [note]="note"
       ></app-btn-more-options>
     </app-note-field>

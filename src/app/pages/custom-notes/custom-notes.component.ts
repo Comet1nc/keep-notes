@@ -8,6 +8,7 @@ import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
+import * as archivedNotesActions from '../../store/archive-store/archive.actions';
 import { Store } from '@ngrx/store';
 import { NoteColor } from 'src/app/models/note-colors.model';
 
@@ -138,9 +139,15 @@ export class CustomNotesComponent implements OnInit {
     // this.getDataAndSetup(this.customLabelName);
   }
 
-  archiveNote(note: Note) {
-    this.notesService.deleteNote(note);
-    this.archiveService.saveNewNote(note);
+  archiveNote(note: Note, noteIndex: number) {
+    // this.notesService.deleteNote(note);
+    // this.archiveService.saveNewNote(note);
+
+    this.store.dispatch(new archivedNotesActions.AddNote(note));
+    this.store.dispatch(new notesActions.DeleteNote(noteIndex));
+
+    this.store.dispatch(new archivedNotesActions.StoreNotes());
+    this.store.dispatch(new notesActions.StoreNotes());
 
     // this.getDataAndSetup(this.customLabelName);
   }
