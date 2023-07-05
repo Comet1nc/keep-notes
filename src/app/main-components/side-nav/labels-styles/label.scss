@@ -1,60 +1,54 @@
-@mixin label {
-  .label {
+.label {
+  button {
+    padding-left: 7px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    border-radius: 50%;
+    transition: width 0.3s ease-in-out;
+    transition: border-radius 0.1s;
 
+    svg {
+      padding: 0 14px;
+      -webkit-flex-shrink: 0;
+      flex-shrink: 0;
+    }
+
+    span {
+      font-family: Roboto;
+      font-weight: 500;
+      font-size: 20px;
+      margin-left: 20px;
+      white-space: nowrap;
+      position: absolute;
+      left: 80px;
+    }
+  }
+
+  &.sideNavIsOpened {
     button {
-      padding-left: 7px;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      display: flex;
-      // background-color: #feefc3;
-      border-radius: 50%;
-      transition: width 0.3s ease-in-out;
-
-      transition: border-radius 0.1s;
-
-      svg {
-        padding: 0 14px;
-        -webkit-flex-shrink: 0;
-        flex-shrink: 0;
-
-      }
+      width: 100%;
+      padding-left: 13px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
 
       span {
-        font-family: Roboto;
-        font-weight: 500;
-        font-size: 20px;
-        margin-left: 20px;
+        max-width: 160px;
+        text-overflow: ellipsis;
         white-space: nowrap;
-        position: absolute;
-        left: 80px;
+        overflow: hidden;
       }
     }
+  }
 
-    &.sideNavIsOpened {
-      button {
-        width: 100%;
-        padding-left: 13px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-top-right-radius: 50px;
-        border-bottom-right-radius: 50px;
-
-        span {
-          max-width: 160px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
-        }
-      }
-    }
-
-    &.sideNavIsClosed {
-      button {
-        margin-left: 6px;
-        width: calc(100% - 15px);
-        transition-delay: 0.35s;
-        transition-property: border-radius, margin-left, padding-left;
-      }
+  &.sideNavIsClosed {
+    button {
+      margin-left: 6px;
+      width: calc(100% - 15px);
+      transition-delay: 0.35s;
+      transition-property: border-radius, margin-left, padding-left;
     }
   }
 }

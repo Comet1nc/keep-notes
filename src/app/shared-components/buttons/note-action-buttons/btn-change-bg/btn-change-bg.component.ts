@@ -11,7 +11,6 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
 })
 export class BtnChangeBgComponent implements OnInit {
   @Input() note!: Note;
-  @Output() saveData = new EventEmitter<void>();
   @Output() setNoteColor = new EventEmitter<NoteColor>();
 
   currentTheme: Theme = Theme.light;
@@ -34,9 +33,6 @@ export class BtnChangeBgComponent implements OnInit {
   }
 
   setBg(color: any) {
-    // this.note.color = color;
-
-    // this.saveData.emit();
     this.setNoteColor.emit(color);
 
     this.editNoteService.onBgChanged.next();

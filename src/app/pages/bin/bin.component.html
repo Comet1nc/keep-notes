@@ -4,27 +4,27 @@
   [canEditNote]="canEditNote"
   (onNotesChanged)="notesChanged()"
 >
-  <app-btn-delete-forever
+  <!-- <app-btn-delete-forever
     (deleteForeverEvent)="deleteForever(editModeNote)"
-  ></app-btn-delete-forever>
-  <app-btn-restore
+  ></app-btn-delete-forever> -->
+  <!-- <app-btn-restore
     (restoreFromBinEvent)="restoreFromBin(editModeNote)"
-  ></app-btn-restore
-></app-edit-note>
+  ></app-btn-restore> -->
+</app-edit-note>
 <div class="container">
   <button class="empty-bin" (click)="clearBin()">Empty bin</button>
   <div class="notes-container">
     <div class="unpinned-notes-container">
       <app-note-field
-        *ngFor="let note of notes"
+        *ngFor="let note of notes$ | async; let i = index"
         [note]="note"
-        (onDeleteLabel)="deleteLabel($event, note)"
+        (onDeleteLabel)="deleteLabel($event, i)"
       >
         <app-btn-delete-forever
-          (deleteForeverEvent)="deleteForever(note)"
+          (deleteForeverEvent)="deleteForever(i)"
         ></app-btn-delete-forever>
         <app-btn-restore
-          (restoreFromBinEvent)="restoreFromBin(note)"
+          (restoreFromBinEvent)="restoreFromBin(note, i)"
         ></app-btn-restore>
       </app-note-field>
     </div>

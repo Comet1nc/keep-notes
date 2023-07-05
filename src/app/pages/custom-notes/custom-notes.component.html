@@ -2,23 +2,22 @@
   *ngIf="showEditMode"
   [activeNote]="editModeNote"
   (onNotesChanged)="notesChanged()"
-  (saveNotesToLocalStorage)="saveNotes()"
 >
   <!-- <app-btn-pin
     [isNotePinned]="editModeNote.isPinned"
     (togglePin)="togglePin(editModeNote)"
     pin
   ></app-btn-pin> -->
-  <app-btn-change-bg
+  <!-- <app-btn-change-bg
     [note]="editModeNote"
     (saveData)="saveNotes()"
-  ></app-btn-change-bg>
+  ></app-btn-change-bg> -->
   <!-- <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive> -->
   <app-btn-draw></app-btn-draw>
-  <app-btn-more-options
+  <!-- <app-btn-more-options
     (deleteNote)="deleteNote(editModeNote)"
-  ></app-btn-more-options
-></app-edit-note>
+  ></app-btn-more-options> -->
+</app-edit-note>
 <div class="input-container">
   <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
 </div>
@@ -44,7 +43,7 @@
       <app-btn-archive (archiveNote)="archiveNote(note, i)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
+        (deleteNote)="deleteNote(note, i)"
         (onDeleteLabel)="deleteLabel($event, i)"
         (onAddLabel)="addLabel($event, i)"
         [note]="note"
@@ -70,7 +69,7 @@
       <app-btn-archive (archiveNote)="archiveNote(note, i)"></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
+        (deleteNote)="deleteNote(note, i)"
         (onDeleteLabel)="deleteLabel($event, i)"
         (onAddLabel)="addLabel($event, i)"
         [note]="note"

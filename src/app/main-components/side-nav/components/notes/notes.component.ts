@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'side-nav-notes',
   templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.scss'],
+  styleUrls: ['../../labels-styles/label.scss'],
 })
 export class NotesComponent {
   @Input() isSideNavOpened = false;

@@ -18,6 +18,7 @@ const routes: Routes = [
     path: 'bin',
     loadChildren: () =>
       import('./pages/bin/bin.module').then((m) => m.BinModule),
+    resolve: [NotesResolverService],
   },
   {
     path: 'archive',

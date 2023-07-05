@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'side-nav-bin',
   templateUrl: './bin.component.html',
-  styleUrls: ['./bin.component.scss'],
+  styleUrls: ['../../labels-styles/label.scss'],
 })
 export class BinComponent {
   @Input() isSideNavOpened = false;

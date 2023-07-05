@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
-import { BinService } from 'src/app/services/bin.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
-import { SearchService } from '../search/search.service';
+import * as deletedNotesActions from '../../store/bin-store/bin.actions';
+import * as notesActions from '../../store/notes-store/notes.actions';
+import * as fromApp from '../../store/app.reducer';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-bin',
@@ -10,7 +13,9 @@ import { SearchService } from '../search/search.service';
   styleUrls: ['./bin.component.scss'],
 })
 export class BinComponent {
-  notes: Note[] = [];
+  notes$ = this.store
+    .select('deletedNotes')
+    .pipe(map((notesState) => notesState.deletedNotes));
 
   showEditMode = false;
   editModeNote!: Note;
@@ -19,15 +24,10 @@ export class BinComponent {
 
   constructor(
     private editNoteService: EditNoteService,
-    private binService: BinService,
-    private searchService: SearchService
+    private store: Store<fromApp.AppState>
   ) {}
 
   ngOnInit(): void {
-    if (!this.binService.filled) {
-      this.binService.loadData();
-    }
-
     this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
       this.showEditMode = true;
 
@@ -37,30 +37,33 @@ export class BinComponent {
     this.editNoteService.onCloseEditMode.subscribe(() => {
       this.showEditMode = false;
     });
-
-    this.notes = this.binService.notesContainer;
   }
 
-  deleteLabel(event: string, note: Note) {
-    this.binService.deleteLabel(event, note);
+  deleteLabel(label: string, noteIndex: number) {
+    this.store.dispatch(
+      new deletedNotesActions.DeleteLabelFromNote({ noteIndex, label })
+    );
   }
 
   clearBin() {
-    this.notes = [];
-    this.binService.clear();
+    this.store.dispatch(new deletedNotesActions.DeleteAllNotes());
+    this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 
   notesChanged() {
-    this.binService.onNotesChanged.next();
+    // this.binService.onNotesChanged.next();
   }
 
-  deleteForever(note: Note) {
-    this.binService.deleteNote(note);
+  deleteForever(noteIndex: number) {
+    this.store.dispatch(new deletedNotesActions.DeleteNote(noteIndex));
+    this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 
-  restoreFromBin(note: Note) {
-    this.binService.deleteNote(note);
+  restoreFromBin(note: Note, noteIndex: number) {
+    this.store.dispatch(new notesActions.AddNote(note));
+    this.store.dispatch(new deletedNotesActions.DeleteNote(noteIndex));
 
-    this.binService.restoreNote.next(note);
+    this.store.dispatch(new notesActions.StoreNotes());
+    this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 }

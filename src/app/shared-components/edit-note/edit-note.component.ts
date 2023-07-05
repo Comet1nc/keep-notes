@@ -13,6 +13,8 @@ import {
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from './edit-note.service';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-edit-note',
@@ -55,6 +57,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   @Input() activeNote!: Note;
   @Input() canEditNote = false;
+  @Input() store: Store<fromApp.AppState>;
 
   @Output() onNotesChanged = new EventEmitter<void>();
   @Output() saveNotesToLocalStorage = new EventEmitter<void>();

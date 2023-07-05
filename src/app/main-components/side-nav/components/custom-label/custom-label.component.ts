@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'side-nav-custom-label',
   templateUrl: './custom-label.component.html',
-  styleUrls: ['./custom-label.component.scss'],
+  styleUrls: ['../../labels-styles/label.scss'],
 })
 export class CustomLabelComponent {
   @Input() isSideNavOpened = false;

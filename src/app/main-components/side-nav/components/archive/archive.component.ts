@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'side-nav-archive',
   templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss'],
+  styleUrls: ['../../labels-styles/label.scss'],
 })
 export class ArchiveComponent {
   @Input() isSideNavOpened = false;

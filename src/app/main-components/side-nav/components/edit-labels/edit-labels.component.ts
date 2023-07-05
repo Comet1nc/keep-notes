@@ -4,7 +4,7 @@ import { LabelService } from 'src/app/services/label.service';
 @Component({
   selector: 'side-nav-edit-labels',
   templateUrl: './edit-labels.component.html',
-  styleUrls: ['./edit-labels.component.scss'],
+  styleUrls: ['../../labels-styles/label.scss'],
 })
 export class EditLabelsComponent {
   @Input() isSideNavOpened = false;
