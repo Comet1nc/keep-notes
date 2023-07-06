@@ -29,24 +29,17 @@ export class NotesComponent implements OnInit {
   );
 
   showEditMode = false;
-  editModeNote!: Note;
+  noteForEdit!: Note;
+  noteForEditIndex!: number;
 
-  constructor(
-    private notesService: NotesService,
-    private editNoteService: EditNoteService,
-    private store: Store<fromApp.AppState>
-  ) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
-  ngOnInit(): void {
-    this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
-      this.showEditMode = true;
+  ngOnInit(): void {}
 
-      this.editModeNote = note;
-    });
-
-    this.editNoteService.onCloseEditMode.subscribe(() => {
-      this.showEditMode = false;
-    });
+  startEditNote(note: Note, noteIndex: number) {
+    this.noteForEdit = note;
+    this.noteForEditIndex = noteIndex;
+    this.showEditMode = true;
   }
 
   setNoteColor(color: NoteColor, noteIndex: number) {
@@ -95,7 +88,12 @@ export class NotesComponent implements OnInit {
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  notesChanged() {
-    this.notesService.saveNotes();
+  updateNote(newNote: Note) {
+    this.store.dispatch(
+      new notesActions.UpdateNote({ index: this.noteForEditIndex, newNote })
+    );
+    this.store.dispatch(new notesActions.StoreNotes());
+
+    this.showEditMode = false;
   }
 }

@@ -1,7 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Subject, debounceTime } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  Subject,
+  combineLatest,
+  debounceTime,
+  map,
+  mergeAll,
+  merge,
+} from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 import { LabelService } from 'src/app/services/label.service';
+import * as fromApp from '../../../../store/app.reducer';
+import * as labelsActions from '../../../../store/labels-store/labels.actions';
+import { mergeWith, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-btn-more-options',
@@ -9,7 +20,6 @@ import { LabelService } from 'src/app/services/label.service';
   styleUrls: ['./btn-more-options.component.scss', '../action-buttons.scss'],
 })
 export class BtnMoreOptionsComponent implements OnInit {
-  allLabels: string[] = [];
   moreOptionsActive = false;
   editLabelsMenuActive = false;
   searchLabel = new Subject<Event>();
@@ -18,25 +28,29 @@ export class BtnMoreOptionsComponent implements OnInit {
   @Output() onAddLabel = new EventEmitter<string>();
   @Input() note!: Note;
 
-  constructor(private labelsService: LabelService) {}
-
-  ngOnInit(): void {
-    this.allLabels = this.labelsService.labels;
-
-    this.searchLabel.pipe(debounceTime(300)).subscribe((event: any) => {
-      if (event.target.value.length > 0) {
-        let result = this.labelsService.labels.filter(
-          (value) =>
-            value === event.target.value || value.includes(event.target.value)
-        );
-
-        this.allLabels = [];
-        this.allLabels = result;
+  labels$ = combineLatest([
+    this.store.select('labels').pipe(map((state) => state.labels)),
+    this.searchLabel.pipe(
+      debounceTime(300),
+      map((event: Event) => {
+        return (event.target as HTMLInputElement).value;
+      }),
+      startWith('')
+    ),
+  ]).pipe(
+    map(([labels, inputValue]) => {
+      if (inputValue === '') {
+        return labels;
       } else {
-        this.allLabels = this.labelsService.labels;
+        let result = labels.filter((value) => value.includes(inputValue));
+        return result;
       }
-    });
-  }
+    })
+  );
+
+  constructor(private store: Store<fromApp.AppState>) {}
+
+  ngOnInit(): void {}
 
   toggleMenu() {
     this.moreOptionsActive = !this.moreOptionsActive;
@@ -50,9 +64,9 @@ export class BtnMoreOptionsComponent implements OnInit {
   check(label: string) {
     if (this.note.labels) {
       return this.note?.labels.includes(label);
+    } else {
+      return false;
     }
-
-    return false;
   }
 
   changeLabel(label: string) {

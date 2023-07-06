@@ -1,8 +1,7 @@
 <app-edit-note
   *ngIf="showEditMode"
-  [activeNote]="editModeNote"
+  [noteForEdit]="editModeNote"
   [canEditNote]="canEditNote"
-  (onNotesChanged)="notesChanged()"
 >
   <!-- <app-btn-delete-forever
     (deleteForeverEvent)="deleteForever(editModeNote)"

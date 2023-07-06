@@ -20,7 +20,8 @@ export class ArchiveComponent implements OnInit {
     .pipe(map((state) => state.archivedNotes));
 
   showEditMode = false;
-  editModeNote!: Note;
+  noteForEdit!: Note;
+  // noteForEditIndex!: number;
 
   readonly isArchive = true;
 
@@ -30,15 +31,35 @@ export class ArchiveComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
-      this.showEditMode = true;
+    // this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
+    //   this.showEditMode = true;
+    //   this.editModeNote = note;
+    // });
+    // this.editNoteService.onCloseEditMode.subscribe(() => {
+    //   this.showEditMode = false;
+    // });
+  }
 
-      this.editModeNote = note;
-    });
+  startEditNote(note: Note, noteIndex: number) {
+    this.noteForEdit = note;
+    // this.noteForEditIndex = noteIndex;
+    this.showEditMode = true;
 
-    this.editNoteService.onCloseEditMode.subscribe(() => {
-      this.showEditMode = false;
-    });
+    console.log('start edit | enter Property: ' + noteIndex);
+    // console.log('start edit | editNoteIndex: ' + this.noteForEditIndex);
+    console.log('start edit | noteForEdit: ' + this.noteForEdit);
+  }
+
+  updateNote(newNote: Note) {
+    // console.log('update note | editNoteIndex: ' + this.noteForEditIndex);
+    console.log('update note | newNote enter propert: ' + newNote);
+
+    // this.store.dispatch(
+    //   new notesActions.UpdateNote({ index: noteForEditIndex, newNote })
+    // );
+    this.store.dispatch(new notesActions.StoreNotes());
+
+    this.showEditMode = false;
   }
 
   setNoteColor(color: NoteColor, noteIndex: number) {
@@ -69,10 +90,6 @@ export class ArchiveComponent implements OnInit {
 
     this.store.dispatch(new deletedNotesActions.StoreNotes());
     this.store.dispatch(new archivedNotesActions.StoreNotes());
-  }
-
-  notesChanged() {
-    // this.archiveService.onNotesChanged.next();
   }
 
   unarchive(note: Note, noteIndex: number) {

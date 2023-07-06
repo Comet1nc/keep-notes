@@ -1,7 +1,8 @@
 <app-edit-note
   *ngIf="showEditMode"
-  [activeNote]="editModeNote"
-  (onNotesChanged)="notesChanged()"
+  [noteForEdit]="noteForEdit"
+  [canEditNote]="true"
+  (updateNote)="updateNote($event)"
 >
   <!-- <app-btn-change-bg
     [note]="editModeNote"
@@ -21,6 +22,7 @@
       *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, i)"
+      (startEditNote)="startEditNote(note, i)"
     >
       <app-btn-change-bg
         [note]="note"

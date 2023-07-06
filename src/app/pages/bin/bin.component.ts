@@ -50,10 +50,6 @@ export class BinComponent {
     this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 
-  notesChanged() {
-    // this.binService.onNotesChanged.next();
-  }
-
   deleteForever(noteIndex: number) {
     this.store.dispatch(new deletedNotesActions.DeleteNote(noteIndex));
     this.store.dispatch(new deletedNotesActions.StoreNotes());

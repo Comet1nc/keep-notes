@@ -55,17 +55,18 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
   @ViewChild('inputField') inputField!: ElementRef;
 
-  @Input() activeNote!: Note;
+  @Input() noteForEdit!: Note;
   @Input() canEditNote = false;
   @Input() store: Store<fromApp.AppState>;
 
-  @Output() onNotesChanged = new EventEmitter<void>();
+  @Output() updateNote = new EventEmitter<Note>();
+
   @Output() saveNotesToLocalStorage = new EventEmitter<void>();
 
   currentTheme: Theme = Theme.light;
 
-  titleText: string = '';
-  newNoteText: string = '';
+  newNoteTitle: string = '';
+  newNoteContent: string = '';
   createdAt: string = '';
 
   constructor(
@@ -75,15 +76,15 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.titleText = this.activeNote.title;
-    this.newNoteText = this.activeNote.content;
+    this.newNoteTitle = this.noteForEdit.title;
+    this.newNoteContent = this.noteForEdit.content;
   }
 
   ngAfterViewInit(): void {
     this.renderer.setProperty(
       this.inputField.nativeElement,
       'innerText',
-      this.newNoteText
+      this.newNoteContent
     );
 
     this.changeBg(this.noteRef.nativeElement);
@@ -100,13 +101,13 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   }
 
   changeBg(noteRef: HTMLElement) {
-    if (this.activeNote.color !== undefined) {
+    if (this.noteForEdit.color !== undefined) {
       this.renderer.setStyle(
         noteRef,
         'background-color',
         this.currentTheme === Theme.light
-          ? this.activeNote.color.valueLightTheme
-          : this.activeNote.color.valueDarkTheme
+          ? this.noteForEdit.color.valueLightTheme
+          : this.noteForEdit.color.valueDarkTheme
       );
     } else {
       this.renderer.removeStyle(noteRef, 'background-color');
@@ -114,16 +115,17 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   }
 
   closeEditMode() {
-    this.editNoteService.onCloseEditMode.next();
+    const newNote: Note = {
+      ...this.noteForEdit,
+      title: this.newNoteTitle,
+      content: this.newNoteContent,
+      lastEditAt: new Date(),
+    };
 
-    this.activeNote.title = this.titleText;
-    this.activeNote.content = this.newNoteText;
-    this.activeNote.lastEditAt = new Date();
-
-    this.onNotesChanged.emit();
+    this.updateNote.emit(newNote);
   }
 
   input(e: any) {
-    this.newNoteText = e.srcElement.innerText;
+    this.newNoteContent = e.srcElement.innerText;
   }
 }

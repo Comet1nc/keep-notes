@@ -34,8 +34,8 @@
       placeholder="Enter label name"
       (input)="searchLabel.next($event)"
     />
-    <div class="labels-list" *ngIf="allLabels">
-      <div class="label" *ngFor="let label of allLabels">
+    <div class="labels-list">
+      <div class="label" *ngFor="let label of labels$ | async">
         <input
           type="checkbox"
           [checked]="check(label)"

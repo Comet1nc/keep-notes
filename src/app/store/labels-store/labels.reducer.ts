@@ -18,6 +18,26 @@ export function labelsReducer(
         ...state,
         labels: [...action.payload],
       };
+    case LabelsActions.ADD_LABEL:
+      return {
+        ...state,
+        labels: [...state.labels, action.payload],
+      };
+    case LabelsActions.UPDATE_LABEL:
+      let updatedLabels = [...state.labels];
+      updatedLabels[action.payload.index] = action.payload.updatedLabel;
+
+      return {
+        ...state,
+        labels: updatedLabels,
+      };
+    case LabelsActions.DELETE_LABEL:
+      return {
+        ...state,
+        labels: state.labels.filter(
+          (label: string, index: number) => index !== action.payload
+        ),
+      };
     default:
       return state;
   }

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LabelService } from 'src/app/services/label.service';
+import * as fromApp from '../../store/app.reducer';
+import * as labelsActions from '../../store/labels-store/labels.actions';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-edit-labels',
@@ -9,34 +13,41 @@ import { LabelService } from 'src/app/services/label.service';
 export class EditLabelsComponent implements OnInit {
   editLabelsOpened = false;
   newLabel: string = '';
-  labels: string[] = [];
 
-  constructor(private labelService: LabelService) {}
+  labels$ = this.store
+    .select('labels')
+    .pipe(map((labelsState) => labelsState.labels));
+
+  constructor(
+    private labelService: LabelService,
+    private store: Store<fromApp.AppState>
+  ) {}
 
   ngOnInit(): void {
     this.labelService.openEditLabels.subscribe(() => {
       this.editLabelsOpened = true;
     });
-
-    this.labels = this.labelService.labels;
-
-    this.labelService.loadLabels();
   }
 
   createNewLabel() {
-    this.labelService.createNewLabel(this.newLabel);
+    this.store.dispatch(new labelsActions.AddLabel(this.newLabel));
+    this.store.dispatch(new labelsActions.StoreLabels());
   }
 
   clearNewLabelName() {
     this.newLabel = '';
   }
 
-  deleteLabel(label: string) {
-    this.labelService.deleteLabel(label);
+  deleteLabel(labelIndex: number) {
+    this.store.dispatch(new labelsActions.DeleteLabel(labelIndex));
+    this.store.dispatch(new labelsActions.StoreLabels());
   }
 
-  renameLabel(input: HTMLInputElement, myLabel: string) {
-    this.labelService.renameLabel(myLabel, input.value);
+  renameLabel(input: HTMLInputElement, index: number) {
+    this.store.dispatch(
+      new labelsActions.UpdateLabel({ index, updatedLabel: input.value })
+    );
+    this.store.dispatch(new labelsActions.StoreLabels());
   }
 
   closeEditLabels() {

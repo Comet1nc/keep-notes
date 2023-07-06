@@ -44,10 +44,10 @@
           </svg>
         </button>
       </div>
-      <div class="label" *ngFor="let label of labels">
+      <div class="label" *ngFor="let label of labels$ | async; let i = index">
         <button
           class="delete-label"
-          (click)="deleteLabel(label)"
+          (click)="deleteLabel(i)"
           matTooltip="Delete label"
         >
           <svg
@@ -71,7 +71,7 @@
         />
         <button
           class="rename-label"
-          (click)="renameLabel(input, label)"
+          (click)="renameLabel(input, i)"
           matTooltip="Rename label"
         >
           <svg

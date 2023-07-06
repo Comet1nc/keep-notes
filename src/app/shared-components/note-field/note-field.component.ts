@@ -48,6 +48,7 @@ import { EditNoteService } from '../edit-note/edit-note.service';
 export class NoteFieldComponent implements OnInit, AfterViewInit {
   @Input() note!: Note;
   @Output() onDeleteLabel = new EventEmitter<string>();
+  @Output() startEditNote = new EventEmitter<void>();
 
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
 
@@ -102,6 +103,8 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
 
   openEditMode() {
     if (this.mouseInNote) {
+      this.startEditNote.emit();
+
       this.editNoteService.openEditMode(this.note);
       this.editModeOpened = true;
     }

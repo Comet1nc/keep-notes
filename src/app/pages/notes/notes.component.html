@@ -1,14 +1,15 @@
 <app-edit-note
   *ngIf="showEditMode"
-  [activeNote]="editModeNote"
-  (onNotesChanged)="notesChanged()"
+  [noteForEdit]="noteForEdit"
+  [canEditNote]="true"
+  (updateNote)="updateNote($event)"
 >
   <!-- <app-btn-pin
     [isNotePinned]="editModeNote.isPinned"
     (togglePin)="togglePin(editModeNote)"
     pin
   ></app-btn-pin> -->
-  <app-btn-change-bg [note]="editModeNote"></app-btn-change-bg>
+  <app-btn-change-bg [note]="noteForEdit"></app-btn-change-bg>
   <!-- <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive> -->
   <app-btn-draw></app-btn-draw>
   <!-- <app-btn-more-options
@@ -27,6 +28,7 @@
       *ngFor="let note of pinnedNotes$ | async; let i = index"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, i)"
+      (startEditNote)="startEditNote(note, i)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
@@ -53,6 +55,7 @@
       *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, i)"
+      (startEditNote)="startEditNote(note, i)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"

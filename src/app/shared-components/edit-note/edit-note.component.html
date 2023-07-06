@@ -7,7 +7,7 @@
         class="title-input"
         placeholder="Title"
         maxlength="20"
-        [(ngModel)]="titleText"
+        [(ngModel)]="newNoteTitle"
       />
       <div class="pin-button-container">
         <ng-content select="[pin]"></ng-content>
@@ -15,7 +15,7 @@
     </div>
     <div class="main-note-content-wrapper">
       <div
-        *ngIf="newNoteText.length === 0"
+        *ngIf="newNoteContent.length === 0"
         class="default-text"
         spellcheck="false"
         contenteditable="false"
@@ -37,7 +37,7 @@
   </div>
   <div class="read-only-fields" *ngIf="!canEditNote">
     <div class="title-wrapper">
-      <div class="title-input" [innerText]="titleText"></div>
+      <div class="title-input" [innerText]="newNoteTitle"></div>
     </div>
     <div class="main-note-content-wrapper">
       <div
@@ -54,10 +54,10 @@
   </div>
   <div class="time">
     <div class="create-date">
-      Created {{ activeNote.createdAt | date : "dd LLL" }} |&nbsp;
+      Created {{ noteForEdit.createdAt | date : "dd LLL" }} |&nbsp;
     </div>
     <div class="last-edit-date">
-      Edited {{ activeNote.createdAt | date : "dd LLL" }}
+      Edited {{ noteForEdit.createdAt | date : "dd LLL" }}
     </div>
   </div>
   <footer>
