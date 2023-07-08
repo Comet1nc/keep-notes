@@ -64,17 +64,15 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.changeBg(this.noteRef.nativeElement);
-
+    // this.changeBg(this.noteRef.nativeElement);
     this.appService.onThemeChanged.subscribe((theme) => {
+      console.log(theme);
       this.currentTheme = theme;
-
       this.changeBg(this.noteRef.nativeElement);
     });
-
-    this.editNoteService.onBgChanged.subscribe(() => {
-      this.changeBg(this.noteRef.nativeElement);
-    });
+    // this.editNoteService.onBgChanged.subscribe(() => {
+    //   this.changeBg(this.noteRef.nativeElement);
+    // });
   }
 
   ngOnInit(): void {

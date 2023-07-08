@@ -1,18 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  Subject,
-  combineLatest,
-  debounceTime,
-  map,
-  mergeAll,
-  merge,
-} from 'rxjs';
+import { Subject, combineLatest, debounceTime, map } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
-import { LabelService } from 'src/app/services/label.service';
 import * as fromApp from '../../../../store/app.reducer';
-import * as labelsActions from '../../../../store/labels-store/labels.actions';
-import { mergeWith, startWith } from 'rxjs/operators';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-btn-more-options',
@@ -22,7 +13,7 @@ import { mergeWith, startWith } from 'rxjs/operators';
 export class BtnMoreOptionsComponent implements OnInit {
   moreOptionsActive = false;
   editLabelsMenuActive = false;
-  searchLabel = new Subject<Event>();
+  searchLabel$ = new Subject<Event>();
   @Output() deleteNote = new EventEmitter<void>();
   @Output() onDeleteLabel = new EventEmitter<string>();
   @Output() onAddLabel = new EventEmitter<string>();
@@ -30,7 +21,7 @@ export class BtnMoreOptionsComponent implements OnInit {
 
   labels$ = combineLatest([
     this.store.select('labels').pipe(map((state) => state.labels)),
-    this.searchLabel.pipe(
+    this.searchLabel$.pipe(
       debounceTime(300),
       map((event: Event) => {
         return (event.target as HTMLInputElement).value;

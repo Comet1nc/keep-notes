@@ -4,7 +4,7 @@
 ></app-tool-bar>
 <div class="main">
   <side-nav
-    [sub]="onToggleSideNav.asObservable()"
+    [toggleSideNav]="onToggleSideNav.asObservable()"
     [isSideNavOpened]="isSideNavOpened"
   ></side-nav>
   <div class="content" [ngClass]="getContentClass()">

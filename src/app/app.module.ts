@@ -20,7 +20,6 @@ import { DrawService } from './main-components/draw/draw.service';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { NotesService } from './services/notes.service';
 import { HttpClientModule } from '@angular/common/http';
-import { LabelService } from './services/label.service';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -71,7 +70,6 @@ import { DeletedNotesEffects } from './store/bin-store/bin.effects';
     BinService,
     AppService,
     DrawService,
-    LabelService,
   ],
   bootstrap: [AppComponent],
 })

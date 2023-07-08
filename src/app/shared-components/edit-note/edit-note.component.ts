@@ -15,6 +15,8 @@ import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from './edit-note.service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
+import { Observable, take } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-note',
@@ -55,19 +57,16 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
   @ViewChild('inputField') inputField!: ElementRef;
 
-  @Input() noteForEdit!: Note;
+  @Input() noteForEdit: Note;
   @Input() canEditNote = false;
   @Input() store: Store<fromApp.AppState>;
 
   @Output() updateNote = new EventEmitter<Note>();
 
-  @Output() saveNotesToLocalStorage = new EventEmitter<void>();
-
   currentTheme: Theme = Theme.light;
 
   newNoteTitle: string = '';
   newNoteContent: string = '';
-  createdAt: string = '';
 
   constructor(
     private editNoteService: EditNoteService,
@@ -75,18 +74,9 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     private appService: AppService
   ) {}
 
-  ngOnInit(): void {
-    this.newNoteTitle = this.noteForEdit.title;
-    this.newNoteContent = this.noteForEdit.content;
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.renderer.setProperty(
-      this.inputField.nativeElement,
-      'innerText',
-      this.newNoteContent
-    );
-
     this.changeBg(this.noteRef.nativeElement);
 
     this.appService.onThemeChanged.subscribe((theme) => {
@@ -98,6 +88,17 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     this.editNoteService.onBgChanged.subscribe(() => {
       this.changeBg(this.noteRef.nativeElement);
     });
+  }
+
+  initForm() {
+    this.newNoteTitle = this.noteForEdit.title;
+    this.newNoteContent = this.noteForEdit.content;
+
+    this.renderer.setProperty(
+      this.inputField.nativeElement,
+      'innerText',
+      this.newNoteContent
+    );
   }
 
   changeBg(noteRef: HTMLElement) {
@@ -125,7 +126,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     this.updateNote.emit(newNote);
   }
 
-  input(e: any) {
-    this.newNoteContent = e.srcElement.innerText;
+  input(event: any) {
+    this.newNoteContent = event.srcElement.innerText;
   }
 }

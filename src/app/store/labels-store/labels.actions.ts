@@ -6,6 +6,7 @@ export const STORE_LABELS = '[LABELS] STORE_LABELS';
 export const ADD_LABEL = '[LABELS] ADD_NOTE';
 export const UPDATE_LABEL = '[LABELS] UPDATE_NOTE';
 export const DELETE_LABEL = '[LABELS] DELETE_NOTE';
+export const TOGGLE_EDIT_LABEL_MENU = '[LABELS] TOGGLE_EDIT_LABEL_MENU';
 
 export class FetchLabels implements Action {
   readonly type = FETCH_LABELS;
@@ -39,10 +40,15 @@ export class DeleteLabel implements Action {
   constructor(public payload: number) {}
 }
 
+export class ToggleEditLabelMenu implements Action {
+  readonly type = TOGGLE_EDIT_LABEL_MENU;
+}
+
 export type LabelsActions =
   | FetchLabels
   | SetLabels
   | StoreLabels
   | AddLabel
   | UpdateLabel
-  | DeleteLabel;
+  | DeleteLabel
+  | ToggleEditLabelMenu;

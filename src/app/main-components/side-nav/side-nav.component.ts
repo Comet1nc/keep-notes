@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent implements OnInit {
-  @Input() sub!: Observable<void>;
+  @Input() toggleSideNav!: Observable<void>;
 
   @Input() isSideNavOpened = true;
 
@@ -21,7 +21,7 @@ export class SideNavComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {
-    this.sub.subscribe(() => {
+    this.toggleSideNav.subscribe(() => {
       this.isSideNavOpened = !this.isSideNavOpened;
     });
 

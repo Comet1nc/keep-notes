@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { LabelService } from 'src/app/services/label.service';
+import { Component } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import * as labelsActions from '../../store/labels-store/labels.actions';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-labels',
   templateUrl: './edit-labels.component.html',
   styleUrls: ['./edit-labels.component.scss'],
 })
-export class EditLabelsComponent implements OnInit {
-  editLabelsOpened = false;
+export class EditLabelsComponent {
+  isEditLabelsMenuOpened$ = this.store
+    .select('labels')
+    .pipe(map((state) => state.isEditLabelsMenuOpen));
   newLabel: string = '';
 
   labels$ = this.store
@@ -19,19 +22,21 @@ export class EditLabelsComponent implements OnInit {
     .pipe(map((labelsState) => labelsState.labels));
 
   constructor(
-    private labelService: LabelService,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private _snackBar: MatSnackBar,
+    private activeRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.labelService.openEditLabels.subscribe(() => {
-      this.editLabelsOpened = true;
-    });
-  }
-
   createNewLabel() {
-    this.store.dispatch(new labelsActions.AddLabel(this.newLabel));
-    this.store.dispatch(new labelsActions.StoreLabels());
+    this.labels$.pipe(take(1)).subscribe((labels) => {
+      if (labels.includes(this.newLabel) || this.newLabel.trim() === '') {
+        this._snackBar.open('Wrong name.', 'Close');
+      } else {
+        this.store.dispatch(new labelsActions.AddLabel(this.newLabel));
+        this.store.dispatch(new labelsActions.StoreLabels());
+      }
+    });
   }
 
   clearNewLabelName() {
@@ -43,14 +48,29 @@ export class EditLabelsComponent implements OnInit {
     this.store.dispatch(new labelsActions.StoreLabels());
   }
 
-  renameLabel(input: HTMLInputElement, index: number) {
-    this.store.dispatch(
-      new labelsActions.UpdateLabel({ index, updatedLabel: input.value })
-    );
-    this.store.dispatch(new labelsActions.StoreLabels());
+  renameLabel(newName: string, index: number) {
+    this.labels$.pipe(take(1)).subscribe((labels: string[]) => {
+      if (labels.includes(newName)) {
+        this._snackBar.open('Wrong name.', 'Close');
+      } else {
+        this.store.dispatch(
+          new labelsActions.UpdateLabel({ index, updatedLabel: newName })
+        );
+        this.store.dispatch(new labelsActions.StoreLabels());
+
+        if (
+          this.activeRoute.snapshot.children[0].children[0].params['name'] ===
+          labels[index]
+        ) {
+          this.router.navigate(['custom-notes/' + newName]);
+        }
+
+        this._snackBar.open('Successfully renamed!', 'Close');
+      }
+    });
   }
 
   closeEditLabels() {
-    this.editLabelsOpened = false;
+    this.store.dispatch(new labelsActions.ToggleEditLabelMenu());
   }
 }

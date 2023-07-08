@@ -1,4 +1,4 @@
-<div class="edit-labels" *ngIf="editLabelsOpened">
+<div class="edit-labels" *ngIf="isEditLabelsMenuOpened$ | async">
   <div class="bg" (click)="closeEditLabels()"></div>
   <div class="container">
     <header>
@@ -71,7 +71,7 @@
         />
         <button
           class="rename-label"
-          (click)="renameLabel(input, i)"
+          (click)="renameLabel(input.value, i)"
           matTooltip="Rename label"
         >
           <svg

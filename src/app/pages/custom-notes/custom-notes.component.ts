@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, take } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
@@ -43,8 +43,6 @@ export class CustomNotesComponent implements OnInit {
     })
   );
 
-  notes: Note[] = [];
-
   showEditMode = false;
   noteForEdit!: Note;
 
@@ -53,11 +51,7 @@ export class CustomNotesComponent implements OnInit {
     private store: Store<fromApp.AppState>
   ) {}
 
-  ngOnInit(): void {
-    this.store.select('notes').subscribe((notesState) => {
-      this.notes = notesState.notes;
-    });
-  }
+  ngOnInit(): void {}
 
   startEditNote(note: Note) {
     this.noteForEdit = note;
@@ -65,7 +59,7 @@ export class CustomNotesComponent implements OnInit {
   }
 
   updateNote(newNote: Note) {
-    let noteForEditIndex = this.notes.indexOf(this.noteForEdit);
+    let noteForEditIndex = this.indexOfNote(this.noteForEdit);
 
     this.store.dispatch(
       new notesActions.UpdateNote({ index: noteForEditIndex, newNote })
@@ -76,19 +70,19 @@ export class CustomNotesComponent implements OnInit {
   }
 
   setNoteColor(color: NoteColor, note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+    let noteIndex = this.indexOfNote(note);
     this.store.dispatch(new notesActions.UpdateNoteColor({ noteIndex, color }));
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
   addLabel(label: string, note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+    let noteIndex = this.indexOfNote(note);
     this.store.dispatch(new notesActions.AddLabelToNote({ noteIndex, label }));
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
   deleteLabel(label: string, note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+    let noteIndex = this.indexOfNote(note);
     this.store.dispatch(
       new notesActions.DeleteLabelFromNote({ noteIndex, label })
     );
@@ -96,7 +90,7 @@ export class CustomNotesComponent implements OnInit {
   }
 
   archiveNote(note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+    let noteIndex = this.indexOfNote(note);
     this.store.dispatch(new archivedNotesActions.AddNote(note));
     this.store.dispatch(new notesActions.DeleteNote(noteIndex));
 
@@ -105,7 +99,7 @@ export class CustomNotesComponent implements OnInit {
   }
 
   deleteNote(note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+    let noteIndex = this.indexOfNote(note);
     this.store.dispatch(new deletedNotesActions.AddNote(note));
     this.store.dispatch(new notesActions.DeleteNote(noteIndex));
 
@@ -114,7 +108,7 @@ export class CustomNotesComponent implements OnInit {
   }
 
   togglePin(note: Note) {
-    let noteIndex = this.notes.indexOf(note);
+    let noteIndex = this.indexOfNote(note);
     this.store.dispatch(new notesActions.TogglePinNote(noteIndex));
     this.store.dispatch(new notesActions.StoreNotes());
   }
@@ -131,5 +125,14 @@ export class CustomNotesComponent implements OnInit {
     this.store.dispatch(new notesActions.AddNote(note));
 
     this.store.dispatch(new notesActions.StoreNotes());
+  }
+
+  indexOfNote(note: Note) {
+    let index: number;
+    this.store
+      .select('notes')
+      .pipe(take(1))
+      .subscribe((state) => (index = state.notes.indexOf(note)));
+    return index;
   }
 }

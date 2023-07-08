@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { LabelService } from 'src/app/services/label.service';
+import { Store } from '@ngrx/store';
+import * as labelsActions from '../../../../store/labels-store/labels.actions';
+import * as fromApp from '../../../../store/app.reducer';
 
 @Component({
   selector: 'side-nav-edit-labels',
@@ -13,7 +15,7 @@ export class EditLabelsComponent {
   @Input() svgPaths: string[] = [''];
   @Input() isSelectedNote = false;
 
-  constructor(private labelService: LabelService) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   getLabelClass() {
     if (this.isSideNavOpened) {
@@ -24,6 +26,6 @@ export class EditLabelsComponent {
   }
 
   openEditLabels() {
-    this.labelService.openEditLabels.next();
+    this.store.dispatch(new labelsActions.ToggleEditLabelMenu());
   }
 }

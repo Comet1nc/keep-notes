@@ -7,7 +7,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import * as archivedNotesActions from '../../store/archive-store/archive.actions';
 import * as deletedNotesActions from '../../store/bin-store/bin.actions';
-import { map } from 'rxjs';
+import { Observable, combineLatest, map, take } from 'rxjs';
 import { NoteColor } from 'src/app/models/note-colors.model';
 
 @Component({
@@ -17,19 +17,20 @@ import { NoteColor } from 'src/app/models/note-colors.model';
 })
 export class NotesComponent implements OnInit {
   pinnedNotes$ = this.store.select('notes').pipe(
-    map((data) => {
-      return data.notes.filter((note: Note) => note.isPinned);
+    map((state) => {
+      return state.notes.filter((note: Note) => note.isPinned);
     })
   );
 
   notes$ = this.store.select('notes').pipe(
-    map((data) => {
-      return data.notes.filter((note: Note) => !note.isPinned);
+    map((state) => {
+      return state.notes.filter((note: Note) => !note.isPinned);
     })
   );
 
   showEditMode = false;
-  noteForEdit!: Note;
+  noteForEdit$: Observable<Note>;
+  noteForEdit: Note;
   noteForEditIndex!: number;
 
   constructor(private store: Store<fromApp.AppState>) {}
@@ -38,6 +39,9 @@ export class NotesComponent implements OnInit {
 
   startEditNote(note: Note, noteIndex: number) {
     this.noteForEdit = note;
+    this.noteForEdit$ = this.store
+      .select('notes')
+      .pipe(map((state) => state.notes[noteIndex]));
     this.noteForEditIndex = noteIndex;
     this.showEditMode = true;
   }
@@ -95,5 +99,24 @@ export class NotesComponent implements OnInit {
     this.store.dispatch(new notesActions.StoreNotes());
 
     this.showEditMode = false;
+  }
+
+  indexOfNote(note: Note | Observable<Note>) {
+    let index: number;
+
+    if (note instanceof Observable) {
+      combineLatest([this.store.select('notes'), note])
+        .pipe(take(1))
+        .subscribe(([state, note]) => {
+          index = state.notes.indexOf(note);
+        });
+    } else {
+      this.store
+        .select('notes')
+        .pipe(take(1))
+        .subscribe((state) => (index = state.notes.indexOf(note)));
+    }
+
+    return index;
   }
 }

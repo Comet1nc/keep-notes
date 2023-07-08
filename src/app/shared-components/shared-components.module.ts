@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputBarComponent } from './input-bar/input-bar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoteFieldComponent } from './note-field/note-field.component';
 import { EditNoteComponent } from './edit-note/edit-note.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -31,7 +31,7 @@ import { EditNoteService } from './edit-note/edit-note.service';
     BtnUnarchiveComponent,
     BtnPinComponent,
   ],
-  imports: [CommonModule, FormsModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatTooltipModule, ReactiveFormsModule],
   providers: [EditNoteService],
   exports: [
     InputBarComponent,
