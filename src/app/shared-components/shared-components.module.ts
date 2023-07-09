@@ -32,7 +32,7 @@ import { EditNoteService } from './edit-note/edit-note.service';
     BtnPinComponent,
   ],
   imports: [CommonModule, FormsModule, MatTooltipModule, ReactiveFormsModule],
-  providers: [EditNoteService],
+  providers: [],
   exports: [
     InputBarComponent,
     NoteFieldComponent,

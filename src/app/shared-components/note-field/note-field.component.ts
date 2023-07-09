@@ -5,6 +5,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -13,6 +14,7 @@ import {
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from '../edit-note/edit-note.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-note-field',
@@ -45,7 +47,7 @@ import { EditNoteService } from '../edit-note/edit-note.service';
     ]),
   ],
 })
-export class NoteFieldComponent implements OnInit, AfterViewInit {
+export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() note!: Note;
   @Output() onDeleteLabel = new EventEmitter<string>();
   @Output() startEditNote = new EventEmitter<void>();
@@ -57,6 +59,8 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   editModeOpened = false;
   currentTheme: Theme = Theme.light;
 
+  sub: Subscription;
+
   constructor(
     private editNoteService: EditNoteService,
     private renderer: Renderer2,
@@ -64,15 +68,15 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    // this.changeBg(this.noteRef.nativeElement);
-    this.appService.onThemeChanged.subscribe((theme) => {
-      console.log(theme);
+    this.changeBg(this.noteRef.nativeElement);
+    this.sub = this.appService.appTheme$.subscribe((theme) => {
       this.currentTheme = theme;
       this.changeBg(this.noteRef.nativeElement);
     });
-    // this.editNoteService.onBgChanged.subscribe(() => {
-    //   this.changeBg(this.noteRef.nativeElement);
-    // });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -103,7 +107,8 @@ export class NoteFieldComponent implements OnInit, AfterViewInit {
     if (this.mouseInNote) {
       this.startEditNote.emit();
 
-      this.editNoteService.openEditMode(this.note);
+      // the component will be re-created in any case after emitting close edit mode func in edit-note.component,
+      // and this variable will change the state to what it is by default automatically
       this.editModeOpened = true;
     }
   }

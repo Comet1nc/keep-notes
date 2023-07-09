@@ -9,13 +9,14 @@ import {
   Renderer2,
   Output,
   EventEmitter,
+  OnDestroy,
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from './edit-note.service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
-import { Observable, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -53,11 +54,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     ]),
   ],
 })
-export class EditNoteComponent implements OnInit, AfterViewInit {
+export class EditNoteComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
   @ViewChild('inputField') inputField!: ElementRef;
 
-  @Input() noteForEdit: Note;
+  @Input() noteForEdit$: Observable<Note>;
+  noteForEdit: Note;
   @Input() canEditNote = false;
   @Input() store: Store<fromApp.AppState>;
 
@@ -67,6 +69,7 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
 
   newNoteTitle: string = '';
   newNoteContent: string = '';
+  subs: Subscription[] = [];
 
   constructor(
     private editNoteService: EditNoteService,
@@ -74,20 +77,34 @@ export class EditNoteComponent implements OnInit, AfterViewInit {
     private appService: AppService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    for (let sub of this.subs) {
+      sub.unsubscribe();
+    }
+  }
+
+  ngOnInit(): void {
+    this.subs.push(
+      this.noteForEdit$.subscribe((note) => (this.noteForEdit = note))
+    );
+  }
 
   ngAfterViewInit(): void {
+    this.initForm();
+
     this.changeBg(this.noteRef.nativeElement);
 
-    this.appService.onThemeChanged.subscribe((theme) => {
+    const sub1 = this.appService.appTheme$.subscribe((theme) => {
       this.currentTheme = theme;
 
       this.changeBg(this.noteRef.nativeElement);
     });
 
-    this.editNoteService.onBgChanged.subscribe(() => {
+    const sub2 = this.editNoteService.onBgChanged.subscribe(() => {
       this.changeBg(this.noteRef.nativeElement);
     });
+
+    this.subs.push(sub1, sub2);
   }
 
   initForm() {

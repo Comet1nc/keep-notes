@@ -47,8 +47,6 @@ export class AppComponent {
       this.isDarkMode ? 'theme-dark' : 'theme-light'
     );
 
-    this.appService.onThemeChanged.next(
-      this.isDarkMode ? Theme.dark : Theme.light
-    );
+    this.appService.appTheme$.next(this.isDarkMode ? Theme.dark : Theme.light);
   }
 }

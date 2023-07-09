@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EditNoteService {
   onOpenEditMode = new Subject<Note>();
   onCloseEditMode = new Subject<void>();

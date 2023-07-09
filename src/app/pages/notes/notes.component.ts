@@ -30,18 +30,18 @@ export class NotesComponent implements OnInit {
 
   showEditMode = false;
   noteForEdit$: Observable<Note>;
-  noteForEdit: Note;
   noteForEditIndex!: number;
 
   constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit(): void {}
 
-  startEditNote(note: Note, noteIndex: number) {
-    this.noteForEdit = note;
-    this.noteForEdit$ = this.store
-      .select('notes')
-      .pipe(map((state) => state.notes[noteIndex]));
+  startEditNote(noteIndex: number) {
+    this.noteForEdit$ = this.store.select('notes').pipe(
+      map((state) => {
+        return state.notes[noteIndex];
+      })
+    );
     this.noteForEditIndex = noteIndex;
     this.showEditMode = true;
   }

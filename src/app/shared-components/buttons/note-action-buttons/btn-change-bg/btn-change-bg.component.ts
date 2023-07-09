@@ -23,7 +23,7 @@ export class BtnChangeBgComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.appService.onThemeChanged.subscribe((theme) => {
+    this.appService.appTheme$.subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -33,6 +33,8 @@ export class BtnChangeBgComponent implements OnInit {
   }
 
   setBg(color: any) {
+    console.log('setbg');
+
     this.setNoteColor.emit(color);
 
     this.editNoteService.onBgChanged.next();
