@@ -1,8 +1,4 @@
-<app-edit-note
-  *ngIf="showEditMode"
-  [canEditNote]="true"
-  (updateNote)="updateNote($event)"
->
+<app-edit-note *ngIf="showEditMode" [canEditNote]="true">
   <!-- <app-btn-change-bg
     [note]="editModeNote"
     (saveData)="saveNotesToLocalStorage()"

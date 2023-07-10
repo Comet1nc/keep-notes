@@ -28,15 +28,13 @@ export class BinComponent {
   ) {}
 
   ngOnInit(): void {
-    this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
-      this.showEditMode = true;
-
-      this.editModeNote = note;
-    });
-
-    this.editNoteService.onCloseEditMode.subscribe(() => {
-      this.showEditMode = false;
-    });
+    // this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
+    //   this.showEditMode = true;
+    //   this.editModeNote = note;
+    // });
+    // this.editNoteService.onCloseEditMode.subscribe(() => {
+    //   this.showEditMode = false;
+    // });
   }
 
   deleteLabel(label: string, noteIndex: number) {

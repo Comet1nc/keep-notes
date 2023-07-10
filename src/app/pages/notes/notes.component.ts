@@ -30,16 +30,22 @@ export class NotesComponent implements OnInit {
 
   showEditMode = false;
   noteForEdit$: Observable<Note>;
+  noteForEdit: Note;
   noteForEditIndex!: number;
 
-  constructor(private store: Store<fromApp.AppState>) {}
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private editNoteService: EditNoteService
+  ) {}
 
   ngOnInit(): void {}
 
   startEditNote(noteIndex: number) {
     this.noteForEdit$ = this.store.select('notes').pipe(
       map((state) => {
-        return state.notes[noteIndex];
+        console.log('noteIndex: ' + noteIndex);
+        this.noteForEdit = state.notes[noteIndex];
+        return this.noteForEdit;
       })
     );
     this.noteForEditIndex = noteIndex;
@@ -61,6 +67,11 @@ export class NotesComponent implements OnInit {
       new notesActions.DeleteLabelFromNote({ noteIndex, label })
     );
     this.store.dispatch(new notesActions.StoreNotes());
+  }
+
+  archiveNoteFromEditMode(noteIndex: number) {
+    this.editNoteService.clodeEditMode.next();
+    this.archiveNote(this.noteForEdit, noteIndex);
   }
 
   archiveNote(note: Note, noteIndex: number) {

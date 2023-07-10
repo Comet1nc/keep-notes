@@ -61,11 +61,7 @@ export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sub: Subscription;
 
-  constructor(
-    private editNoteService: EditNoteService,
-    private renderer: Renderer2,
-    private appService: AppService
-  ) {}
+  constructor(private renderer: Renderer2, private appService: AppService) {}
 
   ngAfterViewInit(): void {
     this.changeBg(this.noteRef.nativeElement);
@@ -79,11 +75,7 @@ export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  ngOnInit(): void {
-    this.editNoteService.onCloseEditMode.subscribe(
-      () => (this.editModeOpened = false)
-    );
-  }
+  ngOnInit(): void {}
 
   deleteLabel(label: string) {
     this.onDeleteLabel.emit(label);

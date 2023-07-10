@@ -1,8 +1,4 @@
-<app-edit-note
-  *ngIf="showEditMode"
-  [canEditNote]="true"
-  (updateNote)="updateNote($event)"
->
+<app-edit-note *ngIf="showEditMode" [canEditNote]="true">
   <app-btn-pin
     [isNotePinned]="noteForEdit.isPinned"
     (togglePin)="togglePin(noteForEdit)"

@@ -4,13 +4,6 @@ import { Note } from 'src/app/models/note.model';
 
 @Injectable({ providedIn: 'root' })
 export class EditNoteService {
-  onOpenEditMode = new Subject<Note>();
-  onCloseEditMode = new Subject<void>();
   onBgChanged = new Subject<void>();
-
-  constructor() {}
-
-  openEditMode(note: Note) {
-    this.onOpenEditMode.next(note);
-  }
+  clodeEditMode = new Subject<void>();
 }

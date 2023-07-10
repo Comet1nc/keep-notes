@@ -61,7 +61,6 @@ export class EditNoteComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() noteForEdit$: Observable<Note>;
   noteForEdit: Note;
   @Input() canEditNote = false;
-  @Input() store: Store<fromApp.AppState>;
 
   @Output() updateNote = new EventEmitter<Note>();
 
@@ -84,41 +83,43 @@ export class EditNoteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.push(
-      this.noteForEdit$.subscribe((note) => (this.noteForEdit = note))
+    let sub1 = this.noteForEdit$.subscribe((note) => {
+      this.noteForEdit = note;
+      this.newNoteTitle = this.noteForEdit.title;
+      console.log(this.noteForEdit.title);
+      this.newNoteContent = this.noteForEdit.content;
+    });
+
+    let sub2 = this.editNoteService.clodeEditMode.subscribe(() =>
+      this.closeEditMode()
     );
+
+    this.subs.push(sub1, sub2);
   }
 
   ngAfterViewInit(): void {
-    this.initForm();
+    this.renderer.setProperty(
+      this.inputField.nativeElement,
+      'innerText',
+      this.noteForEdit.content
+    );
 
-    this.changeBg(this.noteRef.nativeElement);
+    this.setupBg(this.noteRef.nativeElement);
 
     const sub1 = this.appService.appTheme$.subscribe((theme) => {
       this.currentTheme = theme;
 
-      this.changeBg(this.noteRef.nativeElement);
+      this.setupBg(this.noteRef.nativeElement);
     });
 
     const sub2 = this.editNoteService.onBgChanged.subscribe(() => {
-      this.changeBg(this.noteRef.nativeElement);
+      this.setupBg(this.noteRef.nativeElement);
     });
 
     this.subs.push(sub1, sub2);
   }
 
-  initForm() {
-    this.newNoteTitle = this.noteForEdit.title;
-    this.newNoteContent = this.noteForEdit.content;
-
-    this.renderer.setProperty(
-      this.inputField.nativeElement,
-      'innerText',
-      this.newNoteContent
-    );
-  }
-
-  changeBg(noteRef: HTMLElement) {
+  setupBg(noteRef: HTMLElement) {
     if (this.noteForEdit.color !== undefined) {
       this.renderer.setStyle(
         noteRef,
