@@ -23,9 +23,7 @@
     justify-content: space-between;
     padding: 10px 15px;
 
-
     .title-input {
-      // border: 1px solid black;
       font-size: 20px;
       font-weight: 500;
       height: 24px;
@@ -41,7 +39,6 @@
       align-items: center;
       justify-content: center;
 
-
       &:hover {
         background-color: rgb(205 205 205 / 30%);
         border-radius: 50%;
@@ -56,10 +53,7 @@
 
     .default-text {
       font-weight: 500;
-
-
       position: absolute;
-      // bottom: 0;
       left: 15px;
     }
 
@@ -77,11 +71,75 @@
     }
   }
 
-  .time {
+  .time-and-labels-container {
     display: flex;
-    font-size: 14px;
-    justify-content: flex-end;
-    padding-right: 20px;
+    justify-content: space-between;
+    height: 24px;
+
+    .labels {
+      display: flex;
+      padding-left: 15px;
+      bottom: 50px;
+      font-size: 11px;
+      gap: 5px;
+
+      .label {
+        display: flex;
+        justify-content: center;
+        font-weight: 500;
+        border-radius: 20px;
+        cursor: pointer;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .name {
+          max-width: 60px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          padding: 5px 6px;
+        }
+
+        &:hover {
+          .name {
+            padding-right: 2px;
+          }
+
+          .delete {
+            display: flex;
+          }
+        }
+
+        .delete {
+          display: none;
+          justify-content: center;
+          align-items: center;
+          padding: 4px 6px;
+          border-radius: 20px;
+          cursor: pointer;
+        }
+      }
+
+      .more-notes-info {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 11px;
+        border-radius: 2px;
+        padding: 5px 6px;
+      }
+    }
+
+    .time {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 14px;
+      padding-right: 20px;
+      margin-left: auto;
+    }
   }
 
   footer {
@@ -95,12 +153,10 @@
       gap: 15px;
 
       button {
-
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-
         width: 33px;
         height: 33px;
 
@@ -110,7 +166,6 @@
           opacity: 1;
         }
       }
-
     }
 
     .change-bg {
@@ -153,7 +208,6 @@
         border-radius: 4px;
         width: 79px;
         align-items: center;
-
 
         .delete-btn {
           padding: 3px 0;

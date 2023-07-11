@@ -24,12 +24,29 @@
       .main-note-content-wrapper {
         .default-text {
           color: #4C4C4C;
-          //BDBDBE
         }
       }
 
-      .time {
-        color: rgba(0, 0, 0, 0.8);
+      .time-and-labels-container {
+        .labels {
+          .label {
+            background-color: rgba(0, 0, 0, 0.1);
+
+            .delete {
+              &:hover {
+                background-color: inherit;
+              }
+            }
+          }
+
+          .more-notes-info {
+            background-color: #EBEBEB;
+          }
+        }
+
+        .time {
+          color: rgba(0, 0, 0, 0.8);
+        }
       }
 
       footer {
@@ -74,7 +91,6 @@
       background-color: #303030;
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
 
-
       .title-wrapper {
         .title-input {
           background-color: inherit;
@@ -98,9 +114,31 @@
         }
       }
 
-      .time {
-        color: rgba(189, 189, 190, 0.8);
+      .time-and-labels-container {
+        .labels {
+          .label {
+            border: solid 1px;
+            border-color: #4A4D51;
+
+            &:hover {
+              svg {
+                fill: white;
+              }
+            }
+
+            .delete {
+              &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+              }
+            }
+          }
+        }
+
+        .time {
+          color: rgba(189, 189, 190, 0.8);
+        }
       }
+
 
       footer {
         .action-buttons {

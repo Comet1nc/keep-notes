@@ -1,5 +1,4 @@
 .input-bar {
-
   border-radius: 8px;
   width: 600px;
   margin: 90px auto 16px auto;
@@ -17,17 +16,11 @@
       align-items: center;
       width: 100%;
       min-height: 30px;
-
       cursor: text;
 
       .default-text {
-
-
         font-weight: 500;
-
-
         position: absolute;
-        // bottom: 0;
         left: 15px;
       }
 
@@ -49,7 +42,6 @@
       gap: 10px;
 
       button {
-
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -74,7 +66,6 @@
       padding: 15px 15px;
 
       .title-input {
-        // border: 1px solid black;
         font-size: 20px;
         font-weight: 500;
         height: 24px;
@@ -97,7 +88,6 @@
         justify-content: center;
         border-radius: 50%;
 
-
         &:hover {
           background-color: rgb(205 205 205 / 30%);
           border-radius: 50%;
@@ -112,10 +102,7 @@
 
       .default-text {
         font-weight: 500;
-
-
         position: absolute;
-        // bottom: 0;
         left: 15px;
       }
 
@@ -144,7 +131,6 @@
         gap: 10px;
 
         button {
-
           display: flex;
           align-items: center;
           justify-content: center;
@@ -175,10 +161,4 @@
       }
     }
   }
-
-
-
-
-
-
 }

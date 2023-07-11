@@ -25,19 +25,16 @@
             background-color: #FAFAFA;
           }
         }
-
-
-
-
       }
 
       .labels {
         .label {
-          background-color: #EBEBEB;
+          background-color: rgba(0, 0, 0, 0.1);
 
           .delete {
             &:hover {
-              background-color: #d6d6d6;
+              // background-color: #d6d6d6;
+              background-color: inherit;
             }
           }
         }
@@ -77,46 +74,14 @@
             background-color: #303030;
           }
         }
-
-        // .more-options {
-        //   .more-options-menu {
-        //     background-color: #303030;
-        //     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 60%), 0 2px 6px 2px rgb(0 0 0 / 30%);
-
-        //     .btn {
-        //       &:hover {
-        //         background-color: #434446;
-        //       }
-        //     }
-        //   }
-
-        //   .edit-labels-menu {
-        //     background-color: #303030;
-        //     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 60%), 0 2px 6px 2px rgb(0 0 0 / 30%);
-
-        //     input {
-        //       background-color: #303030;
-        //     }
-
-        //     .title {}
-
-        //     .labels-list {
-
-        //       .label {}
-        //     }
-        //   }
-        // }
       }
 
       .labels {
         .label {
-          background-color: #303030;
           border: solid 1px;
           border-color: #4A4D51;
 
           &:hover {
-            background-color: #303030;
-
             svg {
               fill: white;
             }
@@ -124,7 +89,7 @@
 
           .delete {
             &:hover {
-              background-color: #424242;
+              background-color: rgba(255, 255, 255, 0.1);
             }
           }
         }
@@ -137,5 +102,4 @@
       }
     }
   }
-
 }

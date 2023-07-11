@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
-import { NotesService } from 'src/app/services/notes.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducer';
@@ -43,7 +42,6 @@ export class NotesComponent implements OnInit {
   startEditNote(noteIndex: number) {
     this.noteForEdit$ = this.store.select('notes').pipe(
       map((state) => {
-        console.log('noteIndex: ' + noteIndex);
         this.noteForEdit = state.notes[noteIndex];
         return this.noteForEdit;
       })
@@ -70,7 +68,7 @@ export class NotesComponent implements OnInit {
   }
 
   archiveNoteFromEditMode(noteIndex: number) {
-    this.editNoteService.clodeEditMode.next();
+    this.editNoteService.closeEditMode.next();
     this.archiveNote(this.noteForEdit, noteIndex);
   }
 
@@ -80,6 +78,11 @@ export class NotesComponent implements OnInit {
 
     this.store.dispatch(new archivedNotesActions.StoreNotes());
     this.store.dispatch(new notesActions.StoreNotes());
+  }
+
+  deleteNoteFromEditMode(noteIndex: number) {
+    this.editNoteService.closeEditMode.next();
+    this.deleteNote(this.noteForEdit, noteIndex);
   }
 
   deleteNote(note: Note, noteIndex: number) {

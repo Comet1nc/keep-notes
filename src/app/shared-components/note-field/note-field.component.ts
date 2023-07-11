@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { EditNoteService } from '../edit-note/edit-note.service';
 import { Subscription } from 'rxjs';
 
 @Component({

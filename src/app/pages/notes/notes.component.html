@@ -2,6 +2,7 @@
   *ngIf="showEditMode"
   [noteForEdit$]="noteForEdit$"
   [canEditNote]="true"
+  (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
   (updateNote)="updateNote($event)"
 >
   <app-btn-pin
@@ -17,9 +18,13 @@
   <app-btn-archive (archiveNote)="archiveNoteFromEditMode(noteForEditIndex)">
   </app-btn-archive>
   <app-btn-draw></app-btn-draw>
-  <!-- <app-btn-more-options
-    (deleteNote)="deleteNote(editModeNote)"
-  ></app-btn-more-options> -->
+  <app-btn-more-options
+    (deleteNote)="deleteNoteFromEditMode(noteForEditIndex)"
+    (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
+    (onAddLabel)="addLabel($event, noteForEditIndex)"
+    [note]="noteForEdit$ | async"
+  >
+  </app-btn-more-options>
 </app-edit-note>
 <div class="input-container">
   <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
