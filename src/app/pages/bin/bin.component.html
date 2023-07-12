@@ -1,10 +1,18 @@
-<app-edit-note *ngIf="showEditMode" [canEditNote]="canEditNote">
-  <!-- <app-btn-delete-forever
-    (deleteForeverEvent)="deleteForever(editModeNote)"
-  ></app-btn-delete-forever> -->
-  <!-- <app-btn-restore
-    (restoreFromBinEvent)="restoreFromBin(editModeNote)"
-  ></app-btn-restore> -->
+<app-edit-note
+  *ngIf="showEditMode"
+  [noteForEdit$]="noteForEdit$"
+  [canEditNote]="canEditNote"
+  (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
+  (updateNote)="updateNote()"
+>
+  <app-btn-delete-forever
+    (deleteForeverEvent)="deleteForeverFromEditMode(noteForEditIndex)"
+  ></app-btn-delete-forever>
+  <app-btn-restore
+    (restoreFromBinEvent)="
+      restoreFromBinEditMode(noteForEdit, noteForEditIndex)
+    "
+  ></app-btn-restore>
 </app-edit-note>
 <div class="container">
   <button class="empty-bin" (click)="clearBin()">Empty bin</button>
@@ -14,6 +22,7 @@
         *ngFor="let note of notes$ | async; let i = index"
         [note]="note"
         (onDeleteLabel)="deleteLabel($event, i)"
+        (startEditNote)="startEditNote(i)"
       >
         <app-btn-delete-forever
           (deleteForeverEvent)="deleteForever(i)"

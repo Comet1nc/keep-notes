@@ -5,7 +5,7 @@ import * as deletedNotesActions from '../../store/bin-store/bin.actions';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-bin',
@@ -18,7 +18,9 @@ export class BinComponent {
     .pipe(map((notesState) => notesState.deletedNotes));
 
   showEditMode = false;
-  editModeNote!: Note;
+  noteForEdit$: Observable<Note>;
+  noteForEdit: Note;
+  noteForEditIndex!: number;
 
   readonly canEditNote = false;
 
@@ -27,14 +29,21 @@ export class BinComponent {
     private store: Store<fromApp.AppState>
   ) {}
 
-  ngOnInit(): void {
-    // this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
-    //   this.showEditMode = true;
-    //   this.editModeNote = note;
-    // });
-    // this.editNoteService.onCloseEditMode.subscribe(() => {
-    //   this.showEditMode = false;
-    // });
+  ngOnInit(): void {}
+
+  startEditNote(noteIndex: number) {
+    this.noteForEdit$ = this.store.select('deletedNotes').pipe(
+      map((state) => {
+        this.noteForEdit = state.deletedNotes[noteIndex];
+        return this.noteForEdit;
+      })
+    );
+    this.noteForEditIndex = noteIndex;
+    this.showEditMode = true;
+  }
+
+  updateNote() {
+    this.showEditMode = false;
   }
 
   deleteLabel(label: string, noteIndex: number) {
@@ -48,9 +57,19 @@ export class BinComponent {
     this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 
+  deleteForeverFromEditMode(noteIndex: number) {
+    this.editNoteService.closeEditMode.next();
+    this.deleteForever(noteIndex);
+  }
+
   deleteForever(noteIndex: number) {
     this.store.dispatch(new deletedNotesActions.DeleteNote(noteIndex));
     this.store.dispatch(new deletedNotesActions.StoreNotes());
+  }
+
+  restoreFromBinEditMode(note: Note, noteIndex: number) {
+    this.editNoteService.closeEditMode.next();
+    this.restoreFromBin(note, noteIndex);
   }
 
   restoreFromBin(note: Note, noteIndex: number) {

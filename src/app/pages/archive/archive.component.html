@@ -1,15 +1,26 @@
-<app-edit-note *ngIf="showEditMode" [canEditNote]="true">
-  <!-- <app-btn-change-bg
-    [note]="editModeNote"
-    (saveData)="saveNotesToLocalStorage()"
-  ></app-btn-change-bg> -->
-  <!-- <app-btn-unarchive
-    (unarchiveEvent)="unarchive(editModeNote)"
-  ></app-btn-unarchive> -->
+<app-edit-note
+  *ngIf="showEditMode"
+  [noteForEdit$]="noteForEdit$"
+  [canEditNote]="true"
+  (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
+  (updateNote)="updateNote($event)"
+>
+  <app-btn-change-bg
+    [note]="noteForEdit$ | async"
+    (setNoteColor)="setNoteColor($event, noteForEditIndex)"
+  >
+  </app-btn-change-bg>
+  <app-btn-unarchive
+    (unarchiveEvent)="unacrchiveFromEditMode(noteForEdit, noteForEditIndex)"
+  ></app-btn-unarchive>
   <app-btn-draw></app-btn-draw>
-  <!-- <app-btn-more-options
-    (deleteNote)="deleteNote(editModeNote)"
-  ></app-btn-more-options> -->
+  <app-btn-more-options
+    (deleteNote)="deleteNoteFromEditMode(noteForEditIndex)"
+    (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
+    (onAddLabel)="addLabel($event, noteForEditIndex)"
+    [note]="noteForEdit$ | async"
+  >
+  </app-btn-more-options>
 </app-edit-note>
 <div class="notes-container">
   <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
@@ -17,7 +28,7 @@
       *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, i)"
-      (startEditNote)="startEditNote(note, i)"
+      (startEditNote)="startEditNote(i)"
     >
       <app-btn-change-bg
         [note]="note"

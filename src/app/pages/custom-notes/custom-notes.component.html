@@ -1,18 +1,28 @@
-<app-edit-note *ngIf="showEditMode" [canEditNote]="true">
+<app-edit-note
+  *ngIf="showEditMode"
+  [noteForEdit$]="noteForEdit$"
+  [canEditNote]="true"
+  (onDeleteLabel)="deleteLabelFromEditMode($event, noteForEditIndex)"
+  (updateNote)="updateNote($event)"
+>
   <app-btn-pin
-    [isNotePinned]="noteForEdit.isPinned"
-    (togglePin)="togglePin(noteForEdit)"
+    [isNotePinned]="(noteForEdit$ | async).isPinned"
+    (togglePin)="togglePin(noteForEditIndex)"
     pin
   ></app-btn-pin>
-  <!-- <app-btn-change-bg
-    [note]="editModeNote"
-    (saveData)="saveNotes()"
-  ></app-btn-change-bg> -->
-  <!-- <app-btn-archive (archiveNote)="archiveNote(editModeNote)"></app-btn-archive> -->
+  <app-btn-change-bg
+    [note]="noteForEdit$ | async"
+    (setNoteColor)="setNoteColor($event, noteForEditIndex)"
+  ></app-btn-change-bg>
+  <app-btn-archive (archiveNote)="archiveNoteFromEditMode(noteForEditIndex)">
+  </app-btn-archive>
   <app-btn-draw></app-btn-draw>
-  <!-- <app-btn-more-options
-    (deleteNote)="deleteNote(editModeNote)"
-  ></app-btn-more-options> -->
+  <app-btn-more-options
+    (deleteNote)="deleteNoteFromEditMode(noteForEditIndex)"
+    (onDeleteLabel)="deleteLabelFromEditMode($event, noteForEditIndex)"
+    (onAddLabel)="addLabel($event, noteForEditIndex)"
+    [note]="noteForEdit$ | async"
+  ></app-btn-more-options>
 </app-edit-note>
 <div class="input-container">
   <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
@@ -25,24 +35,26 @@
     <app-note-field
       *ngFor="let note of pinnedNotes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, note)"
-      (startEditNote)="startEditNote(note)"
+      (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
+      (startEditNote)="startEditNote(indexOfNote(note))"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
+        (togglePin)="togglePin(indexOfNote(note))"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (setNoteColor)="setNoteColor($event, note)"
+        (setNoteColor)="setNoteColor($event, indexOfNote(note))"
       ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-archive
+        (archiveNote)="archiveNote(note, indexOfNote(note))"
+      ></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
-        (onDeleteLabel)="deleteLabel($event, note)"
-        (onAddLabel)="addLabel($event, note)"
+        (deleteNote)="deleteNote(note, indexOfNote(note))"
+        (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
+        (onAddLabel)="addLabel($event, indexOfNote(note))"
         [note]="note"
       ></app-btn-more-options
     ></app-note-field>
@@ -52,24 +64,26 @@
     <app-note-field
       *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, note)"
-      (startEditNote)="startEditNote(note)"
+      (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
+      (startEditNote)="startEditNote(indexOfNote(note))"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
+        (togglePin)="togglePin(indexOfNote(note))"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (setNoteColor)="setNoteColor($event, note)"
+        (setNoteColor)="setNoteColor($event, indexOfNote(note))"
       ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-archive
+        (archiveNote)="archiveNote(note, indexOfNote(note))"
+      ></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
-        (onDeleteLabel)="deleteLabel($event, note)"
-        (onAddLabel)="addLabel($event, note)"
+        (deleteNote)="deleteNote(note, indexOfNote(note))"
+        (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
+        (onAddLabel)="addLabel($event, indexOfNote(note))"
         [note]="note"
       ></app-btn-more-options
     ></app-note-field>

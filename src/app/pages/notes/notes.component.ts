@@ -115,22 +115,15 @@ export class NotesComponent implements OnInit {
     this.showEditMode = false;
   }
 
-  indexOfNote(note: Note | Observable<Note>) {
+  // !!! to rework
+  // we filtering notes by isPinned property in streams, so we cannot use *ngFor index to correctly identify note in store.
+  // also note does not have any identifier, like id
+  indexOfNote(note: Note) {
     let index: number;
-
-    if (note instanceof Observable) {
-      combineLatest([this.store.select('notes'), note])
-        .pipe(take(1))
-        .subscribe(([state, note]) => {
-          index = state.notes.indexOf(note);
-        });
-    } else {
-      this.store
-        .select('notes')
-        .pipe(take(1))
-        .subscribe((state) => (index = state.notes.indexOf(note)));
-    }
-
+    this.store
+      .select('notes')
+      .pipe(take(1))
+      .subscribe((state) => (index = state.notes.indexOf(note)));
     return index;
   }
 }

@@ -2,7 +2,6 @@
   class="note"
   (mouseenter)="onMouseEnter(noteRef)"
   (mouseleave)="onMouseLeave(noteRef)"
-  [ngClass]="{ editmode: editModeOpened }"
   #noteRef
 >
   <div class="open-edit-mode-trigger" (click)="openEditMode()"></div>

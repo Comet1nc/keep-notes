@@ -7,7 +7,7 @@ import * as deletedNotesActions from '../../store/bin-store/bin.actions';
 import * as fromApp from '../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { NoteColor } from 'src/app/models/note-colors.model';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-archive',
@@ -20,8 +20,9 @@ export class ArchiveComponent implements OnInit {
     .pipe(map((state) => state.archivedNotes));
 
   showEditMode = false;
-  noteForEdit!: Note;
-  // noteForEditIndex!: number;
+  noteForEdit$: Observable<Note>;
+  noteForEdit: Note;
+  noteForEditIndex!: number;
 
   readonly isArchive = true;
 
@@ -30,34 +31,27 @@ export class ArchiveComponent implements OnInit {
     private store: Store<fromApp.AppState>
   ) {}
 
-  ngOnInit(): void {
-    // this.editNoteService.onOpenEditMode.subscribe((note: Note) => {
-    //   this.showEditMode = true;
-    //   this.editModeNote = note;
-    // });
-    // this.editNoteService.onCloseEditMode.subscribe(() => {
-    //   this.showEditMode = false;
-    // });
-  }
+  ngOnInit(): void {}
 
-  startEditNote(note: Note, noteIndex: number) {
-    this.noteForEdit = note;
-    // this.noteForEditIndex = noteIndex;
+  startEditNote(noteIndex: number) {
+    this.noteForEdit$ = this.store.select('archivedNotes').pipe(
+      map((state) => {
+        this.noteForEdit = state.archivedNotes[noteIndex];
+        return this.noteForEdit;
+      })
+    );
+    this.noteForEditIndex = noteIndex;
     this.showEditMode = true;
-
-    console.log('start edit | enter Property: ' + noteIndex);
-    // console.log('start edit | editNoteIndex: ' + this.noteForEditIndex);
-    console.log('start edit | noteForEdit: ' + this.noteForEdit);
   }
 
   updateNote(newNote: Note) {
-    // console.log('update note | editNoteIndex: ' + this.noteForEditIndex);
-    console.log('update note | newNote enter propert: ' + newNote);
-
-    // this.store.dispatch(
-    //   new notesActions.UpdateNote({ index: noteForEditIndex, newNote })
-    // );
-    this.store.dispatch(new notesActions.StoreNotes());
+    this.store.dispatch(
+      new archivedNotesActions.UpdateNote({
+        index: this.noteForEditIndex,
+        newNote,
+      })
+    );
+    this.store.dispatch(new archivedNotesActions.StoreNotes());
 
     this.showEditMode = false;
   }
@@ -84,12 +78,22 @@ export class ArchiveComponent implements OnInit {
     this.store.dispatch(new archivedNotesActions.StoreNotes());
   }
 
+  deleteNoteFromEditMode(noteIndex: number) {
+    this.editNoteService.closeEditMode.next();
+    this.deleteNote(this.noteForEdit, noteIndex);
+  }
+
   deleteNote(note: Note, noteIndex: number) {
     this.store.dispatch(new deletedNotesActions.AddNote(note));
     this.store.dispatch(new archivedNotesActions.DeleteNote(noteIndex));
 
     this.store.dispatch(new deletedNotesActions.StoreNotes());
     this.store.dispatch(new archivedNotesActions.StoreNotes());
+  }
+
+  unacrchiveFromEditMode(note: Note, noteIndex: number) {
+    this.editNoteService.closeEditMode.next();
+    this.unarchive(note, noteIndex);
   }
 
   unarchive(note: Note, noteIndex: number) {

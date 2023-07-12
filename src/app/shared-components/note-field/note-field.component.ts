@@ -55,7 +55,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showButtons = false;
   mouseInNote = false;
-  editModeOpened = false;
   currentTheme: Theme = Theme.light;
 
   sub: Subscription;
@@ -97,10 +96,6 @@ export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
   openEditMode() {
     if (this.mouseInNote) {
       this.startEditNote.emit();
-
-      // the component will be re-created in any case after emitting close edit mode func in edit-note.component,
-      // and this variable will change the state to what it is by default automatically
-      this.editModeOpened = true;
     }
   }
 
