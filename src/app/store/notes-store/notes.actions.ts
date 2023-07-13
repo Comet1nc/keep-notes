@@ -32,13 +32,13 @@ export class AddNote implements Action {
 export class UpdateNote implements Action {
   readonly type = UPDATE_NOTE;
 
-  constructor(public payload: { index: number; newNote: Note }) {}
+  constructor(public payload: { id: string; newNote: Note }) {}
 }
 
 export class DeleteNote implements Action {
   readonly type = DELETE_NOTE;
 
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 
 export class StoreNotes implements Action {
@@ -48,25 +48,25 @@ export class StoreNotes implements Action {
 export class TogglePinNote implements Action {
   readonly type = TOGGLE_PIN_NOTE;
 
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 
 export class AddLabelToNote implements Action {
   readonly type = ADD_LABEL_TO_NOTE;
 
-  constructor(public payload: { noteIndex: number; label: string }) {}
+  constructor(public payload: { noteId: string; label: string }) {}
 }
 
 export class DeleteLabelFromNote implements Action {
   readonly type = DELETE_LABEL_FROM_NOTE;
 
-  constructor(public payload: { noteIndex: number; label: string }) {}
+  constructor(public payload: { noteId: string; label: string }) {}
 }
 
 export class UpdateNoteColor implements Action {
   readonly type = UPDATE_NOTE_COLOR;
 
-  constructor(public payload: { noteIndex: number; color: NoteColor }) {}
+  constructor(public payload: { noteId: string; color: NoteColor }) {}
 }
 
 export type NotesActions =

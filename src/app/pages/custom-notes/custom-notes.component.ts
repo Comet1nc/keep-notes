@@ -47,7 +47,6 @@ export class CustomNotesComponent implements OnInit {
   showEditMode = false;
   noteForEdit$: Observable<Note>;
   noteForEdit: Note;
-  noteForEditIndex!: number;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -57,76 +56,75 @@ export class CustomNotesComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  startEditNote(noteIndex: number) {
+  startEditNote(noteId: string) {
     this.noteForEdit$ = this.store.select('notes').pipe(
       map((state) => {
-        this.noteForEdit = state.notes[noteIndex];
+        this.noteForEdit = state.notes[noteId];
         return this.noteForEdit;
       })
     );
-    this.noteForEditIndex = noteIndex;
     this.showEditMode = true;
   }
 
   updateNote(newNote: Note) {
     this.store.dispatch(
-      new notesActions.UpdateNote({ index: this.noteForEditIndex, newNote })
+      new notesActions.UpdateNote({ id: this.noteForEdit.id, newNote })
     );
     this.store.dispatch(new notesActions.StoreNotes());
 
     this.showEditMode = false;
   }
 
-  setNoteColor(color: NoteColor, noteIndex: number) {
-    this.store.dispatch(new notesActions.UpdateNoteColor({ noteIndex, color }));
+  setNoteColor(color: NoteColor, noteId: string) {
+    this.store.dispatch(new notesActions.UpdateNoteColor({ noteId, color }));
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  addLabel(label: string, noteIndex: number) {
-    this.store.dispatch(new notesActions.AddLabelToNote({ noteIndex, label }));
+  addLabel(label: string, noteId: string) {
+    this.store.dispatch(new notesActions.AddLabelToNote({ noteId, label }));
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  deleteLabelFromEditMode(label: string, noteIndex: number) {
+  deleteLabelFromEditMode(label: string, noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.deleteLabel(label, noteIndex);
+    this.deleteLabel(label, noteId);
   }
 
-  deleteLabel(label: string, noteIndex: number): void {
+  deleteLabel(label: string, noteId: string): void {
     this.store.dispatch(
-      new notesActions.DeleteLabelFromNote({ noteIndex, label })
+      new notesActions.DeleteLabelFromNote({ noteId, label })
     );
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  archiveNoteFromEditMode(noteIndex: number) {
+  archiveNoteFromEditMode(noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.archiveNote(this.noteForEdit, noteIndex);
+    this.archiveNote(this.noteForEdit, noteId);
   }
 
-  archiveNote(note: Note, noteIndex: number) {
+  archiveNote(note: Note, noteId: string) {
     this.store.dispatch(new archivedNotesActions.AddNote(note));
-    this.store.dispatch(new notesActions.DeleteNote(noteIndex));
+    this.store.dispatch(new notesActions.DeleteNote(noteId));
 
     this.store.dispatch(new archivedNotesActions.StoreNotes());
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  deleteNoteFromEditMode(noteIndex: number) {
+  deleteNoteFromEditMode(noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.deleteNote(this.noteForEdit, noteIndex);
+    this.deleteNote(this.noteForEdit, noteId);
   }
 
-  deleteNote(note: Note, noteIndex: number) {
+  deleteNote(note: Note, noteId: string) {
     this.store.dispatch(new deletedNotesActions.AddNote(note));
-    this.store.dispatch(new notesActions.DeleteNote(noteIndex));
+    this.store.dispatch(new notesActions.DeleteNote(noteId));
 
     this.store.dispatch(new deletedNotesActions.StoreNotes());
     this.store.dispatch(new notesActions.StoreNotes());
   }
 
-  togglePin(noteIndex: number) {
-    this.store.dispatch(new notesActions.TogglePinNote(noteIndex));
+  togglePin(noteId: string) {
+    this.store.dispatch(new notesActions.TogglePinNote(noteId));
     this.store.dispatch(new notesActions.StoreNotes());
   }
 

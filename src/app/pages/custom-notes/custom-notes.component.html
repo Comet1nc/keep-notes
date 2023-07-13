@@ -2,25 +2,25 @@
   *ngIf="showEditMode"
   [noteForEdit$]="noteForEdit$"
   [canEditNote]="true"
-  (onDeleteLabel)="deleteLabelFromEditMode($event, noteForEditIndex)"
+  (onDeleteLabel)="deleteLabelFromEditMode($event, noteForEdit.id)"
   (updateNote)="updateNote($event)"
 >
   <app-btn-pin
     [isNotePinned]="(noteForEdit$ | async).isPinned"
-    (togglePin)="togglePin(noteForEditIndex)"
+    (togglePin)="togglePin(noteForEdit.id)"
     pin
   ></app-btn-pin>
   <app-btn-change-bg
     [note]="noteForEdit$ | async"
-    (setNoteColor)="setNoteColor($event, noteForEditIndex)"
+    (setNoteColor)="setNoteColor($event, noteForEdit.id)"
   ></app-btn-change-bg>
-  <app-btn-archive (archiveNote)="archiveNoteFromEditMode(noteForEditIndex)">
+  <app-btn-archive (archiveNote)="archiveNoteFromEditMode(noteForEdit.id)">
   </app-btn-archive>
   <app-btn-draw></app-btn-draw>
   <app-btn-more-options
-    (deleteNote)="deleteNoteFromEditMode(noteForEditIndex)"
-    (onDeleteLabel)="deleteLabelFromEditMode($event, noteForEditIndex)"
-    (onAddLabel)="addLabel($event, noteForEditIndex)"
+    (deleteNote)="deleteNoteFromEditMode(noteForEdit.id)"
+    (onDeleteLabel)="deleteLabelFromEditMode($event, noteForEdit.id)"
+    (onAddLabel)="addLabel($event, noteForEdit.id)"
     [note]="noteForEdit$ | async"
   ></app-btn-more-options>
 </app-edit-note>
@@ -35,26 +35,26 @@
     <app-note-field
       *ngFor="let note of pinnedNotes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
-      (startEditNote)="startEditNote(indexOfNote(note))"
+      (onDeleteLabel)="deleteLabel($event, note.id)"
+      (startEditNote)="startEditNote(note.id)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(indexOfNote(note))"
+        (togglePin)="togglePin(note.id)"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (setNoteColor)="setNoteColor($event, indexOfNote(note))"
+        (setNoteColor)="setNoteColor($event, note.id)"
       ></app-btn-change-bg>
       <app-btn-archive
-        (archiveNote)="archiveNote(note, indexOfNote(note))"
+        (archiveNote)="archiveNote(note, note.id)"
       ></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note, indexOfNote(note))"
-        (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
-        (onAddLabel)="addLabel($event, indexOfNote(note))"
+        (deleteNote)="deleteNote(note, note.id)"
+        (onDeleteLabel)="deleteLabel($event, note.id)"
+        (onAddLabel)="addLabel($event, note.id)"
         [note]="note"
       ></app-btn-more-options
     ></app-note-field>
@@ -64,26 +64,26 @@
     <app-note-field
       *ngFor="let note of notes$ | async; let i = index"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
-      (startEditNote)="startEditNote(indexOfNote(note))"
+      (onDeleteLabel)="deleteLabel($event, note.id)"
+      (startEditNote)="startEditNote(note.id)"
     >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(indexOfNote(note))"
+        (togglePin)="togglePin(note.id)"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
         [note]="note"
-        (setNoteColor)="setNoteColor($event, indexOfNote(note))"
+        (setNoteColor)="setNoteColor($event, note.id)"
       ></app-btn-change-bg>
       <app-btn-archive
-        (archiveNote)="archiveNote(note, indexOfNote(note))"
+        (archiveNote)="archiveNote(note, note.id)"
       ></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note, indexOfNote(note))"
-        (onDeleteLabel)="deleteLabel($event, indexOfNote(note))"
-        (onAddLabel)="addLabel($event, indexOfNote(note))"
+        (deleteNote)="deleteNote(note, note.id)"
+        (onDeleteLabel)="deleteLabel($event, note.id)"
+        (onAddLabel)="addLabel($event, note.id)"
         [note]="note"
       ></app-btn-more-options
     ></app-note-field>

@@ -25,13 +25,13 @@ export function notesReducer(
         notes: [...state.notes, action.payload],
       };
     case NotesActions.UPDATE_NOTE:
-      const updatedNote = {
-        ...state.notes[action.payload.index],
-        ...action.payload.newNote,
-      };
-
-      const updatedNotes = [...state.notes];
-      updatedNotes[action.payload.index] = updatedNote;
+      const updatedNotes = state.notes.map((note) => {
+        if (note.id === action.payload.id) {
+          return { ...note, ...action.payload.newNote };
+        } else {
+          return note;
+        }
+      });
 
       return {
         ...state,
@@ -40,72 +40,59 @@ export function notesReducer(
     case NotesActions.DELETE_NOTE:
       return {
         ...state,
-        notes: state.notes.filter((note: Note, index: number) => {
-          return index != action.payload;
-        }), // filter return the new list so we dont need to mutate
+        notes: state.notes.filter((note) => note.id !== action.payload),
       };
     case NotesActions.TOGGLE_PIN_NOTE:
-      const updatedPinNote: Note = {
-        ...state.notes[action.payload],
-        isPinned: !state.notes[action.payload].isPinned,
-      };
-
-      const notes = [...state.notes];
-      notes[action.payload] = updatedPinNote;
+      const notes = state.notes.map((note) =>
+        note.id === action.payload
+          ? { ...note, isPinned: !note.isPinned }
+          : note
+      );
 
       return {
         ...state,
         notes: notes,
       };
     case NotesActions.ADD_LABEL_TO_NOTE:
-      let updatedLabels;
-
-      if (state.notes[action.payload.noteIndex].labels) {
-        updatedLabels = [
-          ...state.notes[action.payload.noteIndex].labels,
-          action.payload.label,
-        ];
-      } else {
-        updatedLabels = [action.payload.label];
-      }
-
-      const noteWithNewLabel: Note = {
-        ...state.notes[action.payload.noteIndex],
-        labels: updatedLabels,
-      };
-
-      const resultNotes = [...state.notes];
-      resultNotes[action.payload.noteIndex] = noteWithNewLabel;
-
+      const resultNotes = state.notes.map((note) => {
+        if (note.id === action.payload.noteId) {
+          let updatedLabels: string[];
+          if (note.labels) {
+            updatedLabels = [...note.labels, action.payload.label];
+          } else {
+            updatedLabels = [action.payload.label];
+          }
+          return { ...note, labels: updatedLabels };
+        } else {
+          return note;
+        }
+      });
       return {
         ...state,
         notes: resultNotes,
       };
     case NotesActions.DELETE_LABEL_FROM_NOTE:
-      const labels = state.notes[action.payload.noteIndex].labels.filter(
-        (label) => label !== action.payload.label
+      const _resultNotes = state.notes.map((note) =>
+        note.id === action.payload.noteId
+          ? {
+              ...note,
+              labels: note.labels.filter(
+                (label, i) => label !== action.payload.label
+              ),
+            }
+          : note
       );
-
-      const _note = {
-        ...state.notes[action.payload.noteIndex],
-        labels: labels,
-      };
-
-      const _resultNotes = [...state.notes];
-      _resultNotes[action.payload.noteIndex] = _note;
 
       return {
         ...state,
         notes: _resultNotes,
       };
     case NotesActions.UPDATE_NOTE_COLOR:
-      const updatedNoteWithColor: Note = {
-        ...state.notes[action.payload.noteIndex],
-        color: action.payload.color,
-      };
-
-      const notes_ = [...state.notes];
-      notes_[action.payload.noteIndex] = updatedNoteWithColor;
+      const notes_ = state.notes.map((note) =>
+        note.id === action.payload.noteId
+          ? { ...note, color: action.payload.color }
+          : note
+      );
 
       return {
         ...state,
