@@ -10,7 +10,6 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
   styleUrls: ['./btn-change-bg.component.scss', '../action-buttons.scss'],
 })
 export class BtnChangeBgComponent implements OnInit {
-  @Input() note!: Note;
   @Output() setNoteColor = new EventEmitter<NoteColor>();
 
   currentTheme: Theme = Theme.light;

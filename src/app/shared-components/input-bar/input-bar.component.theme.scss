@@ -22,7 +22,7 @@
     .opened-section {
       .title-wrapper {
         .title-input {
-          background-color: #fff;
+          background-color: inherit;
           color: #000;
 
           &::placeholder {
@@ -48,6 +48,12 @@
           button {
             svg {
               fill: #4A4A4A;
+            }
+          }
+
+          .change-bg {
+            .change-bg-menu {
+              background-color: #FAFAFA;
             }
           }
         }
@@ -84,7 +90,7 @@
     .opened-section {
       .title-wrapper {
         .title-input {
-          background-color: #303030;
+          background-color: inherit;
           color: #fff;
 
           &::placeholder {
@@ -110,6 +116,12 @@
           button {
             svg {
               fill: #BEBFBF;
+            }
+          }
+
+          .change-bg {
+            .change-bg-menu {
+              background-color: #303030;
             }
           }
         }

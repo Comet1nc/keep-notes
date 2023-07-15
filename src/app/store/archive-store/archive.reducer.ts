@@ -25,13 +25,13 @@ export function archivedNotesReducer(
         archivedNotes: [...state.archivedNotes, action.payload],
       };
     case ArchivedNotesActions.UPDATE_NOTE:
-      const updatedNote = {
-        ...state.archivedNotes[action.payload.index],
-        ...action.payload.newNote,
-      };
-
-      const updatedNotes = [...state.archivedNotes];
-      updatedNotes[action.payload.index] = updatedNote;
+      const updatedNotes = state.archivedNotes.map((note) => {
+        if (note.id === action.payload.id) {
+          return { ...note, ...action.payload.newNote };
+        } else {
+          return note;
+        }
+      });
 
       return {
         ...state,
@@ -40,61 +40,51 @@ export function archivedNotesReducer(
     case ArchivedNotesActions.DELETE_NOTE:
       return {
         ...state,
-        archivedNotes: state.archivedNotes.filter(
-          (note: Note, index: number) => {
-            return index != action.payload;
-          }
-        ), // filter return the new list so we dont need to mutate
+        archivedNotes: state.archivedNotes.filter((note: Note, i: number) => {
+          return note.id != action.payload;
+        }),
       };
     case ArchivedNotesActions.ADD_LABEL_TO_NOTE:
-      let updatedLabels;
-
-      if (state.archivedNotes[action.payload.noteIndex].labels) {
-        updatedLabels = [
-          ...state.archivedNotes[action.payload.noteIndex].labels,
-          action.payload.label,
-        ];
-      } else {
-        updatedLabels = [action.payload.label];
-      }
-
-      const noteWithNewLabel: Note = {
-        ...state.archivedNotes[action.payload.noteIndex],
-        labels: updatedLabels,
-      };
-
-      const resultNotes = [...state.archivedNotes];
-      resultNotes[action.payload.noteIndex] = noteWithNewLabel;
+      const resultNotes = state.archivedNotes.map((note) => {
+        if (note.id === action.payload.noteId) {
+          let updatedLabels: string[];
+          if (note.labels) {
+            updatedLabels = [...note.labels, action.payload.label];
+          } else {
+            updatedLabels = [action.payload.label];
+          }
+          return { ...note, labels: updatedLabels };
+        } else {
+          return note;
+        }
+      });
 
       return {
         ...state,
         archivedNotes: resultNotes,
       };
     case ArchivedNotesActions.DELETE_LABEL_FROM_NOTE:
-      const labels = state.archivedNotes[
-        action.payload.noteIndex
-      ].labels.filter((label) => label !== action.payload.label);
-
-      const _note = {
-        ...state.archivedNotes[action.payload.noteIndex],
-        labels: labels,
-      };
-
-      const _resultNotes = [...state.archivedNotes];
-      _resultNotes[action.payload.noteIndex] = _note;
+      const _resultNotes = state.archivedNotes.map((note) =>
+        note.id === action.payload.noteId
+          ? {
+              ...note,
+              labels: note.labels.filter(
+                (label, i) => label !== action.payload.label
+              ),
+            }
+          : note
+      );
 
       return {
         ...state,
         archivedNotes: _resultNotes,
       };
     case ArchivedNotesActions.UPDATE_NOTE_COLOR:
-      const updatedNoteWithColor: Note = {
-        ...state.archivedNotes[action.payload.noteIndex],
-        color: action.payload.color,
-      };
-
-      const notes_ = [...state.archivedNotes];
-      notes_[action.payload.noteIndex] = updatedNoteWithColor;
+      const notes_ = state.archivedNotes.map((note) =>
+        note.id === action.payload.noteId
+          ? { ...note, color: action.payload.color }
+          : note
+      );
 
       return {
         ...state,

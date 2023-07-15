@@ -10,10 +10,7 @@
     (togglePin)="togglePin(noteForEdit.id)"
     pin
   ></app-btn-pin>
-  <app-btn-change-bg
-    [note]="noteForEdit$ | async"
-    (setNoteColor)="setNoteColor($event, noteForEdit.id)"
-  >
+  <app-btn-change-bg (setNoteColor)="setNoteColor($event, noteForEdit.id)">
   </app-btn-change-bg>
   <app-btn-archive (archiveNote)="archiveNoteFromEditMode(noteForEdit.id)">
   </app-btn-archive>
@@ -35,7 +32,7 @@
   </div>
   <div class="pinned-notes-container" *ngIf="(pinnedNotes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of pinnedNotes$ | async"
+      *ngFor="let note of pinnedNotes$ | async; trackBy: identify"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note.id)"
       (startEditNote)="startEditNote(note.id)"
@@ -46,7 +43,6 @@
         pin
       ></app-btn-pin>
       <app-btn-change-bg
-        [note]="note"
         (setNoteColor)="setNoteColor($event, note.id)"
       ></app-btn-change-bg>
       <app-btn-archive
@@ -64,7 +60,7 @@
   <div class="category-type" *ngIf="(notes$ | async).length > 0">OTHERS</div>
   <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of notes$ | async"
+      *ngFor="let note of notes$ | async; trackBy: identify"
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note.id)"
       (startEditNote)="startEditNote(note.id)"
@@ -75,7 +71,6 @@
         pin
       ></app-btn-pin>
       <app-btn-change-bg
-        [note]="note"
         (setNoteColor)="setNoteColor($event, note.id)"
       ></app-btn-change-bg>
       <app-btn-archive

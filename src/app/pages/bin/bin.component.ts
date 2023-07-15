@@ -20,7 +20,6 @@ export class BinComponent {
   showEditMode = false;
   noteForEdit$: Observable<Note>;
   noteForEdit: Note;
-  noteForEditIndex!: number;
 
   readonly canEditNote = false;
 
@@ -31,14 +30,15 @@ export class BinComponent {
 
   ngOnInit(): void {}
 
-  startEditNote(noteIndex: number) {
+  startEditNote(noteId: string) {
     this.noteForEdit$ = this.store.select('deletedNotes').pipe(
       map((state) => {
-        this.noteForEdit = state.deletedNotes[noteIndex];
+        this.noteForEdit = state.deletedNotes.find(
+          (note) => note.id === noteId
+        );
         return this.noteForEdit;
       })
     );
-    this.noteForEditIndex = noteIndex;
     this.showEditMode = true;
   }
 
@@ -46,9 +46,9 @@ export class BinComponent {
     this.showEditMode = false;
   }
 
-  deleteLabel(label: string, noteIndex: number) {
+  deleteLabel(label: string, noteId: string) {
     this.store.dispatch(
-      new deletedNotesActions.DeleteLabelFromNote({ noteIndex, label })
+      new deletedNotesActions.DeleteLabelFromNote({ noteId, label })
     );
   }
 
@@ -57,26 +57,30 @@ export class BinComponent {
     this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 
-  deleteForeverFromEditMode(noteIndex: number) {
+  deleteForeverFromEditMode(noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.deleteForever(noteIndex);
+    this.deleteForever(noteId);
   }
 
-  deleteForever(noteIndex: number) {
-    this.store.dispatch(new deletedNotesActions.DeleteNote(noteIndex));
+  deleteForever(noteId: string) {
+    this.store.dispatch(new deletedNotesActions.DeleteNote(noteId));
     this.store.dispatch(new deletedNotesActions.StoreNotes());
   }
 
-  restoreFromBinEditMode(note: Note, noteIndex: number) {
+  restoreFromBinEditMode(note: Note, noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.restoreFromBin(note, noteIndex);
+    this.restoreFromBin(note, noteId);
   }
 
-  restoreFromBin(note: Note, noteIndex: number) {
+  restoreFromBin(note: Note, noteId: string) {
     this.store.dispatch(new notesActions.AddNote(note));
-    this.store.dispatch(new deletedNotesActions.DeleteNote(noteIndex));
+    this.store.dispatch(new deletedNotesActions.DeleteNote(noteId));
 
     this.store.dispatch(new notesActions.StoreNotes());
     this.store.dispatch(new deletedNotesActions.StoreNotes());
+  }
+
+  identify(index: number, item: Note) {
+    return item.id;
   }
 }

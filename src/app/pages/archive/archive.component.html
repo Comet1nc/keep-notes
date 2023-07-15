@@ -2,22 +2,19 @@
   *ngIf="showEditMode"
   [noteForEdit$]="noteForEdit$"
   [canEditNote]="true"
-  (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
+  (onDeleteLabel)="deleteLabel($event, noteForEdit.id)"
   (updateNote)="updateNote($event)"
 >
-  <app-btn-change-bg
-    [note]="noteForEdit$ | async"
-    (setNoteColor)="setNoteColor($event, noteForEditIndex)"
-  >
+  <app-btn-change-bg (setNoteColor)="setNoteColor($event, noteForEdit.id)">
   </app-btn-change-bg>
   <app-btn-unarchive
-    (unarchiveEvent)="unacrchiveFromEditMode(noteForEdit, noteForEditIndex)"
+    (unarchiveEvent)="unacrchiveFromEditMode(noteForEdit, noteForEdit.id)"
   ></app-btn-unarchive>
   <app-btn-draw></app-btn-draw>
   <app-btn-more-options
-    (deleteNote)="deleteNoteFromEditMode(noteForEditIndex)"
-    (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
-    (onAddLabel)="addLabel($event, noteForEditIndex)"
+    (deleteNote)="deleteNoteFromEditMode(noteForEdit.id)"
+    (onDeleteLabel)="deleteLabel($event, noteForEdit.id)"
+    (onAddLabel)="addLabel($event, noteForEdit.id)"
     [note]="noteForEdit$ | async"
   >
   </app-btn-more-options>
@@ -25,23 +22,22 @@
 <div class="notes-container">
   <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
     <app-note-field
-      *ngFor="let note of notes$ | async; let i = index"
+      *ngFor="let note of notes$ | async; trackBy: identify"
       [note]="note"
-      (onDeleteLabel)="deleteLabel($event, i)"
-      (startEditNote)="startEditNote(i)"
+      (onDeleteLabel)="deleteLabel($event, note.id)"
+      (startEditNote)="startEditNote(note.id)"
     >
       <app-btn-change-bg
-        [note]="note"
-        (setNoteColor)="setNoteColor($event, i)"
+        (setNoteColor)="setNoteColor($event, note.id)"
       ></app-btn-change-bg>
       <app-btn-unarchive
-        (unarchiveEvent)="unarchive(note, i)"
+        (unarchiveEvent)="unarchive(note, note.id)"
       ></app-btn-unarchive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note, i)"
-        (onDeleteLabel)="deleteLabel($event, i)"
-        (onAddLabel)="addLabel($event, i)"
+        (deleteNote)="deleteNote(note, note.id)"
+        (onDeleteLabel)="deleteLabel($event, note.id)"
+        (onAddLabel)="addLabel($event, note.id)"
         [note]="note"
       ></app-btn-more-options>
     </app-note-field>

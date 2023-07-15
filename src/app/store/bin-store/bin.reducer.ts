@@ -27,23 +27,21 @@ export function deletedNotesReducer(
     case DeletedNotesActions.DELETE_NOTE:
       return {
         ...state,
-        deletedNotes: state.deletedNotes.filter((note: Note, index: number) => {
-          return index != action.payload;
-        }), // filter return the new list so we dont need to mutate
+        deletedNotes: state.deletedNotes.filter((note: Note, i: number) => {
+          return note.id != action.payload;
+        }),
       };
     case DeletedNotesActions.DELETE_LABEL_FROM_NOTE:
-      const labels = state.deletedNotes[action.payload.noteIndex].labels.filter(
-        (label) => label !== action.payload.label
+      const _resultNotes = state.deletedNotes.map((note) =>
+        note.id === action.payload.noteId
+          ? {
+              ...note,
+              labels: note.labels.filter(
+                (label, i) => label !== action.payload.label
+              ),
+            }
+          : note
       );
-
-      const _note = {
-        ...state.deletedNotes[action.payload.noteIndex],
-        labels: labels,
-      };
-
-      const _resultNotes = [...state.deletedNotes];
-      _resultNotes[action.payload.noteIndex] = _note;
-
       return {
         ...state,
         deletedNotes: _resultNotes,

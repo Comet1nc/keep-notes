@@ -2,16 +2,14 @@
   *ngIf="showEditMode"
   [noteForEdit$]="noteForEdit$"
   [canEditNote]="canEditNote"
-  (onDeleteLabel)="deleteLabel($event, noteForEditIndex)"
+  (onDeleteLabel)="deleteLabel($event, noteForEdit.id)"
   (updateNote)="updateNote()"
 >
   <app-btn-delete-forever
-    (deleteForeverEvent)="deleteForeverFromEditMode(noteForEditIndex)"
+    (deleteForeverEvent)="deleteForeverFromEditMode(noteForEdit.id)"
   ></app-btn-delete-forever>
   <app-btn-restore
-    (restoreFromBinEvent)="
-      restoreFromBinEditMode(noteForEdit, noteForEditIndex)
-    "
+    (restoreFromBinEvent)="restoreFromBinEditMode(noteForEdit, noteForEdit.id)"
   ></app-btn-restore>
 </app-edit-note>
 <div class="container">
@@ -19,16 +17,16 @@
   <div class="notes-container">
     <div class="unpinned-notes-container">
       <app-note-field
-        *ngFor="let note of notes$ | async; let i = index"
+        *ngFor="let note of notes$ | async; trackBy: identify"
         [note]="note"
-        (onDeleteLabel)="deleteLabel($event, i)"
-        (startEditNote)="startEditNote(i)"
+        (onDeleteLabel)="deleteLabel($event, note.id)"
+        (startEditNote)="startEditNote(note.id)"
       >
         <app-btn-delete-forever
-          (deleteForeverEvent)="deleteForever(i)"
+          (deleteForeverEvent)="deleteForever(note.id)"
         ></app-btn-delete-forever>
         <app-btn-restore
-          (restoreFromBinEvent)="restoreFromBin(note, i)"
+          (restoreFromBinEvent)="restoreFromBin(note, note.id)"
         ></app-btn-restore>
       </app-note-field>
     </div>

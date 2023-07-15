@@ -6,7 +6,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import * as archivedNotesActions from '../../store/archive-store/archive.actions';
 import * as deletedNotesActions from '../../store/bin-store/bin.actions';
-import { Observable, combineLatest, map, take } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { NoteColor } from 'src/app/models/note-colors.model';
 
 @Component({
@@ -113,15 +113,7 @@ export class NotesComponent implements OnInit {
     this.showEditMode = false;
   }
 
-  // !!! to rework
-  // we filtering notes by isPinned property in streams, so we cannot use *ngFor index to correctly identify note in store.
-  // also note does not have any identifier, like id
-  indexOfNote(note: Note) {
-    let index: number;
-    this.store
-      .select('notes')
-      .pipe(take(1))
-      .subscribe((state) => (index = state.notes.indexOf(note)));
-    return index;
+  identify(index: number, item: Note) {
+    return item.id;
   }
 }

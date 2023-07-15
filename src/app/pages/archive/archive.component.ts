@@ -22,7 +22,6 @@ export class ArchiveComponent implements OnInit {
   showEditMode = false;
   noteForEdit$: Observable<Note>;
   noteForEdit: Note;
-  noteForEditIndex!: number;
 
   readonly isArchive = true;
 
@@ -33,21 +32,22 @@ export class ArchiveComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  startEditNote(noteIndex: number) {
+  startEditNote(noteId: string) {
     this.noteForEdit$ = this.store.select('archivedNotes').pipe(
       map((state) => {
-        this.noteForEdit = state.archivedNotes[noteIndex];
+        this.noteForEdit = state.archivedNotes.find(
+          (note) => note.id === noteId
+        );
         return this.noteForEdit;
       })
     );
-    this.noteForEditIndex = noteIndex;
     this.showEditMode = true;
   }
 
   updateNote(newNote: Note) {
     this.store.dispatch(
       new archivedNotesActions.UpdateNote({
-        index: this.noteForEditIndex,
+        id: this.noteForEdit.id,
         newNote,
       })
     );
@@ -56,51 +56,55 @@ export class ArchiveComponent implements OnInit {
     this.showEditMode = false;
   }
 
-  setNoteColor(color: NoteColor, noteIndex: number) {
+  setNoteColor(color: NoteColor, noteId: string) {
     this.store.dispatch(
-      new archivedNotesActions.UpdateNoteColor({ noteIndex, color })
+      new archivedNotesActions.UpdateNoteColor({ noteId, color })
     );
 
     this.store.dispatch(new archivedNotesActions.StoreNotes());
   }
 
-  addLabel(label: string, noteIndex: number) {
+  addLabel(label: string, noteId: string) {
     this.store.dispatch(
-      new archivedNotesActions.AddLabelToNote({ noteIndex, label })
+      new archivedNotesActions.AddLabelToNote({ noteId, label })
     );
     this.store.dispatch(new archivedNotesActions.StoreNotes());
   }
 
-  deleteLabel(label: string, noteIndex: number) {
+  deleteLabel(label: string, noteId: string) {
     this.store.dispatch(
-      new archivedNotesActions.DeleteLabelFromNote({ noteIndex, label })
+      new archivedNotesActions.DeleteLabelFromNote({ noteId, label })
     );
     this.store.dispatch(new archivedNotesActions.StoreNotes());
   }
 
-  deleteNoteFromEditMode(noteIndex: number) {
+  deleteNoteFromEditMode(noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.deleteNote(this.noteForEdit, noteIndex);
+    this.deleteNote(this.noteForEdit, noteId);
   }
 
-  deleteNote(note: Note, noteIndex: number) {
+  deleteNote(note: Note, noteId: string) {
     this.store.dispatch(new deletedNotesActions.AddNote(note));
-    this.store.dispatch(new archivedNotesActions.DeleteNote(noteIndex));
+    this.store.dispatch(new archivedNotesActions.DeleteNote(noteId));
 
     this.store.dispatch(new deletedNotesActions.StoreNotes());
     this.store.dispatch(new archivedNotesActions.StoreNotes());
   }
 
-  unacrchiveFromEditMode(note: Note, noteIndex: number) {
+  unacrchiveFromEditMode(note: Note, noteId: string) {
     this.editNoteService.closeEditMode.next();
-    this.unarchive(note, noteIndex);
+    this.unarchive(note, noteId);
   }
 
-  unarchive(note: Note, noteIndex: number) {
+  unarchive(note: Note, noteId: string) {
     this.store.dispatch(new notesActions.AddNote(note));
-    this.store.dispatch(new archivedNotesActions.DeleteNote(noteIndex));
+    this.store.dispatch(new archivedNotesActions.DeleteNote(noteId));
 
     this.store.dispatch(new archivedNotesActions.StoreNotes());
     this.store.dispatch(new notesActions.StoreNotes());
+  }
+
+  identify(index: number, item: Note) {
+    return item.id;
   }
 }

@@ -141,17 +141,7 @@ export class CustomNotesComponent implements OnInit {
 
     this.store.dispatch(new notesActions.StoreNotes());
   }
-
-  // !!! to rework
-  // we filtering notes by isPinned(and others) property in streams,
-  // so we cannot use *ngFor index to correctly identify note in store.
-  // also note does not have any identifier, like id
-  indexOfNote(note: Note) {
-    let index: number;
-    this.store
-      .select('notes')
-      .pipe(take(1))
-      .subscribe((state) => (index = state.notes.indexOf(note)));
-    return index;
+  identify(index: number, item: Note) {
+    return item.id;
   }
 }

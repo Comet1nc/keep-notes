@@ -28,7 +28,7 @@ export class AddNote implements Action {
 export class DeleteNote implements Action {
   readonly type = DELETE_NOTE;
 
-  constructor(public payload: number) {}
+  constructor(public payload: string) {}
 }
 
 export class StoreNotes implements Action {
@@ -38,7 +38,7 @@ export class StoreNotes implements Action {
 export class DeleteLabelFromNote implements Action {
   readonly type = DELETE_LABEL_FROM_NOTE;
 
-  constructor(public payload: { noteIndex: number; label: string }) {}
+  constructor(public payload: { noteId: string; label: string }) {}
 }
 
 export class DeleteAllNotes implements Action {
