@@ -19,19 +19,12 @@ export class ToolBarComponent {
   constructor(private searchService: SearchService) {}
 
   startSearch() {
-    if (this.searchText === '' && this.searchService.searching === true) {
-      this.endSearch();
-    } else {
-      // this.searchBarService.search(this.searchText);
-      this.searchService.search(this.searchText);
-    }
+    this.searchService.search(this.searchText);
   }
 
   endSearch() {
-    // this.searchService.endSearch.next();
-    // const newLocal = this;
-    // newLocal.searchService.searching = false;
     this.searchText = '';
+    this.searchService.search('');
   }
 
   toggleDarkMode() {

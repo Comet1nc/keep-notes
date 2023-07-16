@@ -1,55 +1,104 @@
+<app-edit-note
+  *ngIf="showEditMode"
+  [noteForEdit$]="noteForEdit$"
+  [canEditNote]="true"
+  (onDeleteLabel)="
+    isNoteForEditFromArchive
+      ? deleteLabelArchive($event, noteForEdit.id)
+      : deleteLabel($event, noteForEdit.id)
+  "
+  (updateNote)="updateNote($event)"
+>
+  <app-btn-pin
+    *ngIf="!isNoteForEditFromArchive"
+    [isNotePinned]="(noteForEdit$ | async).isPinned"
+    (togglePin)="togglePin(noteForEdit.id)"
+    pin
+  ></app-btn-pin>
+  <app-btn-change-bg
+    (setNoteColor)="
+      isNoteForEditFromArchive
+        ? setNoteColorArchive($event, noteForEdit.id)
+        : setNoteColor($event, noteForEdit.id)
+    "
+  >
+  </app-btn-change-bg>
+  <app-btn-archive
+    *ngIf="!isNoteForEditFromArchive"
+    (archiveNote)="archiveNoteFromEditMode(noteForEdit.id)"
+  >
+  </app-btn-archive>
+  <app-btn-unarchive
+    *ngIf="isNoteForEditFromArchive"
+    (unarchiveEvent)="unarchiveFromEditMode(noteForEdit, noteForEdit.id)"
+  ></app-btn-unarchive>
+  <app-btn-draw></app-btn-draw>
+  <app-btn-more-options
+    (deleteNote)="deleteNoteFromEditMode(noteForEdit.id)"
+    (onDeleteLabel)="
+      isNoteForEditFromArchive
+        ? deleteLabelArchive($event, noteForEdit.id)
+        : deleteLabel($event, noteForEdit.id)
+    "
+    (onAddLabel)="
+      isNoteForEditFromArchive
+        ? addLabelArchive($event, noteForEdit.id)
+        : addLabel($event, noteForEdit.id)
+    "
+    [note]="noteForEdit$ | async"
+  >
+  </app-btn-more-options>
+</app-edit-note>
 <div class="notes-container">
-  <div class="notes" *ngIf="notes.length > 0">
+  <div class="notes" *ngIf="(notes$ | async).length > 0">
     <p class="category-type">NOTES</p>
-    <app-note-field *ngFor="let note of notes" [note]="note">
+    <app-note-field
+      *ngFor="let note of notes$ | async; trackBy: identify"
+      (onDeleteLabel)="deleteLabel($event, note.id)"
+      (startEditNote)="startEditNote(note.id, false)"
+      [note]="note"
+    >
       <app-btn-pin
         [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
+        (togglePin)="togglePin(note.id)"
         pin
       ></app-btn-pin>
       <app-btn-change-bg
-        (saveData)="saveNotesToLocalStorage()"
+        (setNoteColor)="setNoteColor($event, note.id)"
       ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-archive
+        (archiveNote)="archiveNote(note, note.id)"
+      ></app-btn-archive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
-      ></app-btn-more-options>
-    </app-note-field>
-  </div>
-  <div class="archive-notes" *ngIf="archiveNotes.length > 0">
-    <p class="category-type">ARCHIVE</p>
-    <app-note-field *ngFor="let note of archiveNotes" [note]="note">
-      <app-btn-change-bg
-        (saveData)="saveNotesToLocalStorageFromArchive()"
-      ></app-btn-change-bg>
-      <app-btn-unarchive (unarchiveEvent)="unarchive(note)"></app-btn-unarchive>
-      <app-btn-draw></app-btn-draw>
-      <app-btn-more-options
-        (deleteNote)="deleteNoteFromArchive(note)"
-      ></app-btn-more-options>
-    </app-note-field>
-  </div>
-  <!-- <div class="label" *ngFor="let label of labels">
-    <div class="custom-notes" *ngIf="label.notes.length > 0">
-      <p class="category-type">{{ label.name }}</p>
-      <app-note-field *ngFor="let note of label.notes" [note]="note">
-        <app-btn-pin
-        [isNotePinned]="note.isPinned"
-        (togglePin)="togglePin(note)"
-        pin
-      ></app-btn-pin>
-      <app-btn-change-bg
+        (deleteNote)="deleteNote(note, note.id)"
+        (onDeleteLabel)="deleteLabel($event, note.id)"
+        (onAddLabel)="addLabel($event, note.id)"
         [note]="note"
-        (saveData)="saveNotesToLocalStorage()"
+      ></app-btn-more-options>
+    </app-note-field>
+  </div>
+  <div class="archive-notes">
+    <p class="category-type">ARCHIVE</p>
+    <app-note-field
+      *ngFor="let note of archivedNotes$ | async; trackBy: identify"
+      (onDeleteLabel)="deleteLabelArchive($event, note.id)"
+      (startEditNote)="startEditNote(note.id, true)"
+      [note]="note"
+    >
+      <app-btn-change-bg
+        (setNoteColor)="setNoteColorArchive($event, note.id)"
       ></app-btn-change-bg>
-      <app-btn-archive (archiveNote)="archiveNote(note)"></app-btn-archive>
+      <app-btn-unarchive
+        (unarchiveEvent)="unarchive(note, note.id)"
+      ></app-btn-unarchive>
       <app-btn-draw></app-btn-draw>
       <app-btn-more-options
-        (deleteNote)="deleteNote(note)"
-      ></app-btn-more-options
-    >
-      </app-note-field>
-    </div>
-  </div> -->
+        (deleteNote)="deleteNoteArchive(note, note.id)"
+        (onDeleteLabel)="deleteLabelArchive($event, note.id)"
+        (onAddLabel)="addLabelArchive($event, note.id)"
+        [note]="note"
+      ></app-btn-more-options>
+    </app-note-field>
+  </div>
 </div>

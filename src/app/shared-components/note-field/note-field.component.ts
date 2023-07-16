@@ -13,7 +13,8 @@ import {
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { Subscription } from 'rxjs';
+import { Subscription, delay } from 'rxjs';
+import { EditNoteService } from '../edit-note/edit-note.service';
 
 @Component({
   selector: 'app-note-field',
@@ -57,20 +58,32 @@ export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
   mouseInNote = false;
   currentTheme: Theme = Theme.light;
 
-  sub: Subscription;
+  subs: Subscription[] = [];
 
-  constructor(private renderer: Renderer2, private appService: AppService) {}
+  constructor(
+    private renderer: Renderer2,
+    private appService: AppService,
+    private editNoteService: EditNoteService
+  ) {}
 
   ngAfterViewInit(): void {
     this.changeBg(this.noteRef.nativeElement);
-    this.sub = this.appService.appTheme$.subscribe((theme) => {
+    let sub = this.appService.appTheme$.subscribe((theme) => {
       this.currentTheme = theme;
       this.changeBg(this.noteRef.nativeElement);
     });
+
+    let sub2 = this.editNoteService.onBgChanged.pipe(delay(0)).subscribe(() => {
+      this.changeBg(this.noteRef.nativeElement);
+    });
+
+    this.subs.push(sub, sub2);
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    for (let sub of this.subs) {
+      sub.unsubscribe();
+    }
   }
 
   ngOnInit(): void {}

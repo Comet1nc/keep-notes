@@ -91,7 +91,7 @@ export class ArchiveComponent implements OnInit {
     this.store.dispatch(new archivedNotesActions.StoreNotes());
   }
 
-  unacrchiveFromEditMode(note: Note, noteId: string) {
+  unarchiveFromEditMode(note: Note, noteId: string) {
     this.editNoteService.closeEditMode.next();
     this.unarchive(note, noteId);
   }

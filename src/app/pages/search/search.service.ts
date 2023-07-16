@@ -1,38 +1,16 @@
-import { Injectable, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { Note } from 'src/app/models/note.model';
-import { ArchiveService } from 'src/app/services/archive.service';
-import { BinService } from 'src/app/services/bin.service';
-import { NotesService } from 'src/app/services/notes.service';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SearchService implements OnInit {
-  searchResult: Note[] = [];
-
-  searching = false;
-
-  notesResult = new Subject<Note[]>();
-  archiveNotesResult = new Subject<Note[]>();
+export class SearchService {
+  searchByPhrase$ = new BehaviorSubject<string>('');
 
   lastSearchText: string = '';
 
-  constructor(
-    private ac: ActivatedRoute,
-    private notesService: NotesService,
-    private archiveService: ArchiveService,
-    private binService: BinService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    // this.endSearch.subscribe(() => {
-    //   console.log('WORKS');
-    //   this.router.navigate(['notes']);
-    // });
-  }
+  constructor(private router: Router) {}
 
   search(searchText: string) {
     if (searchText.length < 1) {
@@ -41,48 +19,9 @@ export class SearchService implements OnInit {
     }
 
     this.router.navigate(['search']);
-    this.lastSearchText = searchText;
 
-    let notesSearchResult: Note[] = this.searchInArray(
-      this.notesService.notesContainer.concat(
-        this.notesService.notesContainerPinned
-      )
-    );
-    notesSearchResult.length > 0
-      ? this.notesResult.next(notesSearchResult)
-      : this.notesResult.next([]);
-    //
+    console.log(searchText);
 
-    let archiveNotesSearchResult: Note[] = this.searchInArray(
-      this.archiveService.notesContainer
-    );
-    archiveNotesSearchResult.length > 0
-      ? this.archiveNotesResult.next(archiveNotesSearchResult)
-      : this.archiveNotesResult.next([]);
-    //
-
-    // this.newSearchResults.next(result.slice());
-  }
-
-  searchInArray(notes: Note[]): Note[] {
-    let result: Note[] = [];
-
-    for (const note of notes) {
-      if (
-        note.title
-          .toLocaleLowerCase()
-          .includes(this.lastSearchText.toLocaleLowerCase())
-      ) {
-        result.push(note);
-      } else if (
-        note.content
-          .toLocaleLowerCase()
-          .includes(this.lastSearchText.toLocaleLowerCase())
-      ) {
-        result.push(note);
-      }
-    }
-
-    return result;
+    this.searchByPhrase$.next(searchText);
   }
 }
