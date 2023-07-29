@@ -1,6 +1,7 @@
 <button
   class="pin-button"
   (click)="togglePin.emit()"
+  type="button"
   [matTooltip]="isNotePinned ? 'Unpin note' : 'Pin note'"
 >
   <svg

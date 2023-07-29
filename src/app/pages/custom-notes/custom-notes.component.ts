@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Observable, combineLatest, map, take } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
 import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';

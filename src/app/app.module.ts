@@ -10,7 +10,7 @@ import { ToolBarComponent } from './main-components/tool-bar/tool-bar.component'
 import { SideNavModule } from './main-components/side-nav/side-nav.module';
 import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
 import { AngularMaterialModule } from './modules/angular-material.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
 import { EditLabelsComponent } from './main-components/edit-labels/edit-labels.component';
 import { DrawComponent } from './main-components/draw/draw.component';

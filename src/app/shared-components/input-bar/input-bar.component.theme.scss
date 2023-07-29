@@ -38,7 +38,7 @@
       }
 
       .main-note-content-wrapper {
-        .default-text {
+        .note-content-input::placeholder {
           color: #4C4C4C;
         }
       }
@@ -106,7 +106,7 @@
       }
 
       .main-note-content-wrapper {
-        .default-text {
+        .note-content-input::placeholder {
           color: #BDBDBE;
         }
       }

@@ -1,100 +1,88 @@
-<div class="bg" (click)="closeEditMode()" [@bg]></div>
-<div class="container" [@note] #noteRef>
-  <div class="edit-fields" *ngIf="canEditNote">
-    <div class="title-wrapper">
-      <input
-        type="text"
-        class="title-input"
-        placeholder="Title"
-        maxlength="20"
-        [(ngModel)]="newNoteTitle"
-      />
-      <div class="pin-button-container">
-        <ng-content select="[pin]"></ng-content>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <button class="bg" type="submit" [@bg]></button>
+  <div class="container" [@note] #noteRef>
+    <div class="edit-fields" *ngIf="canEditNote">
+      <div class="title-wrapper">
+        <input
+          type="text"
+          class="title-input"
+          placeholder="Title"
+          maxlength="20"
+          formControlName="titleText"
+        />
+        <div class="pin-button-container">
+          <ng-content select="[pin]"></ng-content>
+        </div>
+      </div>
+      <div class="main-note-content-wrapper">
+        <textarea
+          class="note-content-input"
+          type="text"
+          formControlName="mainNoteText"
+          placeholder="Take a note..."
+          wrap="soft"
+          autoResize
+        ></textarea>
       </div>
     </div>
-    <div class="main-note-content-wrapper">
-      <div
-        *ngIf="newNoteContent.length === 0"
-        class="default-text"
-        spellcheck="false"
-        contenteditable="false"
-      >
-        Take a note...
+    <div class="read-only-fields" *ngIf="!canEditNote">
+      <div class="title-wrapper">
+        <div class="title-input" [innerText]="noteForEdit.title"></div>
       </div>
-      <div
-        contenteditable="true"
-        class="note-content-input"
-        aria-multiline="true"
-        role="textbox"
-        tabindex="0"
-        spellcheck="true"
-        dir="ltr"
-        #inputField
-        (input)="input($event)"
-      ></div>
+      <div class="main-note-content-wrapper">
+        <div
+          contenteditable="false"
+          class="note-content-input"
+          aria-multiline="true"
+          role="textbox"
+          tabindex="0"
+          spellcheck="true"
+          dir="ltr"
+          [innerText]="noteForEdit.content"
+        ></div>
+      </div>
     </div>
+    <div class="time-and-labels-container">
+      <div class="labels" *ngIf="(noteForEdit$ | async).labels">
+        <div
+          class="label"
+          *ngFor="let label of (noteForEdit$ | async).labels.slice(0, 3)"
+        >
+          <div class="name">{{ label }}</div>
+          <button class="delete" type="button" (click)="deleteLabel(label)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="10"
+              viewBox="0 -960 960 960"
+              width="10"
+            >
+              <path
+                d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          class="more-notes-info"
+          *ngIf="(noteForEdit$ | async).labels.length > 3"
+        >
+          +{{ (noteForEdit$ | async).labels.length - 3 }}
+        </div>
+      </div>
+      <div class="time">
+        <div class="create-date">
+          Created {{ noteForEdit.createdAt | date : "dd LLL" }} |&nbsp;
+        </div>
+        <div class="last-edit-date">
+          Edited {{ noteForEdit.createdAt | date : "dd LLL" }}
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="action-buttons">
+        <ng-content></ng-content>
+      </div>
+      <button type="submit" class="close-btn">Close</button>
+    </footer>
   </div>
-  <div class="read-only-fields" *ngIf="!canEditNote">
-    <div class="title-wrapper">
-      <div class="title-input" [innerText]="newNoteTitle"></div>
-    </div>
-    <div class="main-note-content-wrapper">
-      <div
-        contenteditable="false"
-        class="note-content-input"
-        aria-multiline="true"
-        role="textbox"
-        tabindex="0"
-        spellcheck="true"
-        dir="ltr"
-        #inputField
-      ></div>
-    </div>
-  </div>
-  <div class="time-and-labels-container">
-    <div class="labels" *ngIf="(noteForEdit$ | async).labels">
-      <div
-        class="label"
-        *ngFor="let label of (noteForEdit$ | async).labels.slice(0, 3)"
-      >
-        <div class="name">{{ label }}</div>
-        <button class="delete" (click)="deleteLabel(label)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="10"
-            viewBox="0 -960 960 960"
-            width="10"
-          >
-            <path
-              d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        class="more-notes-info"
-        *ngIf="(noteForEdit$ | async).labels.length > 3"
-      >
-        +{{ (noteForEdit$ | async).labels.length - 3 }}
-      </div>
-    </div>
-    <div class="time">
-      <div class="create-date">
-        Created {{ noteForEdit.createdAt | date : "dd LLL" }} |&nbsp;
-      </div>
-      <div class="last-edit-date">
-        Edited {{ noteForEdit.createdAt | date : "dd LLL" }}
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <div class="action-buttons">
-      <ng-content></ng-content>
-    </div>
-    <button type="submit" (click)="closeEditMode()" class="close-btn">
-      Close
-    </button>
-  </footer>
-</div>
+</form>

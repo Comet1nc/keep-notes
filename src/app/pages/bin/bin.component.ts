@@ -42,7 +42,7 @@ export class BinComponent {
     this.showEditMode = true;
   }
 
-  updateNote() {
+  updateNote(newNote: Note) {
     this.showEditMode = false;
   }
 

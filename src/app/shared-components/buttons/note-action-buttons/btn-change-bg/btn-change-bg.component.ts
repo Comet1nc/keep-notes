@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NoteColor, noteColors } from 'src/app/models/note-colors.model';
-import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 

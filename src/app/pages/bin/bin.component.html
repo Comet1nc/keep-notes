@@ -3,7 +3,7 @@
   [noteForEdit$]="noteForEdit$"
   [canEditNote]="canEditNote"
   (onDeleteLabel)="deleteLabel($event, noteForEdit.id)"
-  (updateNote)="updateNote()"
+  (updateNote)="updateNote($event)"
 >
   <app-btn-delete-forever
     (deleteForeverEvent)="deleteForeverFromEditMode(noteForEdit.id)"

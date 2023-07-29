@@ -7,7 +7,9 @@ import {
   Renderer2,
   AfterViewInit,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, Subscription, combineLatest } from 'rxjs';
 import { DrawService } from 'src/app/main-components/draw/draw.service';
 import { NoteColor } from 'src/app/models/note-colors.model';
@@ -19,7 +21,7 @@ import { AppService, Theme } from 'src/app/services/app.service';
   templateUrl: './input-bar.component.html',
   styleUrls: ['./input-bar.component.scss'],
 })
-export class InputBarComponent implements AfterViewInit, OnDestroy {
+export class InputBarComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output() saveNewNote = new EventEmitter<Note>();
   @ViewChild('inputField') inputField!: ElementRef<HTMLElement>;
   setColor$ = new Subject<[NoteColor, HTMLElement]>();
@@ -28,16 +30,24 @@ export class InputBarComponent implements AfterViewInit, OnDestroy {
 
   noteColor: NoteColor;
   noteIsPinned: boolean = false;
-  titleText: string = '';
-  mainNoteText: string = '';
 
   sub: Subscription;
+
+  form: FormGroup;
 
   constructor(
     private drawService: DrawService,
     private renderer: Renderer2,
-    private appService: AppService
+    private appService: AppService,
+    private formBuilder: FormBuilder
   ) {}
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      titleText: [''],
+      mainNoteText: [''],
+    });
+  }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -62,10 +72,6 @@ export class InputBarComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  input(e: any) {
-    this.mainNoteText = e.srcElement.innerText;
-  }
-
   draw() {
     this.drawService.openDraw.next();
   }
@@ -77,26 +83,25 @@ export class InputBarComponent implements AfterViewInit, OnDestroy {
     }, 10);
   }
 
-  closeSection(inputField: HTMLDivElement, container: HTMLElement) {
+  onSubmit(container: HTMLElement) {
     this.isOpened = false;
 
-    if (this.titleText.length === 0 && this.mainNoteText.length === 0) {
+    const titleText = this.form.get('titleText').value;
+    const mainNoteText = this.form.get('mainNoteText').value;
+
+    if (titleText.length === 0 && mainNoteText.length === 0) {
       return;
     }
 
-    let newNote = new Note(this.titleText, this.mainNoteText);
+    let newNote = new Note(titleText, mainNoteText);
     newNote.isPinned = this.noteIsPinned;
     newNote.color = this.noteColor;
 
-    // saving
     this.saveNewNote.emit(newNote);
 
-    // clearing input fields
-    this.titleText = '';
-    this.mainNoteText = '';
-    inputField.innerText = '';
-    this.noteColor = undefined;
+    this.form.reset();
 
-    this.setColor$.next([undefined, container]);
+    this.noteColor = undefined;
+    this.setColor$.next([this.noteColor, container]);
   }
 }
