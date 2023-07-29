@@ -110,12 +110,18 @@
         font-size: 15px;
         font-weight: 400;
         width: 100%;
-        word-break: break-all;
-        position: relative;
-        min-height: 40px;
+        min-height: 30px;
+        resize: none;
+        background-color: inherit;
+        overflow: hidden;
+        line-height: 17px;
 
         &:focus {
           outline: none;
+        }
+
+        &::placeholder {
+          font-weight: 500;
         }
       }
     }
