@@ -1,19 +1,15 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { Subscription, delay } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  combineLatest,
+  delay,
+  map,
+  startWith,
+} from 'rxjs';
 import { EditNoteService } from '../edit-note/edit-note.service';
 
 @Component({
@@ -47,63 +43,43 @@ import { EditNoteService } from '../edit-note/edit-note.service';
     ]),
   ],
 })
-export class NoteFieldComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NoteFieldComponent implements OnInit {
   @Input() note!: Note;
   @Output() onDeleteLabel = new EventEmitter<string>();
   @Output() startEditNote = new EventEmitter<void>();
 
-  @ViewChild('noteRef') noteRef!: ElementRef<HTMLElement>;
-
   showButtons = false;
   mouseInNote = false;
-  currentTheme: Theme = Theme.light;
+
+  bg$: Observable<string>;
 
   subs: Subscription[] = [];
 
   constructor(
-    private renderer: Renderer2,
     private appService: AppService,
     private editNoteService: EditNoteService
   ) {}
 
-  ngAfterViewInit(): void {
-    this.changeBg(this.noteRef.nativeElement);
-    let sub = this.appService.appTheme$.subscribe((theme) => {
-      this.currentTheme = theme;
-      this.changeBg(this.noteRef.nativeElement);
-    });
-
-    let sub2 = this.editNoteService.onBgChanged.pipe(delay(0)).subscribe(() => {
-      this.changeBg(this.noteRef.nativeElement);
-    });
-
-    this.subs.push(sub, sub2);
+  ngOnInit(): void {
+    this.bg$ = combineLatest([
+      this.appService.appTheme$,
+      this.editNoteService.onBgChanged.pipe(startWith(0)),
+    ]).pipe(
+      delay(0),
+      map(([theme]) => {
+        if (this.note && this.note.color) {
+          return theme === Theme.light
+            ? this.note.color.valueLightTheme
+            : this.note.color.valueDarkTheme;
+        } else {
+          return '';
+        }
+      })
+    );
   }
-
-  ngOnDestroy(): void {
-    for (let sub of this.subs) {
-      sub.unsubscribe();
-    }
-  }
-
-  ngOnInit(): void {}
 
   deleteLabel(label: string) {
     this.onDeleteLabel.emit(label);
-  }
-
-  changeBg(noteRef: HTMLElement) {
-    if (this.note.color !== undefined) {
-      this.renderer.setStyle(
-        noteRef,
-        'background-color',
-        this.currentTheme === Theme.light
-          ? this.note.color.valueLightTheme
-          : this.note.color.valueDarkTheme
-      );
-    } else {
-      this.renderer.removeStyle(noteRef, 'background-color');
-    }
   }
 
   openEditMode() {

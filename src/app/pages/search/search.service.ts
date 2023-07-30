@@ -20,8 +20,6 @@ export class SearchService {
 
     this.router.navigate(['search']);
 
-    console.log(searchText);
-
     this.searchByPhrase$.next(searchText);
   }
 }

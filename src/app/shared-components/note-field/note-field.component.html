@@ -3,6 +3,7 @@
   (mouseenter)="onMouseEnter(noteRef)"
   (mouseleave)="onMouseLeave(noteRef)"
   #noteRef
+  [ngStyle]="{ 'background-color': bg$ | async }"
 >
   <div class="open-edit-mode-trigger" (click)="openEditMode()"></div>
   <div class="title">{{ getTitle() }}</div>

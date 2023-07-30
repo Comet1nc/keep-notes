@@ -78,7 +78,7 @@
       ></app-btn-more-options>
     </app-note-field>
   </div>
-  <div class="archive-notes">
+  <div class="archive-notes" *ngIf="(archivedNotes$ | async).length > 0">
     <p class="category-type">ARCHIVE</p>
     <app-note-field
       *ngFor="let note of archivedNotes$ | async; trackBy: identify"

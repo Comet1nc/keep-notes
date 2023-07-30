@@ -1,6 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <button class="bg" type="submit" [@bg]></button>
-  <div class="container" [@note] #noteRef>
+  <div
+    class="container"
+    [@note]
+    [ngStyle]="{ 'background-color': bg$ | async }"
+  >
     <div class="edit-fields" *ngIf="canEditNote">
       <div class="title-wrapper">
         <input
@@ -27,7 +31,10 @@
     </div>
     <div class="read-only-fields" *ngIf="!canEditNote">
       <div class="title-wrapper">
-        <div class="title-input" [innerText]="noteForEdit.title"></div>
+        <div
+          class="title-input"
+          [innerText]="(noteForEdit$ | async).title"
+        ></div>
       </div>
       <div class="main-note-content-wrapper">
         <div
@@ -38,7 +45,7 @@
           tabindex="0"
           spellcheck="true"
           dir="ltr"
-          [innerText]="noteForEdit.content"
+          [innerText]="(noteForEdit$ | async).content"
         ></div>
       </div>
     </div>
@@ -71,10 +78,11 @@
       </div>
       <div class="time">
         <div class="create-date">
-          Created {{ noteForEdit.createdAt | date : "dd LLL" }} |&nbsp;
+          Created
+          {{ (noteForEdit$ | async).createdAt | date : "dd LLL" }} |&nbsp;
         </div>
         <div class="last-edit-date">
-          Edited {{ noteForEdit.createdAt | date : "dd LLL" }}
+          Edited {{ (noteForEdit$ | async).createdAt | date : "dd LLL" }}
         </div>
       </div>
     </div>

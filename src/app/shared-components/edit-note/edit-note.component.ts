@@ -2,11 +2,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import {
   Component,
   OnInit,
-  AfterViewInit,
   Input,
   ViewChild,
-  ElementRef,
-  Renderer2,
   Output,
   EventEmitter,
   OnDestroy,
@@ -14,7 +11,14 @@ import {
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from './edit-note.service';
-import { Observable, Subscription } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  combineLatest,
+  map,
+  startWith,
+  take,
+} from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -52,26 +56,19 @@ import { FormGroup, FormBuilder } from '@angular/forms';
     ]),
   ],
 })
-export class EditNoteComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('noteRef') noteHTML!: ElementRef<HTMLElement>;
-  @ViewChild('inputField') inputField!: ElementRef;
+export class EditNoteComponent implements OnInit, OnDestroy {
   @ViewChild('myForm', { static: true }) myForm: HTMLFormElement;
   @Input() noteForEdit$: Observable<Note>;
   @Input() canEditNote = false;
   @Output() updateNote = new EventEmitter<Note>();
   @Output() onDeleteLabel = new EventEmitter<string>();
 
-  noteForEdit: Note;
-  // newNoteTitle: string = '';
-  // newNoteContent: string = '';
+  bg$: Observable<string>;
   subs: Subscription[] = [];
-  currentTheme: Theme = Theme.light;
-
   form: FormGroup;
 
   constructor(
     private editNoteService: EditNoteService,
-    private renderer: Renderer2,
     private appService: AppService,
     private formBuilder: FormBuilder
   ) {}
@@ -83,70 +80,50 @@ export class EditNoteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    let sub1 = this.noteForEdit$.subscribe((note) => {
+    this.bg$ = combineLatest([
+      this.appService.appTheme$,
+      this.noteForEdit$,
+      this.editNoteService.onBgChanged.pipe(startWith(0)),
+    ]).pipe(
+      map(([theme, note]) => {
+        if (note && note.color) {
+          return theme === Theme.light
+            ? note.color.valueLightTheme
+            : note.color.valueDarkTheme;
+        } else {
+          return '';
+        }
+      })
+    );
+
+    this.noteForEdit$.pipe(take(1)).subscribe((note) => {
       if (!note) return;
-      this.noteForEdit = note;
       this.form = this.formBuilder.group({
-        titleText: [this.noteForEdit.title],
-        mainNoteText: [this.noteForEdit.content],
+        titleText: [note.title],
+        mainNoteText: [note.content],
       });
     });
 
-    let sub2 = this.editNoteService.closeEditMode.subscribe(() => {
-      if (this.myForm) {
-        this.myForm.submit();
-      }
+    let sub = this.editNoteService.closeEditMode.subscribe(() => {
+      this.onSubmit();
     });
 
-    this.subs.push(sub1, sub2);
-  }
-
-  ngAfterViewInit(): void {
-    // this.renderer.setProperty(
-    //   this.inputField.nativeElement,
-    //   'innerText',
-    //   this.noteForEdit.content
-    // );
-
-    this.setupBg(this.noteHTML.nativeElement);
-
-    const sub1 = this.appService.appTheme$.subscribe((theme) => {
-      this.currentTheme = theme;
-
-      this.setupBg(this.noteHTML.nativeElement);
-    });
-
-    const sub2 = this.editNoteService.onBgChanged.subscribe(() => {
-      this.setupBg(this.noteHTML.nativeElement);
-    });
-
-    this.subs.push(sub1, sub2);
+    this.subs.push(sub);
   }
 
   deleteLabel(label: string) {
     this.onDeleteLabel.emit(label);
   }
 
-  setupBg(noteRef: HTMLElement) {
-    if (this.noteForEdit.color !== undefined) {
-      this.renderer.setStyle(
-        noteRef,
-        'background-color',
-        this.currentTheme === Theme.light
-          ? this.noteForEdit.color.valueLightTheme
-          : this.noteForEdit.color.valueDarkTheme
-      );
-    } else {
-      this.renderer.removeStyle(noteRef, 'background-color');
-    }
-  }
-
   onSubmit() {
     const titleText = this.form.get('titleText').value;
     const mainNoteText = this.form.get('mainNoteText').value;
 
+    let oldNote;
+    this.noteForEdit$.pipe(take(1)).subscribe((note) => (oldNote = note));
+
     const newNote: Note = {
-      ...this.noteForEdit,
+      ...oldNote,
       title: titleText,
       content: mainNoteText,
       lastEditAt: new Date(),
