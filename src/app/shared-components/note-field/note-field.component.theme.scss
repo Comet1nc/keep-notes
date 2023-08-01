@@ -33,14 +33,13 @@
 
           .delete {
             &:hover {
-              // background-color: #d6d6d6;
               background-color: inherit;
             }
           }
         }
 
         .more-notes-info {
-          background-color: #EBEBEB;
+          background-color: rgba(0, 0, 0, 0.1);
         }
       }
     }
@@ -96,7 +95,7 @@
       }
 
       .more-notes-info {
-        background-color: #303030;
+        background-color: inherit;
         border: solid 1px;
         border-color: #4A4D51;
       }
