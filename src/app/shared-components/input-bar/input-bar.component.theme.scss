@@ -38,8 +38,12 @@
       }
 
       .main-note-content-wrapper {
-        .note-content-input::placeholder {
-          color: #4C4C4C;
+        .note-content-input {
+          color: #202124;
+
+          &::placeholder {
+            color: #4C4C4C;
+          }
         }
       }
 
@@ -106,8 +110,12 @@
       }
 
       .main-note-content-wrapper {
-        .note-content-input::placeholder {
-          color: #BDBDBE;
+        .note-content-input {
+          color: #e8eaed;
+
+          &::placeholder {
+            color: #BDBDBE;
+          }
         }
       }
 

@@ -1,15 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import {
-  Observable,
-  Subscription,
-  combineLatest,
-  delay,
-  map,
-  startWith,
-} from 'rxjs';
+import { Subscription, combineLatest, delay, map, startWith } from 'rxjs';
 import { EditNoteService } from '../edit-note/edit-note.service';
 
 @Component({
@@ -43,7 +36,7 @@ import { EditNoteService } from '../edit-note/edit-note.service';
     ]),
   ],
 })
-export class NoteFieldComponent implements OnInit {
+export class NoteFieldComponent {
   @Input() note!: Note;
   @Output() onDeleteLabel = new EventEmitter<string>();
   @Output() startEditNote = new EventEmitter<void>();
@@ -51,7 +44,21 @@ export class NoteFieldComponent implements OnInit {
   showButtons = false;
   mouseInNote = false;
 
-  bg$: Observable<string>;
+  bg$ = combineLatest([
+    this.appService.appTheme$,
+    this.editNoteService.onBgChanged.pipe(startWith(0)),
+  ]).pipe(
+    delay(0),
+    map(([theme]) => {
+      if (this.note && this.note.color) {
+        return theme === Theme.light
+          ? this.note.color.valueLightTheme
+          : this.note.color.valueDarkTheme;
+      } else {
+        return '';
+      }
+    })
+  );
 
   subs: Subscription[] = [];
 
@@ -59,24 +66,6 @@ export class NoteFieldComponent implements OnInit {
     private appService: AppService,
     private editNoteService: EditNoteService
   ) {}
-
-  ngOnInit(): void {
-    this.bg$ = combineLatest([
-      this.appService.appTheme$,
-      this.editNoteService.onBgChanged.pipe(startWith(0)),
-    ]).pipe(
-      delay(0),
-      map(([theme]) => {
-        if (this.note && this.note.color) {
-          return theme === Theme.light
-            ? this.note.color.valueLightTheme
-            : this.note.color.valueDarkTheme;
-        } else {
-          return '';
-        }
-      })
-    );
-  }
 
   deleteLabel(label: string) {
     this.onDeleteLabel.emit(label);

@@ -3,7 +3,6 @@ import {
   Component,
   OnInit,
   Input,
-  ViewChild,
   Output,
   EventEmitter,
   OnDestroy,
@@ -57,7 +56,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   ],
 })
 export class EditNoteComponent implements OnInit, OnDestroy {
-  @ViewChild('myForm', { static: true }) myForm: HTMLFormElement;
   @Input() noteForEdit$: Observable<Note>;
   @Input() canEditNote = false;
   @Output() updateNote = new EventEmitter<Note>();

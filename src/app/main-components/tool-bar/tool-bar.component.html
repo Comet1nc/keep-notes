@@ -54,10 +54,6 @@
         <circle cx="12" cy="12" r="3.5" />
       </svg>
     </button>
-    <tool-bar-settings-menu
-      *ngIf="menuIsActive"
-      (onThemeChanged)="toggleDarkMode()"
-      [isDarkMode]="isDarkMode"
-    ></tool-bar-settings-menu>
+    <tool-bar-settings-menu *ngIf="menuIsActive"></tool-bar-settings-menu>
   </div>
 </mat-toolbar>

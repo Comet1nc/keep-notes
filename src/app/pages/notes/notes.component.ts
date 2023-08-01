@@ -6,7 +6,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import * as archivedNotesActions from '../../store/archive-store/archive.actions';
 import * as deletedNotesActions from '../../store/bin-store/bin.actions';
-import { Observable, map } from 'rxjs';
+import { Observable, map, take } from 'rxjs';
 import { NoteColor } from 'src/app/models/note-colors.model';
 
 @Component({

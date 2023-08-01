@@ -1,6 +1,6 @@
 export const noteColors: NoteColor[] = [
   { name: 'red', valueLightTheme: '#F28B82', valueDarkTheme: '#5C2B29' },
-  { name: 'green', valueLightTheme: '#CCFF90', valueDarkTheme: '#345920' },
+  { name: 'green', valueLightTheme: '#CCFF90', valueDarkTheme: '#2b461d' },
   { name: 'yellow', valueLightTheme: '#FFF475', valueDarkTheme: '#635D19' },
   { name: 'teal', valueLightTheme: '#A7FFEB', valueDarkTheme: '#16504B' },
   { name: 'blue', valueLightTheme: '#AECBFA', valueDarkTheme: '#1E3A5F' },

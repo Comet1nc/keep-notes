@@ -3,7 +3,13 @@
     <div>Dark Mode</div>
     <mat-slide-toggle
       (change)="toggleDarkMode()"
-      [checked]="isDarkMode"
+      [checked]="isDarkMode$ | async"
     ></mat-slide-toggle>
   </div>
+  <button class="generator" mat-raised-button (click)="generateTrash()">
+    generate trash
+  </button>
+  <button class="generator" mat-raised-button (click)="deleteAllTrash()">
+    delete All trash
+  </button>
 </div>

@@ -1,7 +1,4 @@
-<app-tool-bar
-  (switchDarkMode)="switchTheme()"
-  (onToggleSideNav)="toggleSideNav()"
-></app-tool-bar>
+<app-tool-bar (onToggleSideNav)="toggleSideNav()"></app-tool-bar>
 <div class="main">
   <side-nav
     [toggleSideNav]="onToggleSideNav.asObservable()"

@@ -8,13 +8,10 @@ import { SearchService } from 'src/app/pages/search/search.service';
 })
 export class ToolBarComponent {
   @Output()
-  switchDarkMode = new EventEmitter();
-  @Output()
   onToggleSideNav = new EventEmitter();
 
   menuIsActive = false;
   searchText: string = '';
-  isDarkMode = false;
 
   constructor(private searchService: SearchService) {}
 
@@ -25,11 +22,6 @@ export class ToolBarComponent {
   endSearch() {
     this.searchText = '';
     this.searchService.search('');
-  }
-
-  toggleDarkMode() {
-    this.switchDarkMode.emit();
-    this.isDarkMode = !this.isDarkMode;
   }
 
   toggleSideNav() {
