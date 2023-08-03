@@ -4,13 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ToolBarComponent } from './main-components/tool-bar/tool-bar.component';
 import { SideNavModule } from './main-components/side-nav/side-nav.module';
 import { SettingsMenuComponent } from './main-components/tool-bar/settings-menu/settings-menu.component';
 import { AngularMaterialModule } from './modules/angular-material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
 import { EditLabelsComponent } from './main-components/edit-labels/edit-labels.component';
 import { DrawComponent } from './main-components/draw/draw.component';
@@ -26,6 +24,8 @@ import { NotesEffects } from './store/notes-store/notes.effects';
 import { LabelsEffects } from './store/labels-store/labels.effects';
 import { ArchivedNotesEffects } from './store/archive-store/archive.effects';
 import { DeletedNotesEffects } from './store/bin-store/bin.effects';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [

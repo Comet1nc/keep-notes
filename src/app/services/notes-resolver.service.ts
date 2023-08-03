@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Note } from '../models/note.model';
 import { Action, Store } from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
@@ -14,7 +10,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Observable, combineLatest, map, of, switchMap, take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class NotesResolverService implements Resolve<Note[][]> {
+export class NotesResolverService  {
   constructor(
     private store: Store<fromApp.AppState>,
     private actions$: Actions
