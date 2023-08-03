@@ -17,12 +17,4 @@ export class AppComponent {
     this.onToggleSideNav.next();
     this.isSideNavOpened = !this.isSideNavOpened;
   }
-
-  getContentClass() {
-    if (this.isSideNavOpened) {
-      return 'opened';
-    } else {
-      return 'closed';
-    }
-  }
 }

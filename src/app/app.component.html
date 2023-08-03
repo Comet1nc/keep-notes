@@ -4,7 +4,7 @@
     [toggleSideNav]="onToggleSideNav.asObservable()"
     [isSideNavOpened]="isSideNavOpened"
   ></side-nav>
-  <div class="content" [ngClass]="getContentClass()">
+  <div class="content" [ngClass]="this.isSideNavOpened ? 'opened' : 'closed'">
     <router-outlet></router-outlet>
   </div>
 </div>
