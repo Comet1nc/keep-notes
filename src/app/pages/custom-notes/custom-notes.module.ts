@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
 import { CustomNotesRoutingModule } from './custom-notes-routing.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   declarations: [CustomNotesComponent],
@@ -15,6 +16,7 @@ import { CustomNotesRoutingModule } from './custom-notes-routing.module';
     CustomNotesRoutingModule,
     FormsModule,
     SharedComponentsModule,
+    PipesModule,
   ],
 })
 export class CustomNotesModule {}

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { AngularMaterialModule } from 'src/app/modules/angular-material.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   declarations: [NotesComponent],
@@ -17,6 +18,7 @@ import { AngularMaterialModule } from 'src/app/modules/angular-material.module';
     FormsModule,
     SharedComponentsModule,
     AngularMaterialModule,
+    PipesModule,
   ],
 })
 export class NotesModule {}

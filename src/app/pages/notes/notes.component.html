@@ -27,12 +27,21 @@
   <app-input-bar (saveNewNote)="saveNewNote($event)"></app-input-bar>
 </div>
 <div class="notes-container">
-  <div class="category-type" *ngIf="(pinnedNotes$ | async).length > 0">
+  <div
+    class="category-type"
+    *ngIf="(notes$ | async | pinnedNotes : true).length > 0"
+  >
     PINNED
   </div>
-  <div class="pinned-notes-container" *ngIf="(pinnedNotes$ | async).length > 0">
+  <div
+    class="pinned-notes-container"
+    *ngIf="(notes$ | async | pinnedNotes : true).length > 0"
+  >
     <app-note-field
-      *ngFor="let note of pinnedNotes$ | async; trackBy: identify"
+      *ngFor="
+        let note of notes$ | async | pinnedNotes : true;
+        trackBy: identify
+      "
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note.id)"
       (startEditNote)="startEditNote(note.id)"
@@ -57,10 +66,21 @@
       ></app-btn-more-options>
     </app-note-field>
   </div>
-  <div class="category-type" *ngIf="(notes$ | async).length > 0">OTHERS</div>
-  <div class="unpinned-notes-container" *ngIf="(notes$ | async).length > 0">
+  <div
+    class="category-type"
+    *ngIf="(notes$ | async | pinnedNotes : false).length > 0"
+  >
+    OTHERS
+  </div>
+  <div
+    class="unpinned-notes-container"
+    *ngIf="(notes$ | async | pinnedNotes : false).length > 0"
+  >
     <app-note-field
-      *ngFor="let note of notes$ | async; trackBy: identify"
+      *ngFor="
+        let note of notes$ | async | pinnedNotes : false;
+        trackBy: identify
+      "
       [note]="note"
       (onDeleteLabel)="deleteLabel($event, note.id)"
       (startEditNote)="startEditNote(note.id)"

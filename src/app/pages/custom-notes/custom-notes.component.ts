@@ -15,35 +15,18 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
   templateUrl: './custom-notes.component.html',
   styleUrls: ['./custom-notes.component.scss'],
 })
-export class CustomNotesComponent implements OnInit {
-  pinnedNotes$ = combineLatest([
-    this.activeRoute.params.pipe(map((params: Params) => params['name'])),
-    this.store.select('notes'),
-  ]).pipe(
-    map(([paramName, notesState]) => {
-      return notesState.notes.filter(
-        (note: Note) =>
-          note.isPinned &&
-          note.labels &&
-          note.labels.find((label) => label === paramName)
-      );
-    })
-  );
-
+export class CustomNotesComponent {
   notes$ = combineLatest([
-    this.activeRoute.params.pipe(map((params: Params) => params['name'])),
     this.store.select('notes'),
+    this.activeRoute.params.pipe(map((params: Params) => params['name'])),
   ]).pipe(
-    map(([paramName, notesState]) => {
-      return notesState.notes.filter(
-        (note: Note) =>
-          !note.isPinned &&
-          note.labels &&
-          note.labels.find((label) => label === paramName)
-      );
+    map(([notesState, param]) => {
+      this.label = param;
+      return notesState.notes;
     })
   );
 
+  label: string = '';
   showEditMode = false;
   noteForEdit$: Observable<Note>;
   noteForEdit: Note;
@@ -54,12 +37,10 @@ export class CustomNotesComponent implements OnInit {
     private editNoteService: EditNoteService
   ) {}
 
-  ngOnInit(): void {}
-
   startEditNote(noteId: string) {
     this.noteForEdit$ = this.store.select('notes').pipe(
       map((state) => {
-        this.noteForEdit = state.notes[noteId];
+        this.noteForEdit = state.notes.find((note) => note.id === noteId);
         return this.noteForEdit;
       })
     );

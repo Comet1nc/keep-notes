@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { Store } from '@ngrx/store';
@@ -6,7 +6,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as notesActions from '../../store/notes-store/notes.actions';
 import * as archivedNotesActions from '../../store/archive-store/archive.actions';
 import * as deletedNotesActions from '../../store/bin-store/bin.actions';
-import { Observable, map, take } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { NoteColor } from 'src/app/models/note-colors.model';
 
 @Component({
@@ -14,18 +14,8 @@ import { NoteColor } from 'src/app/models/note-colors.model';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
 })
-export class NotesComponent implements OnInit {
-  pinnedNotes$ = this.store.select('notes').pipe(
-    map((state) => {
-      return state.notes.filter((note: Note) => note.isPinned);
-    })
-  );
-
-  notes$ = this.store.select('notes').pipe(
-    map((state) => {
-      return state.notes.filter((note: Note) => !note.isPinned);
-    })
-  );
+export class NotesComponent {
+  notes$ = this.store.select('notes').pipe(map((state) => state.notes));
 
   showEditMode = false;
   noteForEdit$: Observable<Note>;
@@ -35,8 +25,6 @@ export class NotesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private editNoteService: EditNoteService
   ) {}
-
-  ngOnInit(): void {}
 
   startEditNote(noteId: string) {
     this.noteForEdit$ = this.store.select('notes').pipe(
