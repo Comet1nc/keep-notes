@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SearchService } from './search.service';
 import { Note } from 'src/app/models/note.model';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
@@ -9,18 +9,19 @@ import * as deletedNotesActions from '../../store/bin-store/bin.actions';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest, map } from 'rxjs';
 import { NoteColor } from 'src/app/models/note-colors.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
   notes$ = combineLatest([
     this.searchService.searchByPhrase$,
     this.store.select('notes'),
   ]).pipe(
     map(([phrase, notesState]) => {
-      return this.filterByPhrase(phrase, notesState.notes);
+      return notesState.notes;
     })
   );
 
@@ -29,7 +30,7 @@ export class SearchComponent implements OnInit {
     this.store.select('archivedNotes'),
   ]).pipe(
     map(([phrase, notesState]) => {
-      return this.filterByPhrase(phrase, notesState.archivedNotes);
+      return notesState.archivedNotes;
     })
   );
 
@@ -37,14 +38,19 @@ export class SearchComponent implements OnInit {
   noteForEdit$: Observable<Note>;
   noteForEdit: Note;
   isNoteForEditFromArchive: boolean = false;
+  searchPhrase = '';
 
   constructor(
     private searchService: SearchService,
     private editNoteService: EditNoteService,
     private store: Store<fromApp.AppState>
-  ) {}
-
-  ngOnInit(): void {}
+  ) {
+    this.searchService.searchByPhrase$
+      .pipe(takeUntilDestroyed())
+      .subscribe((phrase) => {
+        this.searchPhrase = phrase;
+      });
+  }
 
   filterByPhrase(phrase, notes) {
     return notes.filter((note) => {

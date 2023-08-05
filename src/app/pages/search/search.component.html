@@ -50,10 +50,16 @@
   </app-btn-more-options>
 </app-edit-note>
 <div class="notes-container">
-  <div class="notes" *ngIf="(notes$ | async).length > 0">
+  <div
+    class="notes"
+    *ngIf="(notes$ | async | searchNotes : searchPhrase).length > 0"
+  >
     <p class="category-type">NOTES</p>
     <app-note-field
-      *ngFor="let note of notes$ | async; trackBy: identify"
+      *ngFor="
+        let note of notes$ | async | searchNotes : searchPhrase;
+        trackBy: identify
+      "
       (onDeleteLabel)="deleteLabel($event, note.id)"
       (startEditNote)="startEditNote(note.id, false)"
       [note]="note"
@@ -78,10 +84,16 @@
       ></app-btn-more-options>
     </app-note-field>
   </div>
-  <div class="archive-notes" *ngIf="(archivedNotes$ | async).length > 0">
+  <div
+    class="archive-notes"
+    *ngIf="(archivedNotes$ | async | searchNotes : searchPhrase).length > 0"
+  >
     <p class="category-type">ARCHIVE</p>
     <app-note-field
-      *ngFor="let note of archivedNotes$ | async; trackBy: identify"
+      *ngFor="
+        let note of archivedNotes$ | async | searchNotes : searchPhrase;
+        trackBy: identify
+      "
       (onDeleteLabel)="deleteLabelArchive($event, note.id)"
       (startEditNote)="startEditNote(note.id, true)"
       [note]="note"

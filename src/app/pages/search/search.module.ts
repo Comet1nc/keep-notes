@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedComponentsModule } from 'src/app/shared-components/shared-components.module';
 import { SearchComponent } from './search.component';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   declarations: [SearchComponent],
@@ -16,6 +17,7 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
     FormsModule,
     SharedComponentsModule,
     AngularMaterialModule,
+    PipesModule,
   ],
 })
 export class SearchModule {}
