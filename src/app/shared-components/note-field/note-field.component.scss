@@ -99,3 +99,10 @@
     left: 14px;
   }
 }
+
+@media (max-width: 650px) {
+  .note {
+    width: 180px;
+    padding: 15px 15px 35px 15px;
+  }
+}

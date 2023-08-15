@@ -22,7 +22,7 @@
   pointer-events: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 960px) {
   .info {
     position: absolute;
     top: 70%;
@@ -31,5 +31,15 @@
     z-index: 20;
     opacity: 0.3;
     font-size: 30px;
+  }
+
+  .content {
+    &.opened {
+      margin-left: 80px;
+    }
+
+    &.closed {
+      margin-left: 80px;
+    }
   }
 }

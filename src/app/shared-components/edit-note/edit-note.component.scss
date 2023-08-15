@@ -60,19 +60,6 @@
       left: 15px;
     }
 
-    // .note-content-input {
-    //   font-size: 15px;
-    //   font-weight: 400;
-    //   width: 100%;
-    //   word-break: break-all;
-    //   position: relative;
-    //   min-height: 40px;
-
-    //   &:focus {
-    //     outline: none;
-    //   }
-    // }
-
     .note-content-input {
       font-size: 15px;
       font-weight: 400;
@@ -252,5 +239,12 @@
         background-color: rgba(95, 99, 104, 0.039);
       }
     }
+  }
+}
+
+@media (max-width: 650px) {
+  .container {
+    width: 300px;
+    left: calc(50% - 150px);
   }
 }

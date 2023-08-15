@@ -8,3 +8,10 @@
   color: #5F6368;
   text-transform: uppercase;
 }
+
+@media (max-width: 960px) {
+  .notes-container {
+    padding: 100px 0;
+
+  }
+}

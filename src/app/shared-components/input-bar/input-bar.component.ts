@@ -86,12 +86,11 @@ export class InputBarComponent implements OnInit, OnDestroy, AfterViewInit {
   onSubmit(container: HTMLElement) {
     this.isOpened = false;
 
-    const titleText = this.form.get('titleText').value;
-    const mainNoteText = this.form.get('mainNoteText').value;
+    let titleText = this.form.get('titleText').value;
+    let mainNoteText = this.form.get('mainNoteText').value;
 
-    if (titleText.length === 0 && mainNoteText.length === 0) {
-      return;
-    }
+    if (!titleText) titleText = '';
+    if (!mainNoteText) mainNoteText = '';
 
     let newNote = new Note(titleText, mainNoteText);
     newNote.isPinned = this.noteIsPinned;

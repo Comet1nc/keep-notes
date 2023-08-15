@@ -1,9 +1,18 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
-import { Subscription, combineLatest, delay, map, startWith } from 'rxjs';
+import {
+  Subscription,
+  combineLatest,
+  delay,
+  map,
+  startWith,
+  takeUntil,
+} from 'rxjs';
 import { EditNoteService } from '../edit-note/edit-note.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-note-field',
@@ -42,7 +51,6 @@ export class NoteFieldComponent {
   @Output() startEditNote = new EventEmitter<void>();
 
   showButtons = false;
-  mouseInNote = false;
 
   bg$ = combineLatest([
     this.appService.appTheme$,
@@ -64,27 +72,33 @@ export class NoteFieldComponent {
 
   constructor(
     private appService: AppService,
-    private editNoteService: EditNoteService
-  ) {}
+    private editNoteService: EditNoteService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small])
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        if (result.matches) {
+          this.showButtons = true;
+        }
+      });
+  }
 
   deleteLabel(label: string) {
     this.onDeleteLabel.emit(label);
   }
 
   openEditMode() {
-    if (this.mouseInNote) {
-      this.startEditNote.emit();
-    }
+    this.startEditNote.emit();
   }
 
   onMouseEnter(noteRef: HTMLElement) {
     this.showButtons = true;
-    this.mouseInNote = true;
   }
 
   onMouseLeave(noteRef: HTMLElement) {
     this.showButtons = false;
-    this.mouseInNote = false;
   }
 
   getTitle() {
