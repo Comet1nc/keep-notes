@@ -1,6 +1,6 @@
 .main {
   display: flex;
-
+  padding-top: 64px;
 }
 
 .content {
@@ -35,11 +35,11 @@
 
   .content {
     &.opened {
-      margin-left: 80px;
+      margin-left: 0;
     }
 
     &.closed {
-      margin-left: 80px;
+      margin-left: 0;
     }
   }
 }

@@ -8,6 +8,7 @@ import {
   delay,
   map,
   startWith,
+  take,
   takeUntil,
 } from 'rxjs';
 import { EditNoteService } from '../edit-note/edit-note.service';
@@ -98,7 +99,14 @@ export class NoteFieldComponent {
   }
 
   onMouseLeave(noteRef: HTMLElement) {
-    this.showButtons = false;
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small])
+      .pipe(take(1))
+      .subscribe((result) => {
+        if (!result.matches) {
+          this.showButtons = false;
+        }
+      });
   }
 
   getTitle() {

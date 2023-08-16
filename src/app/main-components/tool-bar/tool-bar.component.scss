@@ -2,8 +2,7 @@ mat-toolbar {
   padding: 8px;
   height: 65px;
   position: fixed;
-  z-index: 5;
-
+  z-index: 15;
 
   .search-bar-wrapper {
 
@@ -19,16 +18,13 @@ mat-toolbar {
       box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
     }
 
-
     .search-button {
       margin: auto;
       display: flex;
 
-
       svg {
         padding: 5px;
         margin: 3px;
-        // fill: #5f6368;
         cursor: pointer;
 
         &:hover {
@@ -36,18 +32,15 @@ mat-toolbar {
           border-radius: 50%;
         }
       }
-
     }
 
     .close-input-button {
       margin: auto;
       display: flex;
 
-
       svg {
         padding: 5px;
         margin: 3px;
-        // fill: #5f6368;
         cursor: pointer;
 
         &:hover {
@@ -81,13 +74,10 @@ mat-toolbar {
     font-size: 22px;
     font-weight: 500;
     width: 200px;
-
   }
-
 
   .settings-wrapper {
     position: relative;
-
     margin-left: auto;
     margin-left: auto;
     display: flex;
@@ -96,27 +86,16 @@ mat-toolbar {
     .settings-button {
       margin: auto;
       display: flex;
-
       padding: 5px;
       margin: 3px;
       margin-left: auto;
       margin-right: 10px;
-
       cursor: pointer;
-
       width: 40px;
       height: 40px;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
-
-
-      // background-image: url('../../../assets/icons/settings.svg');
-      // background-size: 30px;
-      // background-position: center;
-      // background-repeat: no-repeat;
 
       img {
         width: 30px;
@@ -126,7 +105,6 @@ mat-toolbar {
         background-color: rgb(205 205 205 / 30%);
         border-radius: 50%;
       }
-
     }
   }
 }
