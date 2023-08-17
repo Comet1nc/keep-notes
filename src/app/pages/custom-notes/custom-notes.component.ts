@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
@@ -14,6 +14,7 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
   selector: 'app-custom-notes',
   templateUrl: './custom-notes.component.html',
   styleUrls: ['./custom-notes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomNotesComponent {
   notes$ = combineLatest([

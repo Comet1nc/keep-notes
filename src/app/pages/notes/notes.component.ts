@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import { Store } from '@ngrx/store';
@@ -13,6 +13,7 @@ import { NoteColor } from 'src/app/models/note-colors.model';
   selector: 'app-notes',
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotesComponent {
   notes$ = this.store.select('notes').pipe(map((state) => state.notes));

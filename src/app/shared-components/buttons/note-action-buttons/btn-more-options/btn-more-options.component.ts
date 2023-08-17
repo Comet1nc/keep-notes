@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, combineLatest, debounceTime, map } from 'rxjs';
 import { Note } from 'src/app/models/note.model';
@@ -9,6 +16,7 @@ import { startWith } from 'rxjs/operators';
   selector: 'app-btn-more-options',
   templateUrl: './btn-more-options.component.html',
   styleUrls: ['./btn-more-options.component.scss', '../action-buttons.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BtnMoreOptionsComponent implements OnInit {
   moreOptionsActive = false;

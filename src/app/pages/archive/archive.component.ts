@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import * as archivedNotesActions from '../../store/archive-store/archive.actions';
@@ -13,6 +13,7 @@ import { Observable, map } from 'rxjs';
   selector: 'app-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArchiveComponent implements OnInit {
   notes$ = this.store

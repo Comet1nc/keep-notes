@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'side-nav-notes',
   templateUrl: './notes.component.html',
   styleUrls: ['../../labels-styles/label.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotesComponent {
   @Input() isSideNavOpened = false;

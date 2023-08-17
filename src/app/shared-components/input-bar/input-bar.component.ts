@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   OnDestroy,
   OnInit,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, Subscription, combineLatest } from 'rxjs';
@@ -20,6 +21,7 @@ import { AppService, Theme } from 'src/app/services/app.service';
   selector: 'app-input-bar',
   templateUrl: './input-bar.component.html',
   styleUrls: ['./input-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputBarComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output() saveNewNote = new EventEmitter<Note>();

@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
 import * as notesActions from '../../../store/notes-store/notes.actions';
@@ -10,6 +15,7 @@ import { AppService, Theme } from 'src/app/services/app.service';
   selector: 'tool-bar-settings-menu',
   templateUrl: './settings-menu.component.html',
   styleUrls: ['./settings-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsMenuComponent {
   @Output() onThemeChanged = new EventEmitter<void>();

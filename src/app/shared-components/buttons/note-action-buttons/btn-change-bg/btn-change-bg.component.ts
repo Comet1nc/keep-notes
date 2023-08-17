@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { NoteColor, noteColors } from 'src/app/models/note-colors.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
@@ -7,6 +13,7 @@ import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.s
   selector: 'app-btn-change-bg',
   templateUrl: './btn-change-bg.component.html',
   styleUrls: ['./btn-change-bg.component.scss', '../action-buttons.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BtnChangeBgComponent implements OnInit {
   @Output() setNoteColor = new EventEmitter<NoteColor>();

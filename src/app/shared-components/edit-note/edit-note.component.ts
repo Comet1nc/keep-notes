@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
@@ -54,6 +55,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
       ]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditNoteComponent implements OnInit, OnDestroy {
   @Input() noteForEdit$: Observable<Note>;

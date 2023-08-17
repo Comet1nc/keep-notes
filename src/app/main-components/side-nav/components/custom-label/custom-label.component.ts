@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'side-nav-custom-label',
   templateUrl: './custom-label.component.html',
   styleUrls: ['../../labels-styles/label.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomLabelComponent {
   @Input() isSideNavOpened = false;

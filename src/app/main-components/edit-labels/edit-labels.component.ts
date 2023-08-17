@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import * as fromApp from '../../store/app.reducer';
 import * as labelsActions from '../../store/labels-store/labels.actions';
 import { Store } from '@ngrx/store';
@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-edit-labels',
   templateUrl: './edit-labels.component.html',
   styleUrls: ['./edit-labels.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditLabelsComponent {
   isEditLabelsMenuOpened$ = this.store

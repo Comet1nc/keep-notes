@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'side-nav-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['../../labels-styles/label.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArchiveComponent {
   @Input() isSideNavOpened = false;

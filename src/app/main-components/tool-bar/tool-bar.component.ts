@@ -1,10 +1,16 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { SearchService } from 'src/app/pages/search/search.service';
 
 @Component({
   selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
   styleUrls: ['./tool-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolBarComponent {
   @Output()

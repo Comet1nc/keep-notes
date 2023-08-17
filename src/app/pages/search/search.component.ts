@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SearchService } from './search.service';
 import { Note } from 'src/app/models/note.model';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   notes$ = combineLatest([

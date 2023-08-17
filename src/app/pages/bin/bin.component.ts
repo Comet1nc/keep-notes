@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { EditNoteService } from 'src/app/shared-components/edit-note/edit-note.service';
 import * as deletedNotesActions from '../../store/bin-store/bin.actions';
@@ -11,6 +11,7 @@ import { Observable, map } from 'rxjs';
   selector: 'app-bin',
   templateUrl: './bin.component.html',
   styleUrls: ['./bin.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BinComponent {
   notes$ = this.store

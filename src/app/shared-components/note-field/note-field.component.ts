@@ -1,5 +1,12 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Note } from 'src/app/models/note.model';
 import { AppService, Theme } from 'src/app/services/app.service';
 import {
@@ -45,6 +52,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       ]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NoteFieldComponent {
   @Input() note!: Note;

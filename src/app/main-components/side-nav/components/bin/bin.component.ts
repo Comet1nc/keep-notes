@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'side-nav-bin',
   templateUrl: './bin.component.html',
   styleUrls: ['../../labels-styles/label.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BinComponent {
   @Input() isSideNavOpened = false;
