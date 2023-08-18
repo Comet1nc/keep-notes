@@ -17,22 +17,7 @@
   }
 }
 
-.info {
-  display: none;
-  pointer-events: none;
-}
-
 @media (max-width: 960px) {
-  .info {
-    position: absolute;
-    top: 70%;
-    right: 25%;
-    display: flex;
-    z-index: 20;
-    opacity: 0.3;
-    font-size: 30px;
-  }
-
   .content {
     &.opened {
       margin-left: 0;
